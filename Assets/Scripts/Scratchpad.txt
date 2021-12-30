@@ -1,0 +1,24 @@
+Scratchpad
+-----------
+
+Shift from long levels to spelunky random sections
+Work out what parts are needed and how to keep it flexible
+Build the level on start instead of mid-level, 
+but try to write it so we could support hotswapping
+
+Idea: mirrors that flip the section you just played
+
+Re-make the dialogue UI for the Above sections
+Add an Above section
+
+Next steps:
+* find more fun gameplay
+** change the platform movement mechanics to use platforms for horizontal jumping
+** change the platform fx to show the platform pushed away zero-g style
+* refactor game state changes
+** game objects fire enum events to the game manager, which controls state changes in a single function
+** simplify GM - subsystem interface (fewer public entry points)
+** remove Game Over booleans, replace with game state / mode
+** come up with a name for the events that the UI recieves (AnimationEvent? FXEvent?)
+* increase eye collider size
+* figure out the tone [see wiki 11/21]

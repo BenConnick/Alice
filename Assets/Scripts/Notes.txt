@@ -1,0 +1,22 @@
+﻿I. Coordinate Spaces
+--------------------
+The visualization of the 2D inventory array is Row Column. 
+Therefore, the array is the transpose of the grid ui.
+
+The coordinate space of the grid is 
+^ Y-
+|
+|    X+
+ ---->
+ 
+The coordinate space of anchored position property of 
+the Inventory Item UI Rect Transform looks like:
+^ Y+
+|
+|    X+
+ ----> 
+^Notice the y coordinate is flipped. 
+
+Also the rect transform's coordinate origin is the center of the grid, 
+wheras the grid's origin is the upper left corner.
+
