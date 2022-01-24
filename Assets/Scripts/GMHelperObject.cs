@@ -6,7 +6,6 @@ public class GMHelperObject : MonoBehaviour
     //public PlatformManager PlatformManager;
     //public CameraController CameraController;
     //public WalkaboutUI LabUI;
-    public GM.IGameplayUI GameplayUI;
     public GameObject MainMenu;
 
     // Start is called before the first frame update
