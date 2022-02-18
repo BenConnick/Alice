@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace StableFluids
 {
-    public class Fluid : MonoBehaviour
+    public class SmokeRendering : MonoBehaviour
     {
         #region Editable attributes
 
@@ -14,7 +14,9 @@ namespace StableFluids
         [SerializeField] float _force = 300;
         [SerializeField] float _exponent = 200;
         [SerializeField] Texture2D _initial;
-        [SerializeField] RenderTexture rt;
+        [SerializeField] Texture2D _globalVelocity;
+        [SerializeField] RenderTexture _bottomEdge;
+        [SerializeField] Material _alphaBlendMat;
         public Transform stirrer;
         public Transform billboard;
 
@@ -58,6 +60,7 @@ namespace StableFluids
             public static RenderTexture V3;
             public static RenderTexture P1;
             public static RenderTexture P2;
+            public static RenderTexture dummy;
         }
 
         // Color buffers (for double buffering)
@@ -97,19 +100,16 @@ namespace StableFluids
             VFB.V3 = AllocateBuffer(2);
             VFB.P1 = AllocateBuffer(1);
             VFB.P2 = AllocateBuffer(1);
+            VFB.dummy = AllocateBuffer(2);
 
             _colorRT1 = AllocateBuffer(4, Screen.width, Screen.height);
             _colorRT2 = AllocateBuffer(4, Screen.width, Screen.height);
 
-            if (rt != null)
-            {
-                Graphics.Blit(toTexture2D(rt), _colorRT1);
-            }
+            Graphics.Blit(_initial, _colorRT1);
+            if (stirrer == null)
+                previousPos = Vector3.zero;
             else
-            {
-                Graphics.Blit(_initial, _colorRT1);
-            }
-            previousPos = stirrer.position;
+                previousPos = stirrer.position;
 
 #if UNITY_IOS
             Application.targetFrameRate = 60;
@@ -125,6 +125,7 @@ namespace StableFluids
             Destroy(VFB.V3);
             Destroy(VFB.P1);
             Destroy(VFB.P2);
+            Destroy(VFB.dummy);
 
             Destroy(_colorRT1);
             Destroy(_colorRT2);
@@ -142,7 +143,22 @@ namespace StableFluids
             return tex;
         }
 
-        void Update()
+        public void ApplyVelocity()
+        {
+
+            // -------
+            if (Time.frameCount % 1 == 0)
+            {
+                Graphics.Blit(_globalVelocity, VFB.V1, _alphaBlendMat);
+            }
+            if (Time.frameCount % 1 == 0)
+            {
+                Graphics.Blit(_bottomEdge, _colorRT1, _alphaBlendMat);
+            }
+            // -------
+        }
+
+        void FixedUpdate()
         {
             var dt = Time.deltaTime;
             var dx = 1.0f / ResolutionY;
@@ -172,7 +188,9 @@ namespace StableFluids
             //    (Input.mousePosition.x - Screen.width  * 0.5f) / Screen.height,
             //    (Input.mousePosition.y - Screen.height * 0.5f) / Screen.height
             //);
-            Vector3 stirrerRelativePos = stirrer.position - billboard.position; // center to center
+            Vector3 stirrerPos = Vector3.zero;
+            if (stirrer != null) stirrerPos = stirrer.position;
+            Vector3 stirrerRelativePos = stirrerPos - billboard.position; // center to center
             float billboardHeight = billboard.localScale.y;
             float billboardWidth = billboard.localScale.x;
             Vector2 stirrerNormalized = new Vector3(stirrerRelativePos.x / billboardHeight, stirrerRelativePos.y / billboardHeight);
@@ -223,11 +241,13 @@ namespace StableFluids
             //    _compute.SetVector("ForceVector", (input - _previousInput) * _force);
             //else
             //    _compute.SetVector("ForceVector", Vector4.zero);
-            Vector3 stirrerMovement = stirrer.position - previousPos;
-            previousPos = stirrer.position;
-            Vector2 normalizedStirrerMovement = new Vector2(stirrerMovement.x/billboardWidth,stirrerMovement.y/billboardHeight);
-            _compute.SetVector("ForceVector", normalizedStirrerMovement * _force);
-
+            if (stirrer != null)
+            {
+                Vector3 stirrerMovement = stirrerRelativePos - previousPos;
+                previousPos = stirrerRelativePos;
+                Vector2 normalizedStirrerMovement = new Vector2(stirrerMovement.x / billboardWidth, stirrerMovement.y / billboardHeight);
+                _compute.SetVector("ForceVector", normalizedStirrerMovement * _force);
+            }
 
             _compute.Dispatch(Kernels.Force, ThreadCountX, ThreadCountY, 1);
 

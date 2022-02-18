@@ -21,10 +21,19 @@ public class SpriteAnimator : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     [SerializeField] private SpriteSequence[] animations;
+    [SerializeField] private bool Autoplay;
 
     private SpriteSequence? currentAnimation;
     private int currentFrame;
     private float timer;
+
+    void Start()
+    {
+        if (Autoplay)
+        {
+            currentAnimation = animations[0];
+        }
+    }
 
     void Update()
     {

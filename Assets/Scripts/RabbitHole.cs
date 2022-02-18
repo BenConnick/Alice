@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using StableFluids;
 using TMPro;
 using UnityEngine;
 
@@ -13,6 +12,8 @@ public class RabbitHole : MonoBehaviour
     [Header("Config")]
     [SerializeField] private float secondsBetweenObstacles;
     [SerializeField] private float obstacleXMax;
+    [SerializeField] private Transform smokeScreen;
+    [SerializeField] private float fallSpeed;
 
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
@@ -31,10 +32,29 @@ public class RabbitHole : MonoBehaviour
     }
 
     // runs every tick
-    private void Update()
+    private void FixedUpdate()
     {
         if (!GM.IsGameplayPaused)
         {
+            if (true || smokeScreen.position.y < 0)
+            {
+                float viewport = GM.FindComp<GameplayCameraBehavior>().GetComponent<Camera>().orthographicSize;
+                float percent = smokeScreen.position.y / -viewport;
+                Vector3 movement;
+                if (true || smokeScreen.position.y < -viewport)
+                {
+                    movement = new Vector3(0, fallSpeed * Time.deltaTime, 0);
+                }
+                else
+                {
+                    movement = new Vector3(0, fallSpeed * Time.deltaTime * percent, 0);
+                }
+                transform.position += movement;
+                if (percent <= .01f)
+                {
+                    GM.FindComp<SmokeRendering>().ApplyVelocity();
+                }
+            }
 
             totalFallDistance = transform.position.y;
 

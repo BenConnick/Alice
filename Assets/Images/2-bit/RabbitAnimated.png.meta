@@ -1,16 +1,22 @@
 fileFormatVersion: 2
-guid: 22d1c6e017f5e413491a918e84c6d0f6
+guid: c6982c619c5df4509b95b8237610ed7a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7234894001683829413
-    second: tunnelsliced_0
+      213: -4132167715054846063
+    second: RabbitAnimated_0
   - first:
-      213: 8032421980291904305
-    second: tunnelsliced_1
+      213: -5854491316378861597
+    second: RabbitAnimated_1
   - first:
-      213: 3648761037357748732
-    second: tunnelsliced_2
+      213: -8211307161314857475
+    second: RabbitAnimated_2
+  - first:
+      213: 6929517698535615772
+    second: RabbitAnimated_3
+  - first:
+      213: -8831393670401696311
+    second: RabbitAnimated_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -49,14 +55,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
-  spriteBorder: {x: 100, y: 0, z: 100, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spritePixelsToUnits: 10
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -108,64 +114,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tunnelsliced_0
+      name: RabbitAnimated_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 99
-        height: 1140
-      alignment: 5
-      pivot: {x: 1, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b5de702dc3e789b90800000000000000
-      internalID: -7234894001683829413
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tunnelsliced_1
-      rect:
-        serializedVersion: 2
-        x: 99
-        y: 0
-        width: 10
-        height: 1140
+        width: 13
+        height: 10
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 133b655cb35e87f60800000000000000
-      internalID: 8032421980291904305
+      spriteID: 19f71d73b5797a6c0800000000000000
+      internalID: -4132167715054846063
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnelsliced_2
+      name: RabbitAnimated_1
       rect:
         serializedVersion: 2
-        x: 109
+        x: 13
         y: 0
-        width: 93
-        height: 1140
-      alignment: 4
-      pivot: {x: 0, y: 0.5}
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf19efdd4d003a230800000000000000
-      internalID: 3648761037357748732
+      spriteID: 3eff0aa8a2ba0cea0800000000000000
+      internalID: -5854491316378861597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RabbitAnimated_2
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 0
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfde43464a39b0e80800000000000000
+      internalID: -8211307161314857475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RabbitAnimated_3
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 0
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1d6ff5f1a79a2060800000000000000
+      internalID: 6929517698535615772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RabbitAnimated_4
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 0
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cdd21c5f36907580800000000000000
+      internalID: -8831393670401696311
       vertices: []
       indices: 
       edges: []

@@ -60,7 +60,7 @@ public static class GM
         private set;
     }
     public static bool IsGameOver { get; private set; }
-    public static bool IsGameplayPaused { get; private set; } = false;
+    public static bool IsGameplayPaused { get; private set; } = true;
     public static bool InputFrozen => IsGameplayPaused || IsGameOver;
     public static bool FellThroughFloor { get; set; }
     public static GameMode CurrentMode { get; private set; }
