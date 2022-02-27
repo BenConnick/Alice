@@ -12,7 +12,6 @@ public class RabbitHole : MonoBehaviour
     [Header("Config")]
     [SerializeField] private float secondsBetweenObstacles;
     [SerializeField] private float obstacleXMax;
-    [SerializeField] private Transform smokeScreen;
     [SerializeField] private float fallSpeed;
 
     [Header("Assets")]
@@ -29,32 +28,19 @@ public class RabbitHole : MonoBehaviour
     private void Awake()
     {
         initialHeight = transform.localPosition.y;
+        Application.targetFrameRate = 60;
+        Time.timeScale = 1f;
     }
 
     // runs every tick
-    private void FixedUpdate()
+    private void Update()
     {
         if (!GM.IsGameplayPaused)
         {
-            if (true || smokeScreen.position.y < 0)
-            {
-                float viewport = GM.FindComp<GameplayCameraBehavior>().GetComponent<Camera>().orthographicSize;
-                float percent = smokeScreen.position.y / -viewport;
-                Vector3 movement;
-                if (true || smokeScreen.position.y < -viewport)
-                {
-                    movement = new Vector3(0, fallSpeed * Time.deltaTime, 0);
-                }
-                else
-                {
-                    movement = new Vector3(0, fallSpeed * Time.deltaTime * percent, 0);
-                }
-                transform.position += movement;
-                if (percent <= .01f)
-                {
-                    GM.FindComp<SmokeRendering>().ApplyVelocity();
-                }
-            }
+            Vector3 movement;
+            movement = new Vector3(0, fallSpeed * SmokeRendering.FixedTimeInterval, 0);
+            transform.position += movement;
+            GM.FindComp<SmokeRendering>().DriveWithGameplay();
 
             totalFallDistance = transform.position.y;
 
@@ -67,7 +53,7 @@ public class RabbitHole : MonoBehaviour
             if (numCollisions > 0)
             {
                 // log
-                Debug.Log("Collision! " + results[0].name);
+                //Debug.Log("Collision! " + results[0].name);
 
                 // player FX
                 // shake, flash, subtract lives

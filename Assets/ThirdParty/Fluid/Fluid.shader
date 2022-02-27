@@ -24,8 +24,8 @@ Shader "Hidden/StableFluids"
     half4 frag_advect(v2f_img i) : SV_Target
     {
         // Time parameters
-        float time = _Time.y;
-        float deltaTime = unity_DeltaTime.x;
+        float time = 0.017;
+        float deltaTime = 0.017;
 
         // Aspect ratio coefficients
         float2 aspect = float2(_MainTex_TexelSize.y * _MainTex_TexelSize.z, 1);

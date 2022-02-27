@@ -49,7 +49,9 @@ public class CharacterController : MonoBehaviour
             velocity = new Vector2(velocity.x, y);
         }
 
+        Debug.Log("playerpos" + transform.position.y);
         transform.position += new Vector3(Time.deltaTime * velocity.x, Time.deltaTime * velocity.y,0);
+        Debug.Log("playerpos" + transform.position.y);
 
         // update animations
         if (inputVector.x > 0.01f)
