@@ -1,4 +1,5 @@
-﻿using StableFluids;
+﻿using System.Collections.Generic;
+using StableFluids;
 using TMPro;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ public class RabbitHole : MonoBehaviour
     private GameObject[] shuffledObstacleQueue = new GameObject[0];
     private int shuffledObstacleIndex = int.MaxValue;
     private float initialHeight;
+    private readonly List<LaneEntity> activeObstacles = new List<LaneEntity>();
 
     private void Awake()
     {
@@ -44,60 +46,35 @@ public class RabbitHole : MonoBehaviour
 
             totalFallDistance = transform.position.y;
 
-            // check collisions
-            var player = GM.FindComp<CharacterController>();
-            var results = new Collider2D[100];
-            var filter = new ContactFilter2D().NoFilter();
-            filter.SetLayerMask(LayerMask.NameToLayer("Obstacle"));
-            int numCollisions = player.GetComponent<Collider2D>().OverlapCollider(filter, results);
-            if (numCollisions > 0)
+            // update active obstacles
+            for (int i = activeObstacles.Count-1; i >= 0; i--)
             {
-                // log
-                //Debug.Log("Collision! " + results[0].name);
+                if (activeObstacles[i] == null)
+                    activeObstacles.RemoveAt(i);
+            }
 
-                // player FX
-                // shake, flash, subtract lives
-                GM.FindComp<GameplayCameraBehavior>().Shake();
-                player.StartFlashing();
-                GM.Lives--;
-
-                for (int i = 0; i < numCollisions; i++)
+            // check collisions
+            var player = GM.FindComp<LaneCharacterMovement>();
+            foreach (var obstacle in activeObstacles)
+            {
+                if (LaneUtils.CheckOverlap(player, obstacle))
                 {
-                    // make the collider react to being hit
-                    // bounce away from the player and rotate
-                    Collider2D collider = results[i];
-                    var collision = collider.gameObject;
-                    Vector3 colliderCenter = collision.transform.position;
-                    Vector3 playerCenter = player.transform.position;
-                    //Vector3 closestPoint = collider.ClosestPoint(player.transform.position);
-                    Vector3 toVec = Vector3.Normalize(colliderCenter - playerCenter);
-                    float torquePower = Mathf.Abs(Mathf.Abs(toVec.x) - Mathf.Abs(toVec.y)); // 0 to 1
-                    float dir = ((playerCenter.y > colliderCenter.y) ^ (playerCenter.x > colliderCenter.x) ? 1 : -1);
-                    float torque = 100*torquePower * dir;
-                    var rbody = collision.GetOrAddComponent<Rigidbody2D>();
-                    rbody.gravityScale = 0;
-                    rbody.AddTorque(torque);
-                    rbody.drag = 1.2f;
-                    rbody.angularDrag = 0.2f;
-                    rbody.AddForceAtPosition(toVec * (10 / (2 + 2 * torquePower)), playerCenter, ForceMode2D.Impulse);
-
-                    // also push back the player for added feedback
-                    player.PauseInput(0.1f);
-                    player.Push(-toVec);
-
-                    // remove the collider to prevent repeat hits
-                    Destroy(collider);
+                    // shake, flash, subtract lives
+                    GM.FindComp<GameplayCameraBehavior>().Shake();
+                    player.StartFlashing();
+                    GM.Lives--;
 
                     // flash the collider
-                    var flashing = collision.AddComponent<FlashingBehavior>();
+                    var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
                     flashing.flashOffTime = 0.08f;
                     flashing.StartFlashing();
 
-                    // remove after a few seconds
-                    var destroyer = collision.GetComponent<DestroyAfterTimeBehavior>();
+                    // bump up the removal time (if applicable)
+                    var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
                     if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
                 }
             }
+            
 
             // spawn new obstacles
             if (Time.time - lastObstableSpawnTime > secondsBetweenObstacles)
@@ -157,5 +134,30 @@ public class RabbitHole : MonoBehaviour
             default:
                 return 999;
         }
+    }
+}
+
+public static class LaneUtils
+{
+    public static int NumLanes = 10;
+    public static float LaneScale = 0.6f;
+
+    public static float GetWorldPosition(LaneEntity entity)
+    {
+        return (entity.Lane - NumLanes * .5f + entity.WidthLanes * .5f) * LaneScale;
+    }
+
+    public static bool CheckOverlap(LaneEntity a, LaneEntity b)
+    {
+        // lane
+        if (a.Lane + a.WidthLanes <= b.Lane) return false; // A left of B
+        if (b.Lane + b.WidthLanes <= a.Lane) return false; // B left of A
+
+        // height
+        if (a.Y - a.Height * .5f > b.Y) return false; // A above B
+        if (a.Y + a.Height * .5f < b.Y) return false; // A below B
+
+        // must be overlapping
+        return true;
     }
 }

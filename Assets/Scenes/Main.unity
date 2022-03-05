@@ -2170,11 +2170,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1534927715}
   - component: {fileID: 1534927714}
-  - component: {fileID: 1534927713}
   - component: {fileID: 1534927716}
   - component: {fileID: 1534927717}
   - component: {fileID: 1534927718}
   - component: {fileID: 1534927719}
+  - component: {fileID: 1534927713}
   m_Layer: 11
   m_Name: Rabbit
   m_TagString: Untagged
@@ -2191,16 +2191,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1534927712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db2ff80c8d52049198b39d11d8d0163d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4091a4e163d27450d81c5ecb22f0c6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lane: 0
+  WidthLanes: 2
+  Height: 1
+  Y: 0
+  laneConfig: {fileID: 1387630783}
   spriteRenderer: {fileID: 1534927714}
-  accelerationPower: 100
-  decelerationPower: 0.1
-  horizontalMaxSpeed: 4
-  upwardMaxSpeed: 4
-  downwardMaxSpeed: 4
   flipAnimationSpeed: 20
+  laneChangeSpeed: 2
 --- !u!212 &1534927714
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2260,7 +2261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534927712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.03, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 169287864}
