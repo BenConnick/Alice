@@ -6,7 +6,7 @@ public class StartButtonBehavior : MonoBehaviour
 {
     public void OnPressed()
     {
-        GM.OnGameEvent(GM.GameEvent.StartButton);
+        GM.OnGameEvent(GM.NavigationEvent.StartButton);
     }
 
 #if UNITY_EDITOR
@@ -14,11 +14,11 @@ public class StartButtonBehavior : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            GM.OnGameEvent(GM.GameEvent.SkipIntroDialogue);
+            GM.OnGameEvent(GM.NavigationEvent.SkipIntroDialogue);
         } 
         else if (Input.GetKey(KeyCode.Alpha2))
         {
-            GM.OnGameEvent(GM.GameEvent.StartLevel);
+            GM.OnGameEvent(GM.NavigationEvent.StartLevel);
         }
     }
 

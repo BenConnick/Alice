@@ -19,10 +19,11 @@ public static class GM
         MainMenu,
         PauseMenu, // unused - placeholder
         Gameplay, // the main gameplay mode
-        GameOver // TODO replace isGameOver
+        Scoreboard,
+        EnterName,
     }
 
-    public enum GameEvent
+    public enum NavigationEvent
     {
         Default,
         StartButton,
@@ -31,6 +32,8 @@ public static class GM
         PlatformerGameOver,
         PlatformerLevelUp,
         SkipIntroDialogue,
+        OpenNamePicker,
+        CloseScoreboard,
     }
 
     public const int MAX_LIVES = 3;
@@ -49,7 +52,7 @@ public static class GM
             // game over
             if (lives <= 0)
             {
-                OnGameOverCondition();
+                OnGameEvent(NavigationEvent.PlatformerGameOver);
             }
         }
     }
@@ -59,13 +62,14 @@ public static class GM
         get;
         private set;
     }
-    public static bool IsGameOver { get; private set; }
     public static bool IsGameplayPaused { get; private set; } = true;
-    public static bool InputFrozen => IsGameplayPaused || IsGameOver;
+    public static bool InputFrozen => IsGameplayPaused;
     public static bool FellThroughFloor { get; set; }
     public static GameMode CurrentMode { get; private set; }
 
     public static GameObject MainMenu => helperObject.MainMenu;
+    public static GameObject Scoreboard => helperObject.ScoreBoard;
+    public static GameObject EnterNameScreen => helperObject.EnterNameScreen;
 
     private static GMHelperObject helperObject;
 
@@ -78,9 +82,10 @@ public static class GM
     {
         if (helperObject != null || helper == null) return;
 
-        helperObject = helper;
+        Physics.autoSimulation = false;
+        Physics2D.autoSimulation = false;
 
-        IsGameOver = false;
+        helperObject = helper;
 
         ChangeMode(GameMode.MainMenu);
     }
@@ -102,7 +107,6 @@ public static class GM
 
     public static void OnRestart()
     {
-        IsGameOver = false;
         Lives = MAX_LIVES;
         //CameraController.SetY(0);
         // TODO reset player
@@ -110,21 +114,15 @@ public static class GM
 
     public static void OnRetry()
     {
-        IsGameOver = false;
         Lives = MAX_LIVES;
         // TODO reset player
         IsGameplayPaused = false;
         ChangeMode(GameMode.Gameplay);
     }
 
-    private static void OnGameOverCondition()
-    {
-        if (IsGameOver) return;
-        IsGameOver = true;
-    }
-
     private static void SetLevel(int l)
     {
+       lives = 3;
        Level = l;
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
@@ -142,6 +140,14 @@ public static class GM
             case GameMode.Gameplay:
                 IsGameplayPaused = false;
                 break;
+            case GameMode.Scoreboard:
+                IsGameplayPaused = true;
+                activeScreen = Scoreboard;
+                break;
+            case GameMode.EnterName:
+                IsGameplayPaused = true;
+                activeScreen = EnterNameScreen;
+                break;
             default:
                 throw new Exception("unhandled mode");
         }
@@ -152,20 +158,39 @@ public static class GM
             g.SetActive(g == activeScreen);
         }
         ShowHide(MainMenu);
+        ShowHide(Scoreboard);
+        ShowHide(EnterNameScreen);
 
         // update mode
         CurrentMode = mode;
     }
 
-    public static void OnGameEvent(GameEvent e)
+    public static void OnGameEvent(NavigationEvent e)
     {
         switch (CurrentMode)
         {
             case GameMode.MainMenu:
-                if (e == GameEvent.StartButton)
+                if (e == NavigationEvent.StartButton)
                 {
                     SetLevel(1);
+                    FindSingle<RabbitHole>().Reset();
                     ChangeMode(GameMode.Gameplay);
+                }
+                break;
+            case GameMode.Gameplay:
+                if (e == NavigationEvent.PlatformerGameOver)
+                {
+                    ChangeMode(GameMode.Scoreboard);
+                }
+                break;
+            case GameMode.Scoreboard:
+                if (e == NavigationEvent.OpenNamePicker)
+                {
+                    ChangeMode(GameMode.EnterName);
+                }
+                else if (e == NavigationEvent.CloseScoreboard)
+                {
+                    ChangeMode(GameMode.MainMenu);
                 }
                 break;
             default:
@@ -178,9 +203,11 @@ public static class GM
         return helperObject.StartCoroutine(routine);
     }
 
-
+    // cached singletons for ease of reference
     private static readonly Dictionary<System.Type, MonoBehaviour> gameplayComponentsCache = new Dictionary<System.Type, MonoBehaviour>();
-    public static T FindComp<T>() where T : MonoBehaviour
+    // finds a single object in the scene with the requested component and caches it
+    // for easily obtaining a reference to a singleton behavior across scripts without serializing
+    public static T FindSingle<T>() where T : MonoBehaviour
     {
         // cached
         if (gameplayComponentsCache.ContainsKey(typeof(T)))

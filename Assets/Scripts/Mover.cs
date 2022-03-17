@@ -15,10 +15,9 @@ public class Mover : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (Time.fixedDeltaTime == 0) Debug.Log("zero");
-        Vector2 move = Time.fixedDeltaTime * MoveSpeed;
+        Vector2 move = Time.deltaTime * MoveSpeed;
         innerPos += new Vector3(move.x, move.y);
         transform.position = Util.GetLowResPosition(innerPos);
     }

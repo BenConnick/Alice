@@ -1,4 +1,6 @@
-﻿using StableFluids;
+﻿using System;
+using System.Collections.Generic;
+using StableFluids;
 using UnityEngine;
 
 public class LaneCharacterMovement : LaneEntity
@@ -9,10 +11,12 @@ public class LaneCharacterMovement : LaneEntity
     public SpriteRenderer spriteRenderer;
     public float flipAnimationSpeed = 20;
     public float laneChangeSpeed = 2;
+    public float invincibilityTime = 2f;
 
     private float laneChangeDirection;
     private bool shouldFlip;
     private float inputCooldown;
+
 
     void Update()
     {
@@ -31,7 +35,7 @@ public class LaneCharacterMovement : LaneEntity
 
 
         // update animations
-        HandleFlip(dir);
+        //HandleFlip(dir);
     }
 
     public enum DirectionInput {
@@ -147,6 +151,27 @@ public class LaneCharacterMovement : LaneEntity
 
     public void StartFlashing()
     {
-        GetComponent<FlashingBehavior>().StartFlashing();
+        GetComponentCached<FlashingBehavior>().StartFlashing(invincibilityTime);
+    }
+
+    public bool IsFlashing()
+    {
+        return GetComponentCached<FlashingBehavior>().IsFlashing();
+    }
+
+    // too lazy to serialize, make a cache for all the components so I can use GetComponent with impunity
+    private Dictionary<Type, MonoBehaviour> componentCache = new Dictionary<Type, MonoBehaviour>();
+    private T GetComponentCached<T>() where T : MonoBehaviour
+    {
+        if(componentCache.TryGetValue(typeof(T), out MonoBehaviour monoBehaviour))
+        {
+            return (T)monoBehaviour;
+        }
+        else
+        {
+            var ret = GetComponent<T>();
+            componentCache.Add(typeof(T), ret);
+            return ret;
+        }
     }
 }

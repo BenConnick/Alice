@@ -34,6 +34,16 @@ public class RabbitHole : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void Reset()
+    {
+        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
+        foreach (var ob in activeObstacles)
+        {
+            Destroy(ob.gameObject);
+        }
+        activeObstacles.Clear();
+    }
+
     // runs every tick
     private void Update()
     {
@@ -42,7 +52,7 @@ public class RabbitHole : MonoBehaviour
             Vector3 movement;
             movement = new Vector3(0, fallSpeed * SmokeRendering.FixedTimeInterval, 0);
             transform.position += movement;
-            GM.FindComp<SmokeRendering>().DriveWithGameplay();
+            GM.FindSingle<SmokeRendering>().DriveWithGameplay();
 
             totalFallDistance = transform.position.y;
 
@@ -54,24 +64,27 @@ public class RabbitHole : MonoBehaviour
             }
 
             // check collisions
-            var player = GM.FindComp<LaneCharacterMovement>();
-            foreach (var obstacle in activeObstacles)
+            var player = GM.FindSingle<LaneCharacterMovement>();
+            if (!player.IsFlashing())
             {
-                if (LaneUtils.CheckOverlap(player, obstacle))
+                foreach (var obstacle in activeObstacles)
                 {
-                    // shake, flash, subtract lives
-                    GM.FindComp<GameplayCameraBehavior>().Shake();
-                    player.StartFlashing();
-                    GM.Lives--;
+                    if (LaneUtils.CheckOverlap(player, obstacle))
+                    {
+                        // shake, flash, subtract lives
+                        GM.FindSingle<GameplayCameraBehavior>().Shake();
+                        player.StartFlashing();
+                        GM.Lives--;
 
-                    // flash the collider
-                    var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-                    flashing.flashOffTime = 0.08f;
-                    flashing.StartFlashing();
+                        // flash the collider
+                        var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
+                        flashing.flashOffTime = 0.08f;
+                        flashing.StartFlashing();
 
-                    // bump up the removal time (if applicable)
-                    var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
-                    if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+                        // bump up the removal time (if applicable)
+                        var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
+                        if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+                    }
                 }
             }
             
@@ -91,15 +104,21 @@ public class RabbitHole : MonoBehaviour
                 }
                 var prefab = shuffledObstacleQueue[shuffledObstacleIndex];
                 shuffledObstacleIndex++;
-                var gameCam = GM.FindComp<GameplayCameraBehavior>().GetComponent<Camera>();
+                var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
                 var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
                 var xPos = Random.Range(-obstacleXMax, obstacleXMax); // at a random position
                 var inst = GameObject.Instantiate(prefab, new Vector3(xPos, yPos, 0), Quaternion.identity, transform);
+                var entity = inst.GetComponent<LaneEntity>();
+                entity.Lane = LaneUtils.GetLanePosition(entity);
+                activeObstacles.Add(entity);
             }
 
             // update UI
             float progressTotal = transform.localPosition.y - initialHeight;
-            float progressPercent = progressTotal / GetLength(GM.LevelType);
+            //float progressPercent = progressTotal / GetLength(GM.LevelType);
+            // progress
+            //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
+            //progressMarker.anchoredPosition = Vector2.zero;
             // score
             scoreLabel.text = "SCORE:<br>"+Mathf.FloorToInt(progressTotal);
             // lives
@@ -107,9 +126,6 @@ public class RabbitHole : MonoBehaviour
             {
                 heartIcons[i].SetActive(i < GM.Lives);
             }
-            // progress
-            progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1-progressPercent);
-            progressMarker.anchoredPosition = Vector2.zero;
         }
     }
 
@@ -147,6 +163,11 @@ public static class LaneUtils
         return (entity.Lane - NumLanes * .5f + entity.WidthLanes * .5f) * LaneScale;
     }
 
+    public static int GetLanePosition(LaneEntity entity)
+    {
+        return Mathf.RoundToInt(entity.transform.position.x / LaneScale + NumLanes * .5f - entity.WidthLanes * .5f);
+    }
+
     public static bool CheckOverlap(LaneEntity a, LaneEntity b)
     {
         // lane
@@ -154,8 +175,8 @@ public static class LaneUtils
         if (b.Lane + b.WidthLanes <= a.Lane) return false; // B left of A
 
         // height
-        if (a.Y - a.Height * .5f > b.Y) return false; // A above B
-        if (a.Y + a.Height * .5f < b.Y) return false; // A below B
+        if (a.Y - a.Height * .5f > b.Y + b.Height * .5f) return false; // A above B
+        if (a.Y + a.Height * .5f < b.Y - b.Height * .5f) return false; // A below B
 
         // must be overlapping
         return true;
