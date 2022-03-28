@@ -11,9 +11,8 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private RectTransform progressMarker;
 
     [Header("Config")]
-    [SerializeField] private float secondsBetweenObstacles;
-    [SerializeField] private float obstacleXMax;
     [SerializeField] private float fallSpeed;
+    public ObstacleSpawnersConfig SpawnersConfig;
 
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
@@ -22,13 +21,13 @@ public class RabbitHole : MonoBehaviour
     private float lastObstableSpawnTime;
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
-    private GameObject[] shuffledObstacleQueue = new GameObject[0];
-    private int shuffledObstacleIndex = int.MaxValue;
     private float initialHeight;
     private readonly List<LaneEntity> activeObstacles = new List<LaneEntity>();
+    private ObstacleSpawner currentSpawner;
 
     private void Awake()
     {
+        currentSpawner = new RabbitHoleObstacleSpawner(obstaclePrefabs);
         initialHeight = transform.localPosition.y;
         Application.targetFrameRate = 60;
         Time.timeScale = 1f;
@@ -39,7 +38,7 @@ public class RabbitHole : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
         foreach (var ob in activeObstacles)
         {
-            Destroy(ob.gameObject);
+            if (ob != null && ob.gameObject != null) Destroy(ob.gameObject);
         }
         activeObstacles.Clear();
     }
@@ -71,114 +70,59 @@ public class RabbitHole : MonoBehaviour
                 {
                     if (LaneUtils.CheckOverlap(player, obstacle))
                     {
-                        // shake, flash, subtract lives
-                        GM.FindSingle<GameplayCameraBehavior>().Shake();
-                        player.StartFlashing();
-                        GM.Lives--;
-
-                        // flash the collider
-                        var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-                        flashing.flashOffTime = 0.08f;
-                        flashing.StartFlashing();
-
-                        // bump up the removal time (if applicable)
-                        var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
-                        if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+                        HandleObstacleCollision(player, obstacle);
                     }
                 }
             }
-            
 
             // spawn new obstacles
-            if (Time.time - lastObstableSpawnTime > secondsBetweenObstacles)
+            var newObstacles = currentSpawner.Update(Time.deltaTime);
+            for (int i = 0; i < newObstacles.Length; i++)
             {
-                lastObstableSpawnTime = Time.time;
-
-                // spawn random obstacle
-                if (shuffledObstacleIndex >= shuffledObstacleQueue.Length)
-                {
-                    shuffledObstacleQueue = new GameObject[obstaclePrefabs.Length];
-                    obstaclePrefabs.CopyTo(shuffledObstacleQueue, 0);
-                    Util.Shuffle(shuffledObstacleQueue);
-                    shuffledObstacleIndex = 0;
-                }
-                var prefab = shuffledObstacleQueue[shuffledObstacleIndex];
-                shuffledObstacleIndex++;
-                var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-                var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
-                var xPos = Random.Range(-obstacleXMax, obstacleXMax); // at a random position
-                var inst = GameObject.Instantiate(prefab, new Vector3(xPos, yPos, 0), Quaternion.identity, transform);
+                // spawn
+                var spawn = newObstacles[i];
+                var inst = Instantiate(spawn.Prefab, new Vector3(LaneUtils.GetWorldPosition(spawn.Prefab.GetComponent<LaneEntity>(),spawn.Lane), spawn.YPos, 0), Quaternion.identity, transform);
                 var entity = inst.GetComponent<LaneEntity>();
-                entity.Lane = LaneUtils.GetLanePosition(entity);
+                entity.Lane = spawn.Lane;
                 activeObstacles.Add(entity);
             }
 
             // update UI
-            float progressTotal = transform.localPosition.y - initialHeight;
-            //float progressPercent = progressTotal / GetLength(GM.LevelType);
-            // progress
-            //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
-            //progressMarker.anchoredPosition = Vector2.zero;
-            // score
-            scoreLabel.text = "SCORE:<br>"+Mathf.FloorToInt(progressTotal);
-            // lives
-            for (int i = 0; i < heartIcons.Length; i++)
-            {
-                heartIcons[i].SetActive(i < GM.Lives);
-            }
+            UpdateGameplayUI();
         }
     }
 
-    private static float GetLength(LevelType level)
+    private void UpdateGameplayUI()
     {
-        switch (level)
+        float progressTotal = transform.localPosition.y - initialHeight;
+        //float progressPercent = progressTotal / GetLength(GM.LevelType);
+        // progress
+        //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
+        //progressMarker.anchoredPosition = Vector2.zero;
+        // score
+        GM.CurrentScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
+        scoreLabel.text = "SCORE:<br>"+GM.CurrentScore;
+        // lives
+        for (int i = 0; i < heartIcons.Length; i++)
         {
-            case LevelType.Default:
-                return 999; // TODO
-            case LevelType.RabbitHole:
-                return 150;
-            case LevelType.Caterpillar:
-                return 150;
-            case LevelType.CheshireCat:
-                return 150;
-            case LevelType.MadHatter:
-                return 150;
-            case LevelType.TweedleDum:
-                return 150;
-            case LevelType.QueenOfHearts:
-                return 150;
-            default:
-                return 999;
+            heartIcons[i].SetActive(i < GM.Lives);
         }
     }
-}
 
-public static class LaneUtils
-{
-    public static int NumLanes = 10;
-    public static float LaneScale = 0.6f;
-
-    public static float GetWorldPosition(LaneEntity entity)
+    private void HandleObstacleCollision(LaneCharacterMovement player, LaneEntity obstacle)
     {
-        return (entity.Lane - NumLanes * .5f + entity.WidthLanes * .5f) * LaneScale;
-    }
+        // shake, flash, subtract lives
+        GM.FindSingle<GameplayCameraBehavior>().Shake();
+        player.StartFlashing();
+        GM.Lives--;
 
-    public static int GetLanePosition(LaneEntity entity)
-    {
-        return Mathf.RoundToInt(entity.transform.position.x / LaneScale + NumLanes * .5f - entity.WidthLanes * .5f);
-    }
+        // flash the collider
+        var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
+        flashing.flashOffTime = 0.08f;
+        flashing.StartFlashing();
 
-    public static bool CheckOverlap(LaneEntity a, LaneEntity b)
-    {
-        // lane
-        if (a.Lane + a.WidthLanes <= b.Lane) return false; // A left of B
-        if (b.Lane + b.WidthLanes <= a.Lane) return false; // B left of A
-
-        // height
-        if (a.Y - a.Height * .5f > b.Y + b.Height * .5f) return false; // A above B
-        if (a.Y + a.Height * .5f < b.Y - b.Height * .5f) return false; // A below B
-
-        // must be overlapping
-        return true;
+        // bump up the removal time (if applicable)
+        var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
+        if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
     }
 }

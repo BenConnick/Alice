@@ -37,7 +37,6 @@ public static class GM
     }
 
     public const int MAX_LIVES = 3;
-    private static int lives = MAX_LIVES;
     public static int Lives
     {
         get => lives;
@@ -56,21 +55,30 @@ public static class GM
             }
         }
     }
-    public static LevelType LevelType => (LevelType)Level;
-    public static int Level
+    public static LevelType CurrentLevel { get; set; }
+    public static int CurrentLevelIndex
     {
-        get;
-        private set;
+        get => (int)CurrentLevel;
     }
+
+    #region gamestate
+    // Game State
+    private static int lives = MAX_LIVES;
     public static bool IsGameplayPaused { get; private set; } = true;
     public static bool InputFrozen => IsGameplayPaused;
     public static bool FellThroughFloor { get; set; }
     public static GameMode CurrentMode { get; private set; }
+    public static int CurrentScore { get; set; }
+    public static readonly List<int> PlayerHighScores = new List<int>();
+    public static readonly List<string> PlayerHighScoreNames = new List<string>(); // assumed same length as scores^
+    #endregion
 
+    // Screen Quick References
     public static GameObject MainMenu => helperObject.MainMenu;
     public static GameObject Scoreboard => helperObject.ScoreBoard;
     public static GameObject EnterNameScreen => helperObject.EnterNameScreen;
 
+    // Helper object
     private static GMHelperObject helperObject;
 
     public interface IGameplayUI
@@ -120,10 +128,9 @@ public static class GM
         ChangeMode(GameMode.Gameplay);
     }
 
-    private static void SetLevel(int l)
+    private static void SetLevel(LevelType levelType)
     {
        lives = 3;
-       Level = l;
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
        // PC.transform.position = new Vector3(0, 0, 0);
@@ -172,7 +179,7 @@ public static class GM
             case GameMode.MainMenu:
                 if (e == NavigationEvent.StartButton)
                 {
-                    SetLevel(1);
+                    SetLevel(CurrentLevel);
                     FindSingle<RabbitHole>().Reset();
                     ChangeMode(GameMode.Gameplay);
                 }
