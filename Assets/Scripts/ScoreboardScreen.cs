@@ -13,7 +13,7 @@ public class ScoreboardScreen : MonoBehaviour
         "QUEEN", "TDNTD", "HATTA", "CHESH", "ABSOL", "WHITE"
     };
     private readonly int[] defaultScores = new int[] {
-        1000, 800, 600, 400, 200, 100
+        1000, 800, 600, 400, 200, 10
     };
 
     public void OnEnable()

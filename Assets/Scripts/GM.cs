@@ -33,8 +33,20 @@ public static class GM
         PlatformerLevelUp,
         SkipIntroDialogue,
         OpenNamePicker,
+        CloseNamePicker,
         CloseScoreboard,
+        CheatCodeEntered,
     }
+
+    // so-called "cheat codes"
+    public static readonly IReadOnlyDictionary<string, LevelType> CheatCodes = new Dictionary<string, LevelType>()
+    {
+        { "DRINK", LevelType.Caterpillar },
+        { "GROWN", LevelType.CheshireCat },
+        { "GRINS", LevelType.MadHatter },
+        { "PARTY", LevelType.TweedleDum },
+        { "TWINS", LevelType.QueenOfHearts },
+    };
 
     public const int MAX_LIVES = 3;
     public static int Lives
@@ -172,6 +184,11 @@ public static class GM
         CurrentMode = mode;
     }
 
+    public static void OnCheatCode(LevelType levelType)
+    {
+
+    }
+
     public static void OnGameEvent(NavigationEvent e)
     {
         switch (CurrentMode)
@@ -196,6 +213,12 @@ public static class GM
                     ChangeMode(GameMode.EnterName);
                 }
                 else if (e == NavigationEvent.CloseScoreboard)
+                {
+                    ChangeMode(GameMode.MainMenu);
+                }
+                break;
+            case GameMode.EnterName:
+                if (e == NavigationEvent.CloseNamePicker)
                 {
                     ChangeMode(GameMode.MainMenu);
                 }
