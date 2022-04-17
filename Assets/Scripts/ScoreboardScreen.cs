@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TMPro;
+using System.Collections.Generic;
 
 public class ScoreboardScreen : MonoBehaviour
 {
@@ -21,26 +22,25 @@ public class ScoreboardScreen : MonoBehaviour
         UpdateDataDrivenUIInstant();
     }
 
+    private void GetScores(out int[] scoresToUse, out string[] namesToUse)
+    {
+        // default arguments
+        MixScores(defaultScores, GM.PlayerHighScores, defaultScoreNames, GM.PlayerHighScoreNames,
+            out scoresToUse, out namesToUse);
+    }
+
     public void UpdateDataDrivenUIInstant()
     {
-        int[] scoresToUse = defaultScores;
-        string[] namesToUse = defaultScoreNames; // assumed same length as scores^
+        // get the scores
+        GetScores(out int[] scoresToUse, out string[] namesToUse);
 
+        // build the string
         string scoresString = "";
         string scoreNamesString = "";
         for (int i = 0; i < scoresToUse.Length; i++)
         {
             int score = scoresToUse[i];
             string name = namesToUse[i];
-            for (int j = 0; j < GM.PlayerHighScores.Count; j++)
-            {
-                int playerScore = GM.PlayerHighScores[j];
-                if (playerScore > score)
-                {
-                    score = playerScore;
-                    name = GM.PlayerHighScoreNames[j]; // assumed same length as scores
-                }
-            }
             scoresString += "\n" + score;
             scoreNamesString += "\n" + name;
         }
@@ -52,12 +52,35 @@ public class ScoreboardScreen : MonoBehaviour
         ScoreNamesLabel.text = scoreNamesString;
     }
 
+    public void MixScores(int[] builtInScores, List<int> playerScores, string[] builtInNames, List<string> playerNames, out int[] resultingScores, out string[] resultingNames)
+    {
+        resultingScores = new int[builtInScores.Length];
+        resultingNames = new string[builtInScores.Length];
+        for (int i = 0; i < builtInScores.Length; i++)
+        {
+            int score = builtInScores[i];
+            string name = builtInNames[i];
+            for (int j = 0; j < playerScores.Count; j++)
+            {
+                int playerScore = playerScores[j];
+                if (playerScore > score)
+                {
+                    score = playerScore;
+                    name = playerNames[j]; // assumed same length as scores
+                }
+            }
+            resultingScores[i] = score;
+            resultingNames[i] = name;
+        }
+    }
+
     public void OnContinuePressed()
     {
-        int[] scoresToUse = defaultScores;
+        // get the scores
+        GetScores(out int[] scoresToUse, out string[] namesToUse);
         for (int i = 0; i < scoresToUse.Length; i++)
         {
-            if (GM.CurrentScore > scoresToUse[i])
+            if (!GM.PlayerHighScores.Contains(GM.CurrentScore) && GM.CurrentScore > scoresToUse[i])
             {
                 GM.OnGameEvent(GM.NavigationEvent.OpenNamePicker);
                 return;

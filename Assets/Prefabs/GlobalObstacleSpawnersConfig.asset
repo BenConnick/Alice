@@ -14,34 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawnersConfig
   obstacleLaneMax: 10
   RabbitHoleCurve:
-    secondsBetweenObstacles: 1
+    secondsBetweenObstacles: 2
     difficultyCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 2
-        outSlope: 2
+        inSlope: 0.0027424425
+        outSlope: 0.0027424425
         tangentMode: 0
-        weightedMode: 0
+        weightedMode: 2
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.79615384
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0
+        outSlope: -0
         tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
+        weightedMode: 1
+        inWeight: 0.8
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    difficultyCurveMagnitude: 0.5
-    difficultyCurveDuration: 4
-    difficultyAcceleration: 0.0001
+    difficultyCurveMagnitude: 0.75
+    difficultyCurveDuration: 6
+    difficultyAcceleration: -0.001
     difficultyCap: 0.1
   CaterpillarCurve:
     secondsBetweenObstacles: 0

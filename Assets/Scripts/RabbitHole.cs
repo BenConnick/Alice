@@ -84,6 +84,7 @@ public class RabbitHole : MonoBehaviour
                 var inst = Instantiate(spawn.Prefab, new Vector3(LaneUtils.GetWorldPosition(spawn.Prefab.GetComponent<LaneEntity>(),spawn.Lane), spawn.YPos, 0), Quaternion.identity, transform);
                 var entity = inst.GetComponent<LaneEntity>();
                 entity.Lane = spawn.Lane;
+                Debug.Log(entity.Lane);
                 activeObstacles.Add(entity);
             }
 

@@ -38,14 +38,21 @@ public static class GM
         CheatCodeEntered,
     }
 
-    // so-called "cheat codes"
-    public static readonly IReadOnlyDictionary<string, LevelType> CheatCodes = new Dictionary<string, LevelType>()
+    public enum DebugEvent
     {
-        { "DRINK", LevelType.Caterpillar },
-        { "GROWN", LevelType.CheshireCat },
-        { "GRINS", LevelType.MadHatter },
-        { "PARTY", LevelType.TweedleDum },
-        { "TWINS", LevelType.QueenOfHearts },
+        Default,
+        ShowNameEntryScreen,
+
+    }
+
+    // so-called "cheat codes"
+    public static readonly IReadOnlyDictionary<LevelType, string> CheatCodes = new Dictionary<LevelType, string>()
+    {
+        { LevelType.Caterpillar, "DRINK" },
+        { LevelType.CheshireCat, "GROWN" },
+        { LevelType.MadHatter, "GRINS" },
+        { LevelType.TweedleDum, "PARTY" },
+        { LevelType.QueenOfHearts, "TWINS" },
     };
 
     public const int MAX_LIVES = 3;
@@ -68,10 +75,6 @@ public static class GM
         }
     }
     public static LevelType CurrentLevel { get; set; }
-    public static int CurrentLevelIndex
-    {
-        get => (int)CurrentLevel;
-    }
 
     #region gamestate
     // Game State
@@ -184,9 +187,46 @@ public static class GM
         CurrentMode = mode;
     }
 
-    public static void OnCheatCode(LevelType levelType)
+    public static void OnCheatCode(LevelType unlockCode)
     {
-
+        switch (CurrentLevel)
+        {
+            case LevelType.RabbitHole:
+                if (unlockCode == LevelType.Caterpillar)
+                {
+                    CurrentLevel = unlockCode;
+                }
+                break;
+            case LevelType.Caterpillar:
+                if (unlockCode == LevelType.CheshireCat)
+                {
+                    CurrentLevel = unlockCode;
+                }
+                break;
+            case LevelType.CheshireCat:
+                if (unlockCode == LevelType.MadHatter)
+                {
+                    CurrentLevel = unlockCode;
+                }
+                break;
+            case LevelType.MadHatter:
+                if (unlockCode == LevelType.TweedleDum)
+                {
+                    CurrentLevel = unlockCode;
+                }
+                break;
+            case LevelType.TweedleDum:
+                if (unlockCode == LevelType.QueenOfHearts)
+                {
+                    CurrentLevel = unlockCode;
+                }
+                break;
+            case LevelType.QueenOfHearts:
+                // TBD
+                break;
+            default:
+                break;
+        }
     }
 
     public static void OnGameEvent(NavigationEvent e)
@@ -196,6 +236,7 @@ public static class GM
             case GameMode.MainMenu:
                 if (e == NavigationEvent.StartButton)
                 {
+                    if (CurrentLevel == LevelType.Default) CurrentLevel = LevelType.RabbitHole;
                     SetLevel(CurrentLevel);
                     FindSingle<RabbitHole>().Reset();
                     ChangeMode(GameMode.Gameplay);
@@ -220,8 +261,22 @@ public static class GM
             case GameMode.EnterName:
                 if (e == NavigationEvent.CloseNamePicker)
                 {
-                    ChangeMode(GameMode.MainMenu);
+                    ChangeMode(GameMode.Scoreboard);
                 }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void OnDebugEvent(DebugEvent debugEvent)
+    {
+        switch (debugEvent)
+        {
+            case DebugEvent.ShowNameEntryScreen:
+                CurrentLevel = LevelType.RabbitHole;
+                CurrentScore = 110;
+                ChangeMode(GameMode.EnterName);
                 break;
             default:
                 break;

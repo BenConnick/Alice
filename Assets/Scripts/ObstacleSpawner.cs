@@ -59,7 +59,7 @@ public class RabbitHoleObstacleSpawner : ShuffledObstacleSpawner
         elapsedTime += dt;
 
         // spawn new obstacles
-        Debug.Log("SecondsBetweenObstacles: " + secondsBetweenObstacles);
+        //Debug.Log("SecondsBetweenObstacles: " + secondsBetweenObstacles);
         if (Time.time - lastObstableSpawnTime > secondsBetweenObstacles)
         {
             lastObstableSpawnTime = Time.time;
@@ -67,7 +67,7 @@ public class RabbitHoleObstacleSpawner : ShuffledObstacleSpawner
 
             var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
             var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
-            var lane = Random.Range(0, obstacleXMax+1); // at a random position
+            var lane = Random.Range(0, obstacleXMax); // at a random position
 
             return new ObstacleSpawnInfo[] {
                 new ObstacleSpawnInfo {
