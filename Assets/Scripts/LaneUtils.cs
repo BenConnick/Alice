@@ -3,8 +3,8 @@
 // Math utilities for working with "Lanes"
 public static class LaneUtils
 {
-    public static int NumLanes = 10;
-    public static float LaneScale = 0.6f;
+    public static int NumLanes = 12;
+    public static float LaneScale = .6f;
 
     public static float GetWorldPosition(LaneEntity entity, int? hypotheticalLanePosition = null)
     {
@@ -16,6 +16,11 @@ public static class LaneUtils
     {
         float x = hypotheticalXPosition ?? entity.transform.position.x;
         return Mathf.RoundToInt(x / LaneScale + NumLanes * .5f - entity.WidthLanes * .5f);
+    }
+
+    public static float GetLaneCenterWorldPosition(int lane)
+    {
+        return (lane - NumLanes * .5f) * LaneScale;
     }
 
     public static bool CheckOverlap(LaneEntity a, LaneEntity b)

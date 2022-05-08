@@ -42,7 +42,7 @@ public static class GM
     {
         Default,
         ShowNameEntryScreen,
-
+        SetLevelCaterpillar,
     }
 
     // so-called "cheat codes"
@@ -145,7 +145,8 @@ public static class GM
 
     private static void SetLevel(LevelType levelType)
     {
-       lives = 3;
+        lives = 3;
+        FindSingle<TunnelBottomEdgeCamera>().SetLevel(levelType);
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
        // PC.transform.position = new Vector3(0, 0, 0);
@@ -271,12 +272,16 @@ public static class GM
 
     public static void OnDebugEvent(DebugEvent debugEvent)
     {
+        Debug.Log("Debug Event: " + debugEvent);
         switch (debugEvent)
         {
             case DebugEvent.ShowNameEntryScreen:
                 CurrentLevel = LevelType.RabbitHole;
                 CurrentScore = 110;
                 ChangeMode(GameMode.EnterName);
+                break;
+            case DebugEvent.SetLevelCaterpillar:
+                CurrentLevel = LevelType.Caterpillar;
                 break;
             default:
                 break;

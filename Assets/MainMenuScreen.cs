@@ -25,5 +25,9 @@ public class MainMenuScreen : MonoBehaviour
         {
             GM.OnDebugEvent(GM.DebugEvent.ShowNameEntryScreen);
         }
+        if (Input.GetKeyUp(KeyCode.Alpha5))
+        {
+            GM.OnDebugEvent(GM.DebugEvent.SetLevelCaterpillar);
+        }
     }
 }

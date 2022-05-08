@@ -15,7 +15,8 @@ public class LaneCharacterMovement : LaneEntity
 
     private float laneChangeDirection;
     private bool shouldFlip;
-    private float inputCooldown;
+    private const float inputCooldown = 0.05f;
+    private float lastAcceptedInputTime;
 
 
     void Update()
@@ -24,7 +25,11 @@ public class LaneCharacterMovement : LaneEntity
 
         // process input
         int dir = GetHorizInput();
-        TryChangeLane(dir);
+        if (dir != 0 && Time.time - lastAcceptedInputTime > inputCooldown)
+        {
+            lastAcceptedInputTime = Time.time;
+            TryChangeLane(dir);
+        }
 
         // animate lane change
         // position in lane
@@ -52,15 +57,15 @@ public class LaneCharacterMovement : LaneEntity
         switch (controlInput)
         {
             case DirectionInput.Left:
-                return Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A);
+                return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
             case DirectionInput.Right:
-                return Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D);
+                return Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D);
             case DirectionInput.Up:
-                return Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+                return Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
             case DirectionInput.Down:
-                return Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S);
+                return Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
             case DirectionInput.Selection:
-                return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
+                return Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return);
         }
         return false;
     }
@@ -115,7 +120,7 @@ public class LaneCharacterMovement : LaneEntity
         int totalLanes = LaneUtils.NumLanes;
         int width = WidthLanes;
         int prevLane = Lane;
-        int newLane = width * direction + prevLane;
+        int newLane = direction + prevLane;
         if (newLane < 0) newLane = 0;
         if (newLane + width >= totalLanes) newLane = totalLanes - width;
         Lane = newLane;
@@ -146,7 +151,7 @@ public class LaneCharacterMovement : LaneEntity
 
     public void PauseInput(float seconds)
     {
-        inputCooldown = seconds;
+        lastAcceptedInputTime = Time.time + seconds;
     }
 
     public void StartFlashing()
@@ -174,4 +179,19 @@ public class LaneCharacterMovement : LaneEntity
             return ret;
         }
     }
+
+    //public override void OnDrawGizmos()
+    //{
+    //    base.OnDrawGizmos();
+
+    //    // draw
+    //    Color prev = Gizmos.color;
+    //    Gizmos.color = Color.cyan;
+    //    for (int i = 0; i <= LaneUtils.NumLanes; i++)
+    //    {
+    //        float laneX = LaneUtils.GetLaneCenterWorldPosition(i);
+    //        Gizmos.DrawLine(new Vector3(laneX, transform.position.y-10, 0), new Vector3(laneX, transform.position.y+10, 0));
+    //    }
+    //    Gizmos.color = prev;
+    //}
 }

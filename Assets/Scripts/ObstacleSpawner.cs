@@ -30,7 +30,6 @@ public abstract class ShuffledObstacleSpawner : ObstacleSpawner
         // spawn random obstacle
         if (shuffledObstacleIndex >= shuffledObstacleQueue.Length)
         {
-            shuffledObstacleQueue = new GameObject[obstaclePrefabs.Length];
             obstaclePrefabs.CopyTo(shuffledObstacleQueue, 0);
             Util.Shuffle(shuffledObstacleQueue);
             shuffledObstacleIndex = 0;

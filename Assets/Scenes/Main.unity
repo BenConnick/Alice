@@ -535,6 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112741523}
   - component: {fileID: 112741522}
+  - component: {fileID: 112741524}
   m_Layer: 0
   m_Name: TunnelBottomEdgeCamera
   m_TagString: Untagged
@@ -562,14 +563,14 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
+    y: 0.5
     width: 1
-    height: 1
+    height: 0.5
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3
+  orthographic size: 1.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -593,12 +594,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112741521}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -1.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1704963481}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &112741524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112741521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a76b41112bb4eec8158f24521310ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalHeight: 3
+  FullSize: 1
+  EdgeSize: 0.1
+  AssociatedClearCamera: {fileID: 312456915}
 --- !u!1 &156457461
 GameObject:
   m_ObjectHideFlags: 0
@@ -9161,9 +9178,10 @@ MonoBehaviour:
   progressMarker: {fileID: 1109086615}
   fallSpeed: 3
   SpawnersConfig: {fileID: 11400000, guid: cbb981f7132f5407ca7f6fa57bdb4f74, type: 2}
+  chunkPrefabs: []
   obstaclePrefabs:
-  - {fileID: 2746285919771865267, guid: e8d88a5de192b4c5ba3f8d061605d079, type: 3}
-  - {fileID: 3326867526036458633, guid: da6562fe40d92499f8e5511890598e45, type: 3}
+  - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
+  - {fileID: 7750014687331218534, guid: 8a3857c9f237844bdbf4e2d92605b593, type: 3}
   - {fileID: 109536891054318655, guid: b6a1810b76992456a8bb2f7af3b0af88, type: 3}
   - {fileID: 1898889223514662594, guid: 049fb33210bd2427e96f0893a8d376f5, type: 3}
   - {fileID: 1230781960852054474, guid: 96c226e964cfa4742aa053a63ea5a904, type: 3}
@@ -10260,9 +10278,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4091a4e163d27450d81c5ecb22f0c6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lane: 0
+  Lane: 5
   WidthLanes: 2
   Height: 1
+  AutoLane: 1
   laneConfig: {fileID: 1387630783}
   spriteRenderer: {fileID: 1534927714}
   flipAnimationSpeed: 20
@@ -10327,7 +10346,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534927712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 169287864}
