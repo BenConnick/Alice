@@ -11,7 +11,7 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private RectTransform progressMarker;
 
     [Header("Config")]
-    [SerializeField] private float fallSpeed;
+    public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
 
     [Header("Assets")]

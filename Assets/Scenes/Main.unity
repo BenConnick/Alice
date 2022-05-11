@@ -9024,7 +9024,7 @@ MonoBehaviour:
   - {fileID: 1201919867}
   - {fileID: 1802331558}
   progressMarker: {fileID: 1109086615}
-  fallSpeed: 3
+  fallSpeed: 2
   SpawnersConfig: {fileID: 11400000, guid: cbb981f7132f5407ca7f6fa57bdb4f74, type: 2}
   chunkPrefabs:
   - {fileID: 7443406198970905254, guid: 6d3e9a9cad55e4e3aa5eaf3d2d004a70, type: 3}

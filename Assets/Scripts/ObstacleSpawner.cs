@@ -88,10 +88,8 @@ public class ChunkSpawner
 {
     protected LevelChunk[] chunkPrefabs;
 
-    public ObstacleSpawnersConfig Config => GM.FindSingle<RabbitHole>().SpawnersConfig;
-
     protected float lastObstableSpawnTime;
-    private float secondsBetweenObstacles => Config.RabbitHoleCurve.secondsBetweenObstacles;
+    private float secondsBetweenObstacles => 6f/GM.FindSingle<RabbitHole>().fallSpeed;
     private float elapsedTime = 0;
     private LevelChunk prevChunk;
 
