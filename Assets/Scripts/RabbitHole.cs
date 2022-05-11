@@ -60,11 +60,7 @@ public class RabbitHole : MonoBehaviour
     {
         if (!GM.IsGameplayPaused)
         {
-            Vector3 movement;
-            movement = new Vector3(0, fallSpeed * SmokeRendering.FixedTimeInterval, 0);
-            transform.position += movement;
-            GM.FindSingle<SmokeRendering>().DriveWithGameplay();
-
+            transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
             totalFallDistance = transform.position.y;
 
             // update active obstacles
@@ -75,7 +71,7 @@ public class RabbitHole : MonoBehaviour
             }
 
             // check collisions
-            var player = GM.FindSingle<LaneCharacterMovement>();
+            var player = GM.FindSingle<Alice>();
             if (!player.IsFlashing())
             {
                 foreach (var obstacle in activeObstacles)
@@ -104,6 +100,18 @@ public class RabbitHole : MonoBehaviour
 
             // update UI
             UpdateGameplayUI();
+
+            // debug
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                // shrink
+                GM.FindSingle<Alice>().OnShrink();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                // grow
+                GM.FindSingle<Alice>().OnGrow();
+            }
         }
     }
 

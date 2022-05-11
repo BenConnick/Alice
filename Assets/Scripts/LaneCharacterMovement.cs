@@ -20,7 +20,7 @@ public class LaneCharacterMovement : LaneEntity
     private float lastAcceptedInputTime;
 
 
-    void Update()
+    public virtual void Update()
     {
         if (GM.IsGameplayPaused) return;
 

@@ -146,7 +146,6 @@ public static class GM
     private static void SetLevel(LevelType levelType)
     {
         lives = MAX_LIVES;
-        FindSingle<TunnelBottomEdgeCamera>().SetLevel(levelType);
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
        // PC.transform.position = new Vector3(0, 0, 0);
