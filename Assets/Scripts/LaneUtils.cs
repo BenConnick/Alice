@@ -18,20 +18,27 @@ public static class LaneUtils
         return Mathf.RoundToInt(x / LaneScale + NumLanes * .5f - entity.WidthLanes * .5f);
     }
 
+    private static float GetFractionalLanePosition(LaneCharacterMovement character, float? hypotheticalXPosition = null)
+    {
+        float x = hypotheticalXPosition ?? character.transform.position.x;
+        return x / LaneScale + NumLanes * .5f - character.CharacterWidth * .5f;
+    }
+
     public static float GetLaneCenterWorldPosition(int lane)
     {
         return (lane - NumLanes * .5f) * LaneScale;
     }
 
-    public static bool CheckOverlap(LaneEntity a, LaneEntity b)
+    public static bool CheckOverlap(LaneCharacterMovement player, LaneEntity collider)
     {
         // lane
-        if (a.Lane + a.WidthLanes <= b.Lane) return false; // A left of B
-        if (b.Lane + b.WidthLanes <= a.Lane) return false; // B left of A
+        float fractionalLane = GetFractionalLanePosition(player);
+        if (fractionalLane + player.CharacterWidth <= collider.Lane) return false; // A left of B
+        if (collider.Lane + collider.WidthLanes <= fractionalLane) return false; // B left of A
 
         // height
-        if (a.Y - a.Height * .5f > b.Y + b.Height * .5f) return false; // A above B
-        if (a.Y + a.Height * .5f < b.Y - b.Height * .5f) return false; // A below B
+        if (player.Y - player.Height * .5f > collider.Y + collider.Height * .5f) return false; // A above B
+        if (player.Y + player.Height * .5f < collider.Y - collider.Height * .5f) return false; // A below B
 
         // must be overlapping
         return true;

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2715432828914921548}
   - component: {fileID: 2715432828914921551}
-  - component: {fileID: 2715432828914921549}
   - component: {fileID: 5959384790433376051}
   - component: {fileID: 5989725150358062201}
   m_Layer: 0
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2715432828914921550}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ced9784d6fd344e50a7f6cb59fc7d652, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7402aad5a4bd348f7827dad489c75b39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,40 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &2715432828914921549
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2715432828914921550}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.33142856, y: 0.32}
-    newSize: {x: 0.29, y: 0.28}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.065, y: 0.099999994}
-      - {x: -0.015, y: 0.12}
-      - {x: -0.105, y: 0.12}
-      - {x: -0.125, y: 0.089999996}
-      - {x: -0.125, y: -0.099999994}
-      - {x: -0.065, y: -0.13}
-      - {x: 0.125, y: -0.13}
-      - {x: 0.145, y: -0.089999996}
-      - {x: 0.145, y: 0.01}
 --- !u!114 &5959384790433376051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e756ba69ffa7847f3945a85d21156e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lane: 0
+  Lane: 5
   WidthLanes: 2
-  Height: 1
+  Height: 1.2
+  AutoLane: 1

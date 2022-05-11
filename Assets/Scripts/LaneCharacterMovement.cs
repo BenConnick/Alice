@@ -8,6 +8,7 @@ public class LaneCharacterMovement : LaneEntity
     [SerializeField] private RabbitHole laneConfig;
 
     // inspector
+    public float CharacterWidth = 1.5f;
     public SpriteRenderer spriteRenderer;
     public float flipAnimationSpeed = 20;
     public float laneChangeSpeed = 2;
@@ -15,7 +16,7 @@ public class LaneCharacterMovement : LaneEntity
 
     private float laneChangeDirection;
     private bool shouldFlip;
-    private const float inputCooldown = 0.05f;
+    private const float inputCooldown = 0.07f;
     private float lastAcceptedInputTime;
 
 
@@ -24,7 +25,7 @@ public class LaneCharacterMovement : LaneEntity
         if (GM.IsGameplayPaused) return;
 
         // process input
-        int dir = GetHorizInput();
+        int dir = GetHorizInput() * WidthLanes;
         if (dir != 0 && Time.time - lastAcceptedInputTime > inputCooldown)
         {
             lastAcceptedInputTime = Time.time;
@@ -180,18 +181,36 @@ public class LaneCharacterMovement : LaneEntity
         }
     }
 
-    //public override void OnDrawGizmos()
-    //{
-    //    base.OnDrawGizmos();
+#if UNITY_EDITOR
+    public override void OnDrawGizmos()
+    {
+        // update lane
+        if (!Application.isPlaying && AutoLane)
+        {
+            var so = new UnityEditor.SerializedObject(this);
+            var laneProp = so.FindProperty("Lane");
+            laneProp.intValue = LaneUtils.GetLanePosition(this);
+            if (laneProp.intValue != Lane && so.hasModifiedProperties) so.ApplyModifiedProperties();
+        }
 
-    //    // draw
-    //    Color prev = Gizmos.color;
-    //    Gizmos.color = Color.cyan;
-    //    for (int i = 0; i <= LaneUtils.NumLanes; i++)
-    //    {
-    //        float laneX = LaneUtils.GetLaneCenterWorldPosition(i);
-    //        Gizmos.DrawLine(new Vector3(laneX, transform.position.y-10, 0), new Vector3(laneX, transform.position.y+10, 0));
-    //    }
-    //    Gizmos.color = prev;
-    //}
+        // get lane data
+        Vector3 center = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        float w = LaneUtils.LaneScale * CharacterWidth;
+        Vector3 extents = new Vector3(w, Height, 0);
+
+        // draw
+        Color prev = Gizmos.color;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(center, extents);
+        Gizmos.color = prev;
+
+        // draw lanes
+        Gizmos.color = Color.cyan;
+        for (int i = 0; i <= LaneUtils.NumLanes; i++)
+        {
+            float laneX = LaneUtils.GetLaneCenterWorldPosition(i);
+            Gizmos.DrawLine(new Vector3(laneX, transform.position.y - 10, 0), new Vector3(laneX, transform.position.y + 10, 0));
+        }
+    }
+#endif
 }

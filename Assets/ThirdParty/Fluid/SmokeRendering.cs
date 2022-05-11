@@ -24,8 +24,8 @@ namespace StableFluids
         private Vector3 previousPos;
         private int updateQueue; // used to lock the number of compute cycles to the number of forcedUpdates
         private float cumulativeTime = 0;
-        private int updateCount;
-        private int drawCount;
+        //private int updateCount;
+        //private int drawCount;
 
         #endregion
 
@@ -290,21 +290,21 @@ namespace StableFluids
 
             _previousInput = input;
 
-            updateCount++;
+            //updateCount++;
             //Debug.Log("Update count: " + updateCount);
         }
 
         void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            drawCount++;
+            //drawCount++;
             //Debug.Log("Draw count: " + drawCount);
             if (updateQueue > 0)
             {
-                // add valocity
-                Graphics.Blit(_globalVelocity, VFB.V1, _alphaBlendMat);
-
                 // add 'static' (not moving) game graphics to bottom
                 Graphics.Blit(_bottomEdge, _colorRT1, _alphaBlendMat);
+
+                // add velocity
+                Graphics.Blit(_globalVelocity, VFB.V1, _alphaBlendMat);
 
                 // draw to camera output
                 Graphics.Blit(_colorRT1, destination, _shaderSheet, 1);

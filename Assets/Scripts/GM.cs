@@ -55,7 +55,7 @@ public static class GM
         { LevelType.QueenOfHearts, "TWINS" },
     };
 
-    public const int MAX_LIVES = 3;
+    public const int MAX_LIVES = 999;
     public static int Lives
     {
         get => lives;
@@ -145,7 +145,7 @@ public static class GM
 
     private static void SetLevel(LevelType levelType)
     {
-        lives = 3;
+        lives = MAX_LIVES;
         FindSingle<TunnelBottomEdgeCamera>().SetLevel(levelType);
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
@@ -281,6 +281,7 @@ public static class GM
                 ChangeMode(GameMode.EnterName);
                 break;
             case DebugEvent.SetLevelCaterpillar:
+                GM.Lives = 999;
                 CurrentLevel = LevelType.Caterpillar;
                 break;
             default:

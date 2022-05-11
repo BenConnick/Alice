@@ -563,14 +563,14 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.5
+    y: 0
     width: 1
-    height: 0.5
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1.5
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1393,7 +1393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &312456915
 Camera:
   m_ObjectHideFlags: 0
@@ -1782,7 +1782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &423549746
 Camera:
   m_ObjectHideFlags: 0
@@ -2012,7 +2012,7 @@ GameObject:
   - component: {fileID: 440989608}
   m_Layer: 0
   m_Name: MainDisplayCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9178,7 +9178,13 @@ MonoBehaviour:
   progressMarker: {fileID: 1109086615}
   fallSpeed: 3
   SpawnersConfig: {fileID: 11400000, guid: cbb981f7132f5407ca7f6fa57bdb4f74, type: 2}
-  chunkPrefabs: []
+  chunkPrefabs:
+  - {fileID: 7443406198970905254, guid: 6d3e9a9cad55e4e3aa5eaf3d2d004a70, type: 3}
+  - {fileID: 7443406198970905254, guid: 7302616e199b5433c91e84762e2ffc33, type: 3}
+  - {fileID: 7443406198970905254, guid: 1787a26ed6ed24bf1ba8578c587fe0e6, type: 3}
+  - {fileID: 7443406198970905254, guid: f7cf8e789cf8a4e4fa34c9fa92ea0d94, type: 3}
+  - {fileID: 7443406198970905254, guid: 919455ff26da64f049887c9a73d99057, type: 3}
+  - {fileID: 7391109782417918040, guid: 8e9537e49b5364bd9ab4cbd38038e121, type: 3}
   obstaclePrefabs:
   - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
   - {fileID: 7750014687331218534, guid: 8a3857c9f237844bdbf4e2d92605b593, type: 3}
@@ -10280,9 +10286,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lane: 5
   WidthLanes: 2
-  Height: 1
+  Height: 0.2
   AutoLane: 1
   laneConfig: {fileID: 1387630783}
+  CharacterWidth: 0.9
   spriteRenderer: {fileID: 1534927714}
   flipAnimationSpeed: 20
   laneChangeSpeed: 3
@@ -10347,7 +10354,7 @@ Transform:
   m_GameObject: {fileID: 1534927712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 169287864}
   m_RootOrder: 1
@@ -11488,7 +11495,7 @@ GameObject:
   - component: {fileID: 1704963479}
   m_Layer: 0
   m_Name: Smoke FX
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11510,7 +11517,7 @@ MonoBehaviour:
   _force: 30000
   _exponent: 100
   _initial: {fileID: 2800000, guid: a657f5e0dd86e49db80c58e4c1c4c1c6, type: 3}
-  _globalVelocity: {fileID: 2800000, guid: c10e022d793254f3f9bb31b963f71730, type: 3}
+  _globalVelocity: {fileID: 2800000, guid: 7402aad5a4bd348f7827dad489c75b39, type: 3}
   _bottomEdge: {fileID: 8400000, guid: 40cd75d2a17c647858dd350224429187, type: 2}
   _alphaBlendMat: {fileID: 2100000, guid: 86dea9099dcb947afb6c3eacbe3769a5, type: 2}
   stirrer: {fileID: 1534927715}

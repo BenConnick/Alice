@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleSpawnersConfig
   obstacleLaneMax: 10
   RabbitHoleCurve:
-    secondsBetweenObstacles: 20
+    secondsBetweenObstacles: 2
     difficultyCurve:
       serializedVersion: 2
       m_Curve:

@@ -15,20 +15,19 @@ public class RabbitHole : MonoBehaviour
     public ObstacleSpawnersConfig SpawnersConfig;
 
     [Header("Assets")]
-    [SerializeField] private GameObject[] chunkPrefabs;
+    [SerializeField] private LevelChunk[] chunkPrefabs;
     [SerializeField] private GameObject[] obstaclePrefabs;
 
     // fields
-    private float lastObstableSpawnTime;
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
     private float initialHeight;
     private readonly List<LaneEntity> activeObstacles = new List<LaneEntity>();
-    private ObstacleSpawner currentSpawner;
+    private ChunkSpawner currentSpawner;
 
     private void Awake()
     {
-        currentSpawner = new RabbitHoleObstacleSpawner(obstaclePrefabs);
+        currentSpawner = new ChunkSpawner(chunkPrefabs);
         initialHeight = transform.localPosition.y;
         Application.targetFrameRate = 60;
         Time.timeScale = 1f;
@@ -36,11 +35,23 @@ public class RabbitHole : MonoBehaviour
 
     public void Reset()
     {
+        // reset level height
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
+
+        // clean up game objects
         foreach (var ob in activeObstacles)
         {
-            if (ob != null && ob.gameObject != null) Destroy(ob.gameObject);
+            if (ob != null && ob.gameObject != null)
+            {
+                // destroy chunk
+                var chunk = ob.GetComponentInParent<LevelChunk>();
+                if (chunk != null && chunk.gameObject != null) Destroy(chunk.gameObject);
+                // fallback on individual obstacle destroy
+                else Destroy(ob.gameObject);
+            }
         }
+
+        // clear queue
         activeObstacles.Clear();
     }
 
@@ -77,15 +88,18 @@ public class RabbitHole : MonoBehaviour
             }
 
             // spawn new obstacles
-            var newObstacles = currentSpawner.Update(Time.deltaTime);
-            for (int i = 0; i < newObstacles.Length; i++)
+            var newChunkPrefab = currentSpawner.Update(Time.deltaTime);
+            if (newChunkPrefab != null)
             {
-                // spawn
-                var spawn = newObstacles[i];
-                var inst = Instantiate(spawn.Prefab, new Vector3(LaneUtils.GetWorldPosition(spawn.Prefab.GetComponent<LaneEntity>(),spawn.Lane), spawn.YPos, 0), Quaternion.identity, transform);
-                var entity = inst.GetComponent<LaneEntity>();
-                entity.Lane = spawn.Lane;
-                activeObstacles.Add(entity);
+                var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+                var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
+                LevelChunk newChunk = Instantiate(newChunkPrefab, new Vector3(0, yPos, 0), Quaternion.identity, transform);
+                for (int i = 0; i < newChunk.Obstacles.Length; i++)
+                {
+                    // spawn
+                    var entity = newChunk.Obstacles[i];
+                    activeObstacles.Add(entity);
+                }
             }
 
             // update UI
