@@ -2,6 +2,8 @@
 
 public class GameplayInnerDisplayCamera : MonoBehaviour
 {
+    public const float DefaultOrthoSize = 4;
+
     public void LateUpdate()
     {
         var alice = GM.FindSingle<Alice>();
@@ -9,13 +11,10 @@ public class GameplayInnerDisplayCamera : MonoBehaviour
 
         // match scale with the player and move accordingly
         var cam = GetComponent<Camera>();
-        cam.orthographicSize = 3 * scale;
+        cam.orthographicSize = DefaultOrthoSize * scale;
 
         //transform.localScale = new Vector3(12 / (float)alice.WidthLanes, 6 / (float)alice.WidthLanes, 1);
         Vector3 pos = alice.transform.position;
-        if (GM.CurrentLevel == LevelType.Caterpillar)
-            transform.localPosition = new Vector3(pos.x, pos.y - pos.y * scale, -10);
-        else
-            transform.localPosition = new Vector3(0, 0, -10);
+        transform.localPosition = new Vector3(0, pos.y - pos.y * scale, -10);
     }
 }

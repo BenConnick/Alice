@@ -307,4 +307,19 @@ public static class GM
         gameplayComponentsCache[typeof(T)] = found;
         return found;
     }
+
+    // cached singletons for ease of reference
+    private static readonly Dictionary<string, GameObject> namedGameObjectsCache = new Dictionary<string, GameObject>();
+    // finds a single object in the scene with the requested component and caches it
+    // for easily obtaining a reference to a singleton behavior across scripts without serializing
+    public static GameObject FindSingle(string name)
+    {
+        // cached
+        if (namedGameObjectsCache.ContainsKey(name))
+            return namedGameObjectsCache[name];
+        // slow search
+        var found = UnityEngine.GameObject.Find(name);
+        namedGameObjectsCache[name] = found;
+        return found;
+    }
 }

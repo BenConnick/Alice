@@ -25,8 +25,16 @@ public class LaneCharacterMovement : LaneEntity
         if (GM.IsGameplayPaused) return;
 
         // process input
-        int dir = GetHorizInput() * WidthLanes;
-        if (dir != 0 && Time.time - lastAcceptedInputTime > inputCooldown)
+        Camera mainCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+        float worldX = mainCam.ScreenToWorldPoint(Input.mousePosition).x;
+        float adjustedWorldX = worldX - mainCam.transform.position.x;
+        float innerOrthoSize = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>().orthographicSize;
+        float camOrthoSize = mainCam.orthographicSize;
+        float quadSize = GM.FindSingle("GameplayDisplayQuad").transform.localScale.y * .5f;
+        int effectiveMouseLane = LaneUtils.GetLanePosition(this, adjustedWorldX * (innerOrthoSize / camOrthoSize) * (quadSize / camOrthoSize) + LaneUtils.LaneScale*.5f);
+        int roundedMouseLane = effectiveMouseLane - (effectiveMouseLane % WidthLanes);
+        int dir = roundedMouseLane - Lane;
+        if (dir != 0)
         {
             lastAcceptedInputTime = Time.time;
             TryChangeLane(dir);

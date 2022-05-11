@@ -87,7 +87,7 @@ public class RabbitHole : MonoBehaviour
             var newChunkPrefab = currentSpawner.Update(Time.deltaTime);
             if (newChunkPrefab != null)
             {
-                var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+                var gameCam = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>();
                 var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
                 LevelChunk newChunk = Instantiate(newChunkPrefab, new Vector3(0, yPos, 0), Quaternion.identity, transform);
                 for (int i = 0; i < newChunk.Obstacles.Length; i++)
