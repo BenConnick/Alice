@@ -10,6 +10,9 @@ public class Alice : LaneCharacterMovement
     }
 
     public SizeCategory ShrinkStatus { get; private set; }
+    public const float DefaultScale = 0.8f;
+
+    private float targetScale = DefaultScale;
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -21,6 +24,8 @@ public class Alice : LaneCharacterMovement
     public override void Update()
     {
         base.Update();
+        float scale = Mathf.Lerp(transform.localScale.x, targetScale, Time.deltaTime);
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     public void OnShrink()
@@ -76,6 +81,6 @@ public class Alice : LaneCharacterMovement
                 CharacterWidth = 3f;
                 break;
         }
-        transform.localScale = new Vector3(scale, scale, scale);
+        targetScale = DefaultScale * scale;
     }
 }

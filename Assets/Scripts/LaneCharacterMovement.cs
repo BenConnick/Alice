@@ -60,7 +60,7 @@ public class LaneCharacterMovement : LaneEntity
             case DirectionInput.Left:
                 return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
             case DirectionInput.Right:
-                return Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D);
+                return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
             case DirectionInput.Up:
                 return Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
             case DirectionInput.Down:
