@@ -55,7 +55,7 @@ public static class GM
         { LevelType.QueenOfHearts, "TWINS" },
     };
 
-    public const int MAX_LIVES = 999;
+    public const int MAX_LIVES = 3;
     public static int Lives
     {
         get => lives;
@@ -280,7 +280,6 @@ public static class GM
                 ChangeMode(GameMode.EnterName);
                 break;
             case DebugEvent.SetLevelCaterpillar:
-                GM.Lives = 999;
                 CurrentLevel = LevelType.Caterpillar;
                 break;
             default:

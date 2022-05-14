@@ -19,21 +19,18 @@ public class LaneCharacterMovement : LaneEntity
     private const float inputCooldown = 0.07f;
     private float lastAcceptedInputTime;
 
+    private void OnEnable()
+    {
+        Lane = GetMouseLane();
+        transform.position = new Vector3(LaneUtils.GetWorldPosition(this), transform.position.y, transform.position.z);
+    }
 
     public virtual void Update()
     {
         if (GM.IsGameplayPaused) return;
 
         // process input
-        Camera mainCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-        float worldX = mainCam.ScreenToWorldPoint(Input.mousePosition).x;
-        float adjustedWorldX = worldX - mainCam.transform.position.x;
-        float innerOrthoSize = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>().orthographicSize;
-        float camOrthoSize = mainCam.orthographicSize;
-        float quadSize = GM.FindSingle("GameplayDisplayQuad").transform.localScale.y * .5f;
-        int effectiveMouseLane = LaneUtils.GetLanePosition(this, adjustedWorldX * (innerOrthoSize / camOrthoSize) * (quadSize / camOrthoSize) + LaneUtils.LaneScale*.5f);
-        int roundedMouseLane = effectiveMouseLane - (effectiveMouseLane % WidthLanes);
-        int dir = roundedMouseLane - Lane;
+        int dir = GetMouseLane() - Lane;
         if (dir != 0)
         {
             lastAcceptedInputTime = Time.time;
@@ -50,6 +47,19 @@ public class LaneCharacterMovement : LaneEntity
 
         // update animations
         //HandleFlip(dir);
+    }
+
+    private int GetMouseLane()
+    {
+        Camera mainCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+        float worldX = mainCam.ScreenToWorldPoint(Input.mousePosition).x;
+        float adjustedWorldX = worldX - mainCam.transform.position.x;
+        float innerOrthoSize = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>().orthographicSize;
+        float camOrthoSize = mainCam.orthographicSize;
+        float quadSize = GM.FindSingle("GameplayDisplayQuad").transform.localScale.y * .5f;
+        int effectiveMouseLane = LaneUtils.GetLanePosition(this, adjustedWorldX * (innerOrthoSize / camOrthoSize) * (quadSize / camOrthoSize) + LaneUtils.LaneScale * .5f);
+        int roundedMouseLane = effectiveMouseLane - (effectiveMouseLane % WidthLanes);
+        return roundedMouseLane;
     }
 
     public enum DirectionInput {
@@ -78,36 +88,6 @@ public class LaneCharacterMovement : LaneEntity
         }
         return false;
     }
-
-    /* unused
-    private DirectionInput GetInputDirection()
-    {
-        bool left = GetDirectionInputDown(DirectionInput.Left);
-        bool right = GetDirectionInputDown(DirectionInput.Right);
-        bool up = GetDirectionInputDown(DirectionInput.Up);
-        bool down = GetDirectionInputDown(DirectionInput.Down);
-        // left and right before up and down
-        if ((left || right) && !(left && right)) // left or right pressed but not both
-        {
-            return left ? DirectionInput.Left : DirectionInput.Right;
-        }
-        // up and down
-        else
-        {
-            if (up)
-            {
-                return DirectionInput.Up;
-            }
-            else if (down)
-            {
-                return DirectionInput.Down;
-            }
-            else
-            {
-                return DirectionInput.Default;
-            }
-        }
-    } */
 
     // gets the input on this frame
     private int GetHorizInput()

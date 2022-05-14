@@ -30,4 +30,9 @@ public class MainMenuScreen : MonoBehaviour
             GM.OnDebugEvent(GM.DebugEvent.SetLevelCaterpillar);
         }
     }
+
+    public void OnStartPressed()
+    {
+        GM.OnGameEvent(GM.NavigationEvent.StartButton);
+    }
 }
