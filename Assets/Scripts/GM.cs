@@ -157,6 +157,7 @@ public static class GM
         switch (mode)
         {
             case GameMode.MainMenu:
+                IsGameplayPaused = true;
                 activeScreen = MainMenu;
                 break;
             case GameMode.Gameplay:

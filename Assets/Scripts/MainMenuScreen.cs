@@ -5,6 +5,7 @@ public class MainMenuScreen : MonoBehaviour
 {
     public Sprite[] levelSprites;
     public Image bg;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,7 @@ public class MainMenuScreen : MonoBehaviour
     void OnEnable()
     {
         bg.sprite = levelSprites[(int)GM.CurrentLevel];
+        animator.SetTrigger("ResetAnimationTrigger");
     }
 
     // Update is called once per frame

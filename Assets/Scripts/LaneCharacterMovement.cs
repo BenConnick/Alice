@@ -21,8 +21,8 @@ public class LaneCharacterMovement : LaneEntity
 
     private void OnEnable()
     {
-        Lane = GetMouseLane();
-        transform.position = new Vector3(LaneUtils.GetWorldPosition(this), transform.position.y, transform.position.z);
+        //Lane = GetMouseLane();
+        //transform.position = new Vector3(LaneUtils.GetWorldPosition(this), transform.position.y, transform.position.z);
     }
 
     public virtual void Update()

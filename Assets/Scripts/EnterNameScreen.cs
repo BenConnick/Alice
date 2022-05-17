@@ -8,9 +8,10 @@ public class EnterNameScreen : MonoBehaviour
     public TextMeshProUGUI NameLabel;
     public TextMeshProUGUI AlphabetLabel;
     public GameObject[] letterRabbits;
+    public MouseNameEntryWidget NameEntryWidget;
 
     // constants
-    private const string alphabetString = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z <END>";
+    private const string alphabetString = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ <END>";
     private const int numNameCharacters = 5;
     private const int alphabetRowLength = 10;
 
@@ -31,6 +32,7 @@ public class EnterNameScreen : MonoBehaviour
     public void Update()
     {
         UpdateDataDrivenUIInstant();
+        UpdateMouseInput();
     }
 
     public void OnConfirmPressed()
@@ -50,6 +52,36 @@ public class EnterNameScreen : MonoBehaviour
             enteredName += GetSelectedLetter();
             SubmitScoreName();
         }
+    }
+
+    private void UpdateMouseInput()
+    {
+        if (!gameObject.activeSelf) return;
+        if (!NameEntryWidget.IsMouseOver) return;
+        if (NameEntryWidget.PointerClickAction == null)
+            NameEntryWidget.PointerClickAction = (_) =>
+            {
+                OnConfirmPressed();
+            };
+        // get the mouse position
+        var raw = Input.mousePosition;
+        // convert the mouse position to letter coordinates
+        
+        // get the index of the nearest letter
+        int closestIndex = 0;
+        float closestDistance = float.MaxValue;
+        for (int i = 0; i < letterRabbits.Length; i++)
+        {
+            GameObject rabbit = letterRabbits[i];
+            Vector3 rabbitScreen = RectTransformUtility.WorldToScreenPoint(GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>(), rabbit.transform.position);
+            if ((rabbitScreen - raw).sqrMagnitude < closestDistance)
+            {
+                closestDistance = (rabbitScreen - raw).sqrMagnitude;
+                closestIndex = i;
+            }
+        }
+        // call the letter selection logic on EnterNameScreen
+        alphabetX = closestIndex;
     }
 
     public void OnBackspacePressed()
@@ -95,7 +127,7 @@ public class EnterNameScreen : MonoBehaviour
             }
             else if (i == nameCursorIndex)
             {
-                nameString[i] = Time.time % 1 > 0.5f ? '_' : GetSelectedLetter();
+                nameString[i] = Time.time % .5f > 0.25f ? '_' : GetSelectedLetter();
             }
             else
             {
@@ -108,13 +140,27 @@ public class EnterNameScreen : MonoBehaviour
         string alphabetDisplayString = "";
         for (int i = 0; i < alphabetString.Length; i++)
         {
-            if (alphabetX * 2 == i)
+            if (i < 27 * 2)
             {
-                alphabetDisplayString += Time.time % 1 > 0.5f ? alphabetString[i] : '_';
+                if (alphabetX * 2 == i)
+                {
+                    alphabetDisplayString += Time.time % .5f > 0.25f ? alphabetString[i] : '_';
+                }
+                else
+                {
+                    alphabetDisplayString += alphabetString[i];
+                }
             }
             else
             {
-                alphabetDisplayString += alphabetString[i];
+                if (alphabetX > 27)
+                {
+                    alphabetDisplayString += Time.time % .5f > 0.25f ? alphabetString[i] : '_';
+                }
+                else
+                {
+                    alphabetDisplayString += alphabetString[i];
+                }
             }
         }
         AlphabetLabel.text = alphabetDisplayString;
@@ -151,6 +197,7 @@ public class EnterNameScreen : MonoBehaviour
 
     private char GetSelectedLetter()
     {
+        if (alphabetX > 27) return 'X';
         return alphabetString[alphabetX * 2];
     }
 
@@ -161,12 +208,12 @@ public class EnterNameScreen : MonoBehaviour
 
     public void OnRightPressed()
     {
-        OnHorizontalDirectionPressed(1);
+        //OnHorizontalDirectionPressed(1);
     }
 
     public void OnLeftPressed()
     {
-        OnHorizontalDirectionPressed(-1);
+        //OnHorizontalDirectionPressed(-1);
     }
 
     private void SetNameCursorIndex(int index)
