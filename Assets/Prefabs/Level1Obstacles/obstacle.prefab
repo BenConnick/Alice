@@ -112,4 +112,5 @@ MonoBehaviour:
   Lane: 5
   WidthLanes: 2
   Height: 1.2
+  Tags: 1
   AutoLane: 1

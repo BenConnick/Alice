@@ -132,20 +132,31 @@ public class RabbitHole : MonoBehaviour
         }
     }
 
-    private void HandleObstacleCollision(LaneCharacterMovement player, LaneEntity obstacle)
+    private void HandleObstacleCollision(Alice player, LaneEntity obstacle)
     {
-        // shake, flash, subtract lives
-        GM.FindSingle<GameplayCameraBehavior>().Shake();
-        player.StartFlashing();
-        GM.Lives--;
+        if (obstacle.HasTag(LaneEntity.Tag_DamageOnHit))
+        {
+            // shake, flash, subtract lives
+            GM.FindSingle<GameplayCameraBehavior>().Shake();
+            player.StartFlashing();
+            GM.Lives--;
 
-        // flash the collider
-        var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-        flashing.flashOffTime = 0.08f;
-        flashing.StartFlashing();
+            // flash the collider
+            var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
+            flashing.flashOffTime = 0.08f;
+            flashing.StartFlashing();
 
-        // bump up the removal time (if applicable)
-        var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
-        if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+            // bump up the removal time (if applicable)
+            var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
+            if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+        }
+        if (obstacle.HasTag(LaneEntity.Tag_GrowOnHit))
+        {
+            player.OnGrow();
+        }
+        if (obstacle.HasTag(LaneEntity.Tag_ShrinkOnHit))
+        {
+            player.OnShrink();
+        }
     }
 }

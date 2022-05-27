@@ -1,12 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class StartButtonBehavior : MonoBehaviour
+public class StartButtonBehavior : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public Animator LinkedAnimator;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        LinkedAnimator.SetBool("ShouldShow", true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        LinkedAnimator.SetBool("ShouldShow", false);
+    }
+
+    private void OnEnable()
+    {
+        GetComponent<Button>().interactable = true;
+    }
+
     public void OnPressed()
     {
-        GM.OnGameEvent(GM.NavigationEvent.StartButton);
+        GetComponent<Button>().interactable = false;
     }
 
 #if UNITY_EDITOR

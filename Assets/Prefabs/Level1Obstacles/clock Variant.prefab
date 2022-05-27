@@ -1193,5 +1193,10 @@ PrefabInstance:
       propertyPath: WidthLanes
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5989725150358062201, guid: 6f2f4cbbc410141f18708519d1409b35,
+        type: 3}
+      propertyPath: Lane
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f2f4cbbc410141f18708519d1409b35, type: 3}

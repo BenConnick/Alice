@@ -13,12 +13,22 @@ public class LaneEntity : MonoBehaviour
     public int Lane = 0;
     public int WidthLanes = 2;
     public float Height = 1f; // world-space units
+    public byte Tags = Tag_DamageOnHit;
+
+    public const byte Tag_DamageOnHit =     0b00000001;
+    public const byte Tag_ShrinkOnHit =     0b00000010;
+    public const byte Tag_GrowOnHit =       0b00000100;
 
     [Header("Editor Config")]
     public bool AutoLane = true;
 
     // y position is determined by the transform. In code, this is the center of the object in world-space, +Y is up, -Y is down
     public float Y => transform.position.y;
+
+    public bool HasTag(byte tagToMatch)
+    {
+        return (Tags & tagToMatch) > 0;
+    }
 
 #if UNITY_EDITOR
     public virtual void OnDrawGizmos()
