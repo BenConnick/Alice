@@ -22,8 +22,6 @@ public class LaneCharacterMovement : LaneEntity
 
     private void OnEnable()
     {
-        //Lane = GetMouseLane();
-        //transform.position = new Vector3(LaneUtils.GetWorldPosition(this), transform.position.y, transform.position.z);
     }
 
     public virtual void Update()
@@ -36,11 +34,10 @@ public class LaneCharacterMovement : LaneEntity
         if (laneContext == null) return;
         // animate lane change
         // position in lane
-        //transform.position = new Vector3(
-        //    Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
-        //    viewWorldCursorPos.y,
-        //    viewWorldCursorPos.z);
-        transform.position = viewWorldCursorPos;
+        transform.position = new Vector3(
+            Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
+            viewWorldCursorPos.y,
+            viewWorldCursorPos.z);
 
         // update animations
         //HandleFlip(dir);
