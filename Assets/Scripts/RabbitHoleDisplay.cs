@@ -2,6 +2,7 @@
 
 public class RabbitHoleDisplay : MonoBehaviour
 {
+    public Transform DisplayShape;
     public Camera GameplayCamera;
     public RabbitHole ObstacleContext;
     public Material AssociatedMaterial;

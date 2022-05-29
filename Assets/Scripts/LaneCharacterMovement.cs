@@ -46,23 +46,51 @@ public class LaneCharacterMovement : LaneEntity
         //HandleFlip(dir);
     }
 
-    private RaycastHit[] raycastHits = new RaycastHit[1];
+    //private RaycastHit[] raycastHits = new RaycastHit[1];
     private void ProcessInput()
     {
-        raycastHits[0] = default;
         int layer_mask = LayerMask.GetMask("MovieScreen");
         Camera raycastCam = GM.FindSingle("GameDisplayCamera").GetComponent<Camera>();
-        var ray = raycastCam.ScreenPointToRay(Input.mousePosition + raycastCam.transform.forward*1000f);
-        Debug.DrawRay(ray.origin,ray.direction * 1000f);
-        int hits = Physics.RaycastNonAlloc(ray, raycastHits, 10000, layer_mask);
-        if (hits > 0)
+        // note: phyiscs raycasts behaved in a buggy way (probably because I turned off phyiscs) using ortho math instead
+        Ray ray = raycastCam.ScreenPointToRay(Input.mousePosition);
+        Vector3 worldPoint = raycastCam.ScreenToWorldPoint(Input.mousePosition);
+        Plane viewPlane = new Plane(ray.direction, 0);
+
+        // compare the mouse position against every display
+        RabbitHoleDisplay closest = null;
+        foreach (var viewport in FindObjectsOfType<RabbitHoleDisplay>())
         {
-            laneContext = raycastHits[0].collider.GetComponent<RabbitHoleDisplay>();
+            // what are the extents of the display
+            Vector3 quadCenter = viewport.DisplayShape.position;
+            Vector3 quadScale = viewport.DisplayShape.lossyScale;
+            float xRelative = (worldPoint.x - quadCenter.x) + quadScale.x * .5f;
+            float yRelative = (worldPoint.y - quadCenter.y) + quadScale.y * .5f;
+            Vector2 posInQuad = new Vector2(xRelative / quadScale.x, yRelative / quadScale.y); // normalized
+            // is the mouse position contained within those extents?
+            if (posInQuad.x >= 0 && posInQuad.x <= 1 && posInQuad.y >= 0 && posInQuad.y <= 1) {
+                float viewportDist = Vector3.Dot(viewport.DisplayShape.position - raycastCam.transform.position, ray.direction);
+                SetDebugQuantity("ray " + viewport.GetInstanceID(), viewportDist);
+
+                // sort by the display closest to the camera along the camera's forward vector
+                if (closest == null || Vector3.Dot(closest.DisplayShape.position - raycastCam.transform.position, ray.direction) > viewportDist)
+                {
+                    closest = viewport;
+                }
+            }
+        }
+        if (closest != null)
+        {
+            SetDebugQuantity("closest: ", closest.GetInstanceID());
+            laneContext = closest;
             viewWorldCursorPos = GetCharacterTargetPosition(raycastCam, laneContext);
 
             int lane = laneContext.GetLane(viewWorldCursorPos.x);
             bool changed = TryChangeLane(lane);
             if (changed) lastAcceptedInputTime = Time.time;
+        }
+        else
+        {
+            Debug.DrawRay(ray.origin, ray.direction);
         }
     }
 
@@ -253,6 +281,39 @@ public class LaneCharacterMovement : LaneEntity
 
             // move box pos
             boxPos += new Vector2(0, -boxSize.y * 1.1f);
+        }
+    }
+
+    private void SetDebugQuantity(string key, float value)
+    {
+        if (debugQuantities.ContainsKey(key)) debugQuantities[key] = value;
+        else debugQuantities.Add(key, value);
+    }
+
+    private void ClearDebugQuantity(string key)
+    {
+        debugQuantities.Remove(key);
+    }
+
+    private Dictionary<string, float> debugQuantities = new Dictionary<string, float>();
+    private GUIStyle fontStyle;
+    public void OnGUI()
+    {
+        if (fontStyle == null) fontStyle = new GUIStyle {
+            fontSize = 30,
+            fontStyle = FontStyle.Bold,
+            normal = new GUIStyleState
+            {
+                textColor = new Color(1, 1, 0, .5f)
+            }
+        };
+        const float labelHeight = 30;
+        float labelY = 10;
+        foreach (var item in debugQuantities)
+        {
+            string debugString = item.Key + ": " + item.Value;
+            GUI.Label(new Rect(100, labelY, 1000, labelHeight), debugString, fontStyle);
+            labelY += labelHeight;
         }
     }
 #endif

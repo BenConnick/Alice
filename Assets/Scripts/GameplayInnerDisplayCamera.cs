@@ -14,7 +14,7 @@ public class GameplayInnerDisplayCamera : MonoBehaviour
         cam.orthographicSize = DefaultOrthoSize * scale;
 
         //transform.localScale = new Vector3(12 / (float)alice.WidthLanes, 6 / (float)alice.WidthLanes, 1);
-        Vector3 pos = alice.transform.position;
-        transform.localPosition = new Vector3(0, pos.y - pos.y * scale, -10);
+        //Vector3 pos = alice.transform.position;
+        //transform.localPosition = new Vector3(0, pos.y - pos.y * scale, -10);
     }
 }
