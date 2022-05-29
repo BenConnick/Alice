@@ -6,16 +6,24 @@ public static class LaneUtils
     public static int NumLanes = 12;
     public static float LaneScale = .6f;
 
-    public static float GetWorldPosition(LaneEntity entity, int? hypotheticalLanePosition = null)
+    public static float GetWorldPosition(LaneEntity entity)
     {
-        int lane = hypotheticalLanePosition ?? entity.Lane;
-        return (lane - NumLanes * .5f + entity.WidthLanes * .5f) * LaneScale;
+        return GetWorldPosition(entity.Lane, entity.WidthLanes);
     }
 
-    public static int GetLanePosition(LaneEntity entity, float? hypotheticalXPosition = null)
+    public static int GetLanePosition(LaneEntity entity)
     {
-        float x = hypotheticalXPosition ?? entity.transform.position.x;
-        return Mathf.RoundToInt(x / LaneScale + NumLanes * .5f - entity.WidthLanes * .5f);
+        return GetLanePosition(entity.transform.position.x, entity.WidthLanes);
+    }
+
+    public static float GetWorldPosition(int entityLane, int entityWidth=1)
+    {
+        return (entityLane - NumLanes * .5f + entityWidth * .5f) * LaneScale;
+    }
+
+    public static int GetLanePosition(float entityCenterWorldX, int entityWidth=1)
+    {
+        return Mathf.RoundToInt(entityCenterWorldX / LaneScale + NumLanes * .5f - entityWidth * .5f);
     }
 
     private static float GetFractionalLanePosition(LaneCharacterMovement character, float? hypotheticalXPosition = null)

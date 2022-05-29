@@ -56,29 +56,10 @@ public static class GM
     };
 
     public const int MAX_LIVES = 3;
-    public static int Lives
-    {
-        get => lives;
-        set
-        {
-            // set
-            lives = value;
-
-            // on lives changed
-            //LivesChangedEvent.Invoke();
-
-            // game over
-            if (lives <= 0)
-            {
-                OnGameEvent(NavigationEvent.PlatformerGameOver);
-            }
-        }
-    }
     public static LevelType CurrentLevel { get; set; }
 
     #region gamestate
     // Game State
-    private static int lives = MAX_LIVES;
     public static bool IsGameplayPaused { get; private set; } = true;
     public static bool InputFrozen => IsGameplayPaused;
     public static bool FellThroughFloor { get; set; }
@@ -95,11 +76,6 @@ public static class GM
 
     // Helper object
     private static GMHelperObject helperObject;
-
-    public interface IGameplayUI
-    {
-
-    }
 
     public static void Init(GMHelperObject helper)
     {
@@ -130,14 +106,12 @@ public static class GM
 
     public static void OnRestart()
     {
-        Lives = MAX_LIVES;
         //CameraController.SetY(0);
         // TODO reset player
     }
 
     public static void OnRetry()
     {
-        Lives = MAX_LIVES;
         // TODO reset player
         IsGameplayPaused = false;
         ChangeMode(GameMode.Gameplay);
@@ -145,7 +119,7 @@ public static class GM
 
     private static void SetLevel(LevelType levelType)
     {
-        lives = MAX_LIVES;
+       //lives = MAX_LIVES;
        // PlatformManager.PlayLevel(Level);
        // CameraController.SetY(-PlatformManager.PrebakeDistance);
        // PC.transform.position = new Vector3(0, 0, 0);
@@ -246,25 +220,25 @@ public static class GM
             case GameMode.Gameplay:
                 if (e == NavigationEvent.PlatformerGameOver)
                 {
-                    ChangeMode(GameMode.Scoreboard);
-                }
-                break;
-            case GameMode.Scoreboard:
-                if (e == NavigationEvent.OpenNamePicker)
-                {
-                    ChangeMode(GameMode.EnterName);
-                }
-                else if (e == NavigationEvent.CloseScoreboard)
-                {
                     ChangeMode(GameMode.MainMenu);
                 }
                 break;
-            case GameMode.EnterName:
-                if (e == NavigationEvent.CloseNamePicker)
-                {
-                    ChangeMode(GameMode.Scoreboard);
-                }
-                break;
+            //case GameMode.Scoreboard:
+            //    if (e == NavigationEvent.OpenNamePicker)
+            //    {
+            //        ChangeMode(GameMode.EnterName);
+            //    }
+            //    else if (e == NavigationEvent.CloseScoreboard)
+            //    {
+            //        ChangeMode(GameMode.MainMenu);
+            //    }
+            //    break;
+            //case GameMode.EnterName:
+            //    if (e == NavigationEvent.CloseNamePicker)
+            //    {
+            //        ChangeMode(GameMode.Scoreboard);
+            //    }
+            //    break;
             default:
                 break;
         }

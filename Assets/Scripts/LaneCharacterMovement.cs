@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LaneCharacterMovement : LaneEntity
 {
-    [SerializeField] private RabbitHole laneConfig;
+    [NonSerialized] public RabbitHoleDisplay laneContext;
 
     // inspector
     public float CharacterWidth = 1.5f;
@@ -18,6 +18,7 @@ public class LaneCharacterMovement : LaneEntity
     private bool shouldFlip;
     private const float inputCooldown = 0.07f;
     private float lastAcceptedInputTime;
+    private Vector3 viewWorldCursorPos; // the position in the world where the cursor would be if it were part of the scene that is displayed in the viewport 
 
     private void OnEnable()
     {
@@ -30,36 +31,70 @@ public class LaneCharacterMovement : LaneEntity
         if (GM.IsGameplayPaused) return;
 
         // process input
-        int dir = GetMouseLane() - Lane;
-        if (dir != 0)
-        {
-            lastAcceptedInputTime = Time.time;
-            TryChangeLane(dir);
-        }
+        ProcessInput();
 
+        if (laneContext == null) return;
         // animate lane change
         // position in lane
-        transform.position = new Vector3(
-            Mathf.Lerp(transform.position.x, LaneUtils.GetWorldPosition(this), laneChangeSpeed * 0.17f),
-            transform.position.y,
-            0);
-
+        //transform.position = new Vector3(
+        //    Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
+        //    viewWorldCursorPos.y,
+        //    viewWorldCursorPos.z);
+        transform.position = viewWorldCursorPos;
 
         // update animations
         //HandleFlip(dir);
     }
 
-    private int GetMouseLane()
+    private RaycastHit[] raycastHits = new RaycastHit[1];
+    private void ProcessInput()
     {
-        Camera mainCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-        float worldX = mainCam.ScreenToWorldPoint(Input.mousePosition).x;
-        float adjustedWorldX = worldX - mainCam.transform.position.x;
-        float innerOrthoSize = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>().orthographicSize;
-        float camOrthoSize = mainCam.orthographicSize;
-        float quadSize = GM.FindSingle("GameplayDisplayQuad").transform.localScale.y * .5f;
-        int effectiveMouseLane = LaneUtils.GetLanePosition(this, adjustedWorldX * (innerOrthoSize / camOrthoSize) * (quadSize / camOrthoSize) + LaneUtils.LaneScale * .5f);
-        int roundedMouseLane = effectiveMouseLane - (effectiveMouseLane % WidthLanes);
-        return roundedMouseLane;
+        raycastHits[0] = default;
+        int layer_mask = LayerMask.GetMask("MovieScreen");
+        Camera raycastCam = GM.FindSingle("GameDisplayCamera").GetComponent<Camera>();
+        var ray = raycastCam.ScreenPointToRay(Input.mousePosition + raycastCam.transform.forward*1000f);
+        Debug.DrawRay(ray.origin,ray.direction * 1000f);
+        int hits = Physics.RaycastNonAlloc(ray, raycastHits, 10000, layer_mask);
+        if (hits > 0)
+        {
+            laneContext = raycastHits[0].collider.GetComponent<RabbitHoleDisplay>();
+            viewWorldCursorPos = GetCharacterTargetPosition(raycastCam, laneContext);
+
+            int lane = laneContext.GetLane(viewWorldCursorPos.x);
+            bool changed = TryChangeLane(lane);
+            if (changed) lastAcceptedInputTime = Time.time;
+        }
+    }
+
+    private Vector3 GetCharacterTargetPosition(Camera finalCam, RabbitHoleDisplay viewportQuad)
+    {
+        debugPoints.Clear();
+        // coordinate
+        // mouse pos to worldPos
+        AddToDebugViewportQueue(finalCam.ScreenToViewportPoint(Input.mousePosition));
+        Vector3 worldPos = finalCam.ScreenToWorldPoint(Input.mousePosition);
+        // worldPos to normalized quad pos
+        // get quad bounds
+        // (quad has dimensions of 1x1, so we can use the scale to get the size)
+        Vector3 quadCenter = viewportQuad.transform.position;
+        Vector3 quadScale = viewportQuad.transform.lossyScale;
+        float xRelative = (worldPos.x - quadCenter.x) + quadScale.x * .5f;
+        float yRelative = (worldPos.y - quadCenter.y) + quadScale.y * .5f;
+        Vector2 posInQuad = new Vector2(xRelative / quadScale.x, yRelative / quadScale.y); // normalized
+        AddToDebugViewportQueue(posInQuad);
+        // norm quad pos to norm viewportCam pos
+        Vector2 posInViewport = Vector2.Scale(posInQuad, viewportQuad.AssociatedMaterial.mainTextureScale) - viewportQuad.AssociatedMaterial.mainTextureOffset;
+        AddToDebugViewportQueue(posInViewport);
+        // norm viewportCam pos to world* pos
+        Vector3 gameplayPos = viewportQuad.GameplayCamera.ViewportToWorldPoint(posInViewport);
+        gameplayPos.z = viewportQuad.ObstacleContext.transform.position.z; // z pos
+        return gameplayPos;
+    }
+
+    private List<Vector2> debugPoints = new List<Vector2>();
+    private void AddToDebugViewportQueue(Vector2 normalizedPoint)
+    {
+        debugPoints.Add(normalizedPoint);
     }
 
     public enum DirectionInput {
@@ -103,13 +138,11 @@ public class LaneCharacterMovement : LaneEntity
         return 0;
     }
 
-    private bool TryChangeLane(int direction)
+    private bool TryChangeLane(int newLane)
     {
-        if (direction == 0) return false;
         int totalLanes = LaneUtils.NumLanes;
         int width = WidthLanes;
         int prevLane = Lane;
-        int newLane = direction + prevLane;
         if (newLane < 0) newLane = 0;
         if (newLane + width >= totalLanes) newLane = totalLanes - width;
         Lane = newLane;
@@ -198,6 +231,28 @@ public class LaneCharacterMovement : LaneEntity
         {
             float laneX = LaneUtils.GetLaneCenterWorldPosition(i);
             Gizmos.DrawLine(new Vector3(laneX, transform.position.y - 10, 0), new Vector3(laneX, transform.position.y + 10, 0));
+        }
+
+        DrawViewportDebugPoints();
+    }
+
+    private void DrawViewportDebugPoints()
+    {
+        // draw debug points
+        Vector2 boxPos = new Vector2(10, 10);
+        Vector2 boxSize = new Vector2(10, 10);
+        Vector3 pointSize = new Vector3(.5f, .5f, .5f);
+        foreach (var point in debugPoints)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireCube(boxPos, boxSize);
+
+            Gizmos.color = Color.yellow;
+            Vector2 pointPos = boxPos + Vector2.Scale(point, boxSize) - boxSize * .5f;
+            Gizmos.DrawCube(pointPos, pointSize);
+
+            // move box pos
+            boxPos += new Vector2(0, -boxSize.y * 1.1f);
         }
     }
 #endif

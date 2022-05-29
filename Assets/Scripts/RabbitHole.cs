@@ -25,6 +25,10 @@ public class RabbitHole : MonoBehaviour
     private readonly List<LaneEntity> activeObstacles = new List<LaneEntity>();
     private ChunkSpawner currentSpawner;
 
+    // per viewport values
+    private int vpLives;
+    private int vpScore;
+
     private void Awake()
     {
         currentSpawner = new ChunkSpawner(chunkPrefabs);
@@ -35,6 +39,8 @@ public class RabbitHole : MonoBehaviour
 
     public void Reset()
     {
+        vpLives = 99;//GM.MAX_LIVES;
+
         // reset level height
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
 
@@ -123,12 +129,12 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
-        GM.CurrentScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "SCORE:<br>"+GM.CurrentScore;
+        vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
+        scoreLabel.text = "SCORE:<br>"+vpScore;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
-            heartIcons[i].SetActive(i < GM.Lives);
+            heartIcons[i].SetActive(i < vpLives);
         }
     }
 
@@ -136,11 +142,6 @@ public class RabbitHole : MonoBehaviour
     {
         if (obstacle.HasTag(LaneEntity.Tag_DamageOnHit))
         {
-            // shake, flash, subtract lives
-            GM.FindSingle<GameplayCameraBehavior>().Shake();
-            player.StartFlashing();
-            GM.Lives--;
-
             // flash the collider
             var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
             flashing.flashOffTime = 0.08f;
@@ -149,6 +150,11 @@ public class RabbitHole : MonoBehaviour
             // bump up the removal time (if applicable)
             var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
             if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+
+            // shake, flash, subtract lives
+            // GM.FindSingle<GameplayCameraBehavior>().Shake(); DISABLED FOR EDITING
+            player.StartFlashing();
+            //SubtractLife();
         }
         if (obstacle.HasTag(LaneEntity.Tag_GrowOnHit))
         {
@@ -157,6 +163,15 @@ public class RabbitHole : MonoBehaviour
         if (obstacle.HasTag(LaneEntity.Tag_ShrinkOnHit))
         {
             player.OnShrink();
+        }
+    }
+
+    private void SubtractLife()
+    {
+        vpLives--;
+        if (vpLives <= 0)
+        {
+            GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
         }
     }
 }
