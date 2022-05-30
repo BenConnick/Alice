@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using StableFluids;
 using UnityEngine;
 
-public class LaneCharacterMovement : LaneEntity
+public class AliceCharacterMovement : LaneEntity
 {
     [NonSerialized] public RabbitHoleDisplay laneContext;
 
@@ -66,7 +66,7 @@ public class LaneCharacterMovement : LaneEntity
             // is the mouse position contained within those extents?
             if (posInQuad.x >= 0 && posInQuad.x <= 1 && posInQuad.y >= 0 && posInQuad.y <= 1) {
                 float viewportDist = Vector3.Dot(viewport.DisplayShape.position - raycastCam.transform.position, ray.direction);
-                SetDebugQuantity("ray " + viewport.GetInstanceID(), viewportDist);
+                PerFrameVariableWatches.SetDebugQuantity("ray " + viewport.GetInstanceID(), viewportDist);
 
                 // sort by the display closest to the camera along the camera's forward vector
                 if (closest == null || Vector3.Dot(closest.DisplayShape.position - raycastCam.transform.position, ray.direction) > viewportDist)
@@ -77,7 +77,7 @@ public class LaneCharacterMovement : LaneEntity
         }
         if (closest != null)
         {
-            SetDebugQuantity("closest: ", closest.GetInstanceID());
+            PerFrameVariableWatches.SetDebugQuantity("closest: ", closest.GetInstanceID());
             laneContext = closest;
             viewWorldCursorPos = GetCharacterTargetPosition(raycastCam, laneContext);
 
@@ -281,37 +281,5 @@ public class LaneCharacterMovement : LaneEntity
         }
     }
 
-    private void SetDebugQuantity(string key, float value)
-    {
-        if (debugQuantities.ContainsKey(key)) debugQuantities[key] = value;
-        else debugQuantities.Add(key, value);
-    }
-
-    private void ClearDebugQuantity(string key)
-    {
-        debugQuantities.Remove(key);
-    }
-
-    private Dictionary<string, float> debugQuantities = new Dictionary<string, float>();
-    private GUIStyle fontStyle;
-    public void OnGUI()
-    {
-        if (fontStyle == null) fontStyle = new GUIStyle {
-            fontSize = 30,
-            fontStyle = FontStyle.Bold,
-            normal = new GUIStyleState
-            {
-                textColor = new Color(1, 1, 0, .5f)
-            }
-        };
-        const float labelHeight = 30;
-        float labelY = 10;
-        foreach (var item in debugQuantities)
-        {
-            string debugString = item.Key + ": " + item.Value;
-            GUI.Label(new Rect(100, labelY, 1000, labelHeight), debugString, fontStyle);
-            labelY += labelHeight;
-        }
-    }
 #endif
 }

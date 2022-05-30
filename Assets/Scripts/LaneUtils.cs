@@ -26,7 +26,7 @@ public static class LaneUtils
         return Mathf.RoundToInt(entityCenterWorldX / LaneScale + NumLanes * .5f - entityWidth * .5f);
     }
 
-    private static float GetFractionalLanePosition(LaneCharacterMovement character, float? hypotheticalXPosition = null)
+    private static float GetFractionalLanePosition(AliceCharacterMovement character, float? hypotheticalXPosition = null)
     {
         float x = hypotheticalXPosition ?? character.transform.position.x;
         return x / LaneScale + NumLanes * .5f - character.CharacterWidth * .5f;
@@ -37,7 +37,7 @@ public static class LaneUtils
         return (lane - NumLanes * .5f) * LaneScale;
     }
 
-    public static bool CheckOverlap(LaneCharacterMovement player, LaneEntity collider)
+    public static bool CheckOverlap(AliceCharacterMovement player, LaneEntity collider)
     {
         // lane
         float fractionalLane = GetFractionalLanePosition(player);

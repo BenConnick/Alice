@@ -9,7 +9,7 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreLabel;
     [SerializeField] private GameObject[] heartIcons;
     [SerializeField] private RectTransform progressMarker;
-
+        
     [Header("Config")]
     public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
@@ -95,7 +95,7 @@ public class RabbitHole : MonoBehaviour
             {
                 var gameCam = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>();
                 var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
-                LevelChunk newChunk = Instantiate(newChunkPrefab, new Vector3(0, yPos, 0), Quaternion.identity, transform);
+                LevelChunk newChunk = Instantiate(newChunkPrefab, new Vector3(transform.position.x, yPos, transform.position.z), Quaternion.identity, transform);
                 for (int i = 0; i < newChunk.Obstacles.Length; i++)
                 {
                     // spawn

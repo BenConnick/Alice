@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Alice : LaneCharacterMovement
+public class Alice : AliceCharacterMovement
 {
     public enum SizeCategory
     {

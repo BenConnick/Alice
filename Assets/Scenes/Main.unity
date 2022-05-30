@@ -6936,7 +6936,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021418858}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.94, y: 0, z: 20}
+  m_LocalPosition: {x: -1.72, y: 0, z: 20}
   m_LocalScale: {x: 5.6, y: 6, z: 1}
   m_Children: []
   m_Father: {fileID: 440989607}
@@ -9514,7 +9514,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "TODO: \nraycasts out of order\nmake better debugging tools"
+  m_Text: "TODO: \n(these aren't sorted)\nmake debug overlay tool a global utility\nimport
+    command line util\nmake the structure for generic viewports\ndo something cool
+    with ^\n"
 --- !u!222 &1357025947
 CanvasRenderer:
   m_ObjectHideFlags: 0
