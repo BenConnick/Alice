@@ -32,22 +32,6 @@ public class RabbitHoleDisplay : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (CanBeCopied)
-        {
-            Vector3 worldPos = new Vector3(100, 0, 0);
-            Vector3 panelPos = new Vector3(2, 0, 20);
-            Create(panelPos,worldPos);
-            panelPos += PanelDefaultSpacing;
-            worldPos += new Vector3(LevelInstanceSpacing,0,0);
-            Create(panelPos, worldPos);
-            panelPos += PanelDefaultSpacing;
-            worldPos += new Vector3(LevelInstanceSpacing,0,0);
-            Create(panelPos, worldPos);
-        }
-    }
-
     // assumes that there is a RabbitHoleDisplay instance
     // which exists in the scene and can be copied 
     public static RabbitHoleDisplay Create(Vector3 panelPos, Vector3 worldPos)
@@ -65,6 +49,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         var copy = Instantiate(source,source.transform.parent);
         copy.transform.localPosition = panelPos;
         copy.AssociatedMaterial = matCopy;
+        copy.ObstacleContext = gameplayGroupCopy.GetComponentInChildren<RabbitHole>();
         copy.GameplayCamera = cameraCopy;
         copy.CanBeCopied = false;
         copy.GetComponent<MeshRenderer>().sharedMaterial = matCopy;

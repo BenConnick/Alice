@@ -4,7 +4,7 @@ using UnityEngine;
 public class PerFrameVariableWatches : MonoBehaviour
 {
     private static PerFrameVariableWatches _instance;
-    private static Dictionary<string, float> debugQuantities = new Dictionary<string, float>();
+    private static Dictionary<string, string> debugQuantities = new Dictionary<string, string>();
     private static GUIStyle fontStyle;
 
     [RuntimeInitializeOnLoadMethod]
@@ -23,7 +23,7 @@ public class PerFrameVariableWatches : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public static void SetDebugQuantity(string key, float value)
+    public static void SetDebugQuantity(string key, string value)
     {
         if (debugQuantities.ContainsKey(key)) debugQuantities[key] = value;
         else debugQuantities.Add(key, value);

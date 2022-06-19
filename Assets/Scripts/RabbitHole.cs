@@ -78,7 +78,7 @@ public class RabbitHole : MonoBehaviour
 
             // check collisions
             var player = GM.FindSingle<Alice>();
-            if (!player.IsFlashing())
+            if (!player.IsFlashing() && player?.laneContext?.ObstacleContext == this)
             {
                 foreach (var obstacle in activeObstacles)
                 {
