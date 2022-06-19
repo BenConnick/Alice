@@ -43,7 +43,7 @@ public class PerFrameVariableWatches : MonoBehaviour
             fontStyle = FontStyle.Bold,
             normal = new GUIStyleState
             {
-                textColor = new Color(1, 1, 0, .5f)
+                textColor = new Color(0, 0, 1, 1f)
             }
         };
         const float labelHeight = 30;

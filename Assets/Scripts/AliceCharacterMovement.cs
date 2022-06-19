@@ -6,6 +6,7 @@ using UnityEngine;
 public class AliceCharacterMovement : LaneEntity
 {
     [NonSerialized] public RabbitHoleDisplay laneContext;
+    private RabbitHoleDisplay prevLaneContext;
 
     // inspector
     public float CharacterWidth = 1.5f;
@@ -32,12 +33,26 @@ public class AliceCharacterMovement : LaneEntity
         ProcessInput();
 
         if (laneContext == null) return;
-        // animate lane change
-        // position in lane
-        transform.position = new Vector3(
-            Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
-            viewWorldCursorPos.y,
-            viewWorldCursorPos.z);
+
+        // switch lane
+        if (prevLaneContext != laneContext)
+        {
+            prevLaneContext = laneContext;
+            // position in lane
+            transform.position = new Vector3(
+                laneContext.GetLaneCenterWorldPos(Lane),
+                viewWorldCursorPos.y,
+                viewWorldCursorPos.z);
+        }
+        else
+        {
+            // animate lane change
+            // position in lane
+            transform.position = new Vector3(
+                Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
+                viewWorldCursorPos.y,
+                viewWorldCursorPos.z);
+        }
 
         // update animations
         //HandleFlip(dir);
