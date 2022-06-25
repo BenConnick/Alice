@@ -89,7 +89,7 @@ public class ChunkSpawner
     protected LevelChunk[] chunkPrefabs;
 
     protected float lastObstableSpawnTime;
-    private float secondsBetweenObstacles => 6f/GM.FindSingle<RabbitHole>().fallSpeed;
+    private float secondsBetweenObstacles => LevelChunk.height/GM.FindSingle<RabbitHole>().fallSpeed;
     private float elapsedTime = 0;
     private LevelChunk prevChunk;
 
@@ -118,7 +118,8 @@ public class ChunkSpawner
                         validNextChunks.Add(chunk);
                         break;
                     }
-                } else
+                }
+                else
                 {
                     prevMatch = -1;
                 }
@@ -154,5 +155,10 @@ public class ChunkSpawner
         {
             return null;
         }
+    }
+
+    public LevelChunk Force()
+    {
+        return GetNextRandomChunk();
     }
 }

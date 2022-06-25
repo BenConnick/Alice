@@ -81,12 +81,11 @@ public static class GM
     {
         if (helperObject != null || helper == null) return;
 
-        Physics.autoSimulation = false;
-        Physics2D.autoSimulation = false;
-
         helperObject = helper;
 
         ChangeMode(GameMode.MainMenu);
+
+        Application.targetFrameRate = 60;
     }
 
     public static void InitEditor()

@@ -9,6 +9,11 @@ public class RabbitHoleDisplay : MonoBehaviour
     public Material AssociatedMaterial;
     public bool CanBeCopied = true;
 
+    public void Awake()
+    {
+        if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
+    }
+
     public int GetLane(float worldX)
     {
         // (quad has dimensions of 1x1, so we can use the scale to get the size)
@@ -50,6 +55,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         copy.transform.localPosition = panelPos;
         copy.AssociatedMaterial = matCopy;
         copy.ObstacleContext = gameplayGroupCopy.GetComponentInChildren<RabbitHole>();
+        copy.ObstacleContext.OwnerLink = copy;
         copy.GameplayCamera = cameraCopy;
         copy.CanBeCopied = false;
         copy.GetComponent<MeshRenderer>().sharedMaterial = matCopy;

@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 95.45
+  m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 240, y: 110}
   m_ScreenMatchMode: 1
@@ -1490,7 +1490,7 @@ RectTransform:
   m_GameObject: {fileID: 283976199}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.004, y: 0.004, z: 0.004}
+  m_LocalScale: {x: 0.0022600002, y: 0.0022600002, z: 0.0022600002}
   m_Children:
   - {fileID: 1915762221}
   - {fileID: 1519150067}
@@ -1501,8 +1501,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 650, y: 750}
+  m_AnchoredPosition: {x: 0, y: 0.78}
+  m_SizeDelta: {x: 1219.2, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &318775534 stripped
 GameObject:
@@ -9344,12 +9344,7 @@ MonoBehaviour:
   fallSpeed: 2
   SpawnersConfig: {fileID: 11400000, guid: cbb981f7132f5407ca7f6fa57bdb4f74, type: 2}
   chunkPrefabs:
-  - {fileID: 7443406198970905254, guid: 6d3e9a9cad55e4e3aa5eaf3d2d004a70, type: 3}
-  - {fileID: 7443406198970905254, guid: 7302616e199b5433c91e84762e2ffc33, type: 3}
-  - {fileID: 7443406198970905254, guid: 1787a26ed6ed24bf1ba8578c587fe0e6, type: 3}
-  - {fileID: 7443406198970905254, guid: f7cf8e789cf8a4e4fa34c9fa92ea0d94, type: 3}
-  - {fileID: 7443406198970905254, guid: 919455ff26da64f049887c9a73d99057, type: 3}
-  - {fileID: 7391109782417918040, guid: 8e9537e49b5364bd9ab4cbd38038e121, type: 3}
+  - {fileID: 8465607651784711365, guid: c1415f9f124d5401b81ee3f8d8be2c30, type: 3}
   obstaclePrefabs:
   - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
   - {fileID: 7750014687331218534, guid: 8a3857c9f237844bdbf4e2d92605b593, type: 3}
@@ -11987,7 +11982,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 305.4, y: 171.3}
+  m_SizeDelta: {x: 629.4, y: 135.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1941015165
 MonoBehaviour:
@@ -12008,7 +12003,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SCORE: \n000"
+  m_text: 'SCORE: 000'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8753e11afa31e42f8b0302ef72af9640, type: 2}
   m_sharedMaterial: {fileID: 21233605781033530, guid: 8753e11afa31e42f8b0302ef72af9640,
@@ -12037,14 +12032,14 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 257
+  m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: -30
@@ -12078,12 +12073,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1941015165}
-    characterCount: 11
+    characterCount: 10
     spriteCount: 0
-    spaceCount: 2
+    spaceCount: 1
     wordCount: 2
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

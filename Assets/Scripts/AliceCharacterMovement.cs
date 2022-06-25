@@ -15,15 +15,9 @@ public class AliceCharacterMovement : LaneEntity
     public float laneChangeSpeed = 2;
     public float invincibilityTime = 2f;
 
-    private float laneChangeDirection;
-    private bool shouldFlip;
-    private const float inputCooldown = 0.07f;
-    private float lastAcceptedInputTime;
-    private Vector3 viewWorldCursorPos; // the position in the world where the cursor would be if it were part of the scene that is displayed in the viewport 
-
-    private void OnEnable()
-    {
-    }
+    // where the cursor would be if it were in the world 
+    // shown in the (raycast-hit) viewport
+    private Vector3 viewWorldCursorPos; 
 
     public virtual void Update()
     {
@@ -34,26 +28,19 @@ public class AliceCharacterMovement : LaneEntity
 
         if (laneContext == null) return;
 
-        // switch lane
+        // switch viewport
         if (prevLaneContext != laneContext)
         {
             prevLaneContext = laneContext;
             // position in lane
-            transform.position = new Vector3(
-                laneContext.GetLaneCenterWorldPos(Lane),
-                viewWorldCursorPos.y,
-                viewWorldCursorPos.z);
+            transform.position = viewWorldCursorPos;
         }
+        // same viewport
         else
         {
             // animate lane change
             // position in lane
-            transform.position = new Vector3(
-                Mathf.Lerp(transform.position.x, laneContext.GetLaneCenterWorldPos(Lane), laneChangeSpeed * 0.17f),
-                viewWorldCursorPos.y,
-                viewWorldCursorPos.z);
-            PerFrameVariableWatches.SetDebugQuantity("laneCenter", laneContext.GetLaneCenterWorldPos(Lane).ToString());
-            PerFrameVariableWatches.SetDebugQuantity("pos", transform.position.ToString());
+            transform.position = viewWorldCursorPos;
         }
 
         // update animations
@@ -96,12 +83,8 @@ public class AliceCharacterMovement : LaneEntity
         {
             PerFrameVariableWatches.SetDebugQuantity("closest: ", closest.GetInstanceID().ToString());
             laneContext = closest;
-            viewWorldCursorPos = GetCharacterTargetPosition(raycastCam, laneContext);
+            viewWorldCursorPos = GetCursorInnerViewportPos(raycastCam, laneContext);
             PerFrameVariableWatches.SetDebugQuantity("viewWorldCursorPos", viewWorldCursorPos.ToString());
-
-            int lane = laneContext.GetLane(viewWorldCursorPos.x);
-            bool changed = TryChangeLane(lane);
-            if (changed) lastAcceptedInputTime = Time.time;
         }
         else
         {
@@ -109,7 +92,7 @@ public class AliceCharacterMovement : LaneEntity
         }
     }
 
-    private Vector3 GetCharacterTargetPosition(Camera finalCam, RabbitHoleDisplay viewportQuad)
+    private Vector3 GetCursorInnerViewportPos(Camera finalCam, RabbitHoleDisplay viewportQuad)
     {
         // coordinate
         // mouse pos to worldPos
@@ -132,85 +115,6 @@ public class AliceCharacterMovement : LaneEntity
         PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
         gameplayPos.z = viewportQuad.ObstacleContext.transform.position.z; // z pos
         return gameplayPos;
-    }
-
-    public enum DirectionInput {
-        Default,
-        Left,
-        Right,
-        Up,
-        Down,
-        Selection
-    }
-
-    private bool GetDirectionInputDown(DirectionInput controlInput)
-    {
-        switch (controlInput)
-        {
-            case DirectionInput.Left:
-                return Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
-            case DirectionInput.Right:
-                return Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
-            case DirectionInput.Up:
-                return Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
-            case DirectionInput.Down:
-                return Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S);
-            case DirectionInput.Selection:
-                return Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Return);
-        }
-        return false;
-    }
-
-    // gets the input on this frame
-    private int GetHorizInput()
-    {
-        bool left = GetDirectionInputDown(DirectionInput.Left);
-        bool right = GetDirectionInputDown(DirectionInput.Right);
-        // left and right before up and down
-        if ((left || right) && !(left && right)) // left or right pressed but not both
-        {
-            return left ? -1 : 1;
-        }
-        // no direction
-        return 0;
-    }
-
-    private bool TryChangeLane(int newLane)
-    {
-        int totalLanes = LaneUtils.NumLanes;
-        int width = WidthLanes;
-        int prevLane = Lane;
-        if (newLane < 0) newLane = 0;
-        if (newLane + width >= totalLanes) newLane = totalLanes - width;
-        Lane = newLane;
-        return newLane != prevLane;
-    }
-
-    private void HandleFlip(float inputX)
-    {
-        if (inputX > 0.01f)
-        {
-            shouldFlip = true;
-        }
-        else if (inputX < -0.01f)
-        {
-            shouldFlip = false;
-        }
-        float target = shouldFlip ? -1 : 1;
-        float percentToTarget = Mathf.InverseLerp(-target, target, transform.localScale.x);
-        float easing = 0.5f + 0.5f * ((percentToTarget - 0.5f) * (percentToTarget - 0.5f));
-        float xScale = Mathf.Clamp(transform.localScale.x + target * SmokeRendering.FixedTimeInterval * flipAnimationSpeed * easing, -1, 1);
-        transform.localScale = new Vector3(xScale, 1, 1);
-    }
-
-    public void Push(Vector2 push)
-    {
-        // unused
-    }
-
-    public void PauseInput(float seconds)
-    {
-        lastAcceptedInputTime = Time.time + seconds;
     }
 
     public void StartFlashing()
@@ -242,33 +146,7 @@ public class AliceCharacterMovement : LaneEntity
 #if UNITY_EDITOR
     public override void OnDrawGizmos()
     {
-        // update lane
-        if (!Application.isPlaying && AutoLane)
-        {
-            var so = new UnityEditor.SerializedObject(this);
-            var laneProp = so.FindProperty("Lane");
-            laneProp.intValue = LaneUtils.GetLanePosition(this);
-            if (laneProp.intValue != Lane && so.hasModifiedProperties) so.ApplyModifiedProperties();
-        }
-
-        // get lane data
-        Vector3 center = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        float w = LaneUtils.LaneScale * CharacterWidth;
-        Vector3 extents = new Vector3(w, Height, 0);
-
-        // draw
-        Color prev = Gizmos.color;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(center, extents);
-        Gizmos.color = prev;
-
-        // draw lanes
-        Gizmos.color = Color.cyan;
-        for (int i = 0; i <= LaneUtils.NumLanes; i++)
-        {
-            float laneX = LaneUtils.GetLaneCenterWorldPosition(i);
-            Gizmos.DrawLine(new Vector3(laneX, transform.position.y - 10, 0), new Vector3(laneX, transform.position.y + 10, 0));
-        }
+        // unused
     }
 
 #endif

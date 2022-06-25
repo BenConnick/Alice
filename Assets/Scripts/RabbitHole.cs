@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using StableFluids;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreLabel;
     [SerializeField] private GameObject[] heartIcons;
     [SerializeField] private RectTransform progressMarker;
-        
+
     [Header("Config")]
     public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
@@ -19,11 +18,13 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private GameObject[] obstaclePrefabs;
 
     // fields
+    public RabbitHoleDisplay OwnerLink { get; set; }
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
     private float initialHeight;
-    private readonly List<LaneEntity> activeObstacles = new List<LaneEntity>();
-    private ChunkSpawner currentSpawner;
+    private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
+    private ChunkSpawner chunkSpawner;
+    private float chunkCursor;
 
     // per viewport values
     private int vpLives;
@@ -31,15 +32,16 @@ public class RabbitHole : MonoBehaviour
 
     private void Awake()
     {
-        currentSpawner = new ChunkSpawner(chunkPrefabs);
+        chunkSpawner = new ChunkSpawner(chunkPrefabs);
         initialHeight = transform.localPosition.y;
-        Application.targetFrameRate = 60;
         Time.timeScale = 1f;
     }
 
     public void Reset()
     {
         vpLives = 99;//GM.MAX_LIVES;
+
+        chunkCursor = -LevelChunk.height;
 
         // reset level height
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
@@ -82,7 +84,7 @@ public class RabbitHole : MonoBehaviour
             {
                 foreach (var obstacle in activeObstacles)
                 {
-                    if (LaneUtils.CheckOverlap(player, obstacle))
+                    if (CheckOverlap(player, obstacle))
                     {
                         HandleObstacleCollision(player, obstacle);
                     }
@@ -90,18 +92,14 @@ public class RabbitHole : MonoBehaviour
             }
 
             // spawn new obstacles
-            var newChunkPrefab = currentSpawner.Update(Time.deltaTime);
-            if (newChunkPrefab != null)
+            PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.position.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
+            if (initialHeight - transform.position.y < chunkCursor + 6)
             {
-                var gameCam = GM.FindSingle<GameplayInnerDisplayCamera>().GetComponent<Camera>();
-                var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
-                LevelChunk newChunk = Instantiate(newChunkPrefab, new Vector3(transform.position.x, yPos, transform.position.z), Quaternion.identity, transform);
-                for (int i = 0; i < newChunk.Obstacles.Length; i++)
-                {
-                    // spawn
-                    var entity = newChunk.Obstacles[i];
-                    activeObstacles.Add(entity);
-                }
+                var newChunkPrefab = chunkSpawner.Force();
+                LevelChunk newChunk = Instantiate(newChunkPrefab, transform);
+                chunkCursor -= LevelChunk.height;
+                newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
+                activeObstacles.AddRange(newChunk.Obstacles);
             }
 
             // update UI
@@ -138,7 +136,12 @@ public class RabbitHole : MonoBehaviour
         }
     }
 
-    private void HandleObstacleCollision(Alice player, LaneEntity obstacle)
+    private static bool CheckOverlap(Alice player, LevelCollider levelCollider)
+    {
+        return levelCollider.OverlapPoint(player.transform.position);
+    }
+
+    private void HandleObstacleCollision(Alice player, LevelCollider obstacle)
     {
         if (obstacle.HasTag(LaneEntity.Tag_DamageOnHit))
         {
