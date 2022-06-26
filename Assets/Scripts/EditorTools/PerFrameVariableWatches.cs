@@ -39,19 +39,19 @@ public class PerFrameVariableWatches : MonoBehaviour
     {
         if (fontStyle == null) fontStyle = new GUIStyle
         {
-            fontSize = 30,
+            fontSize = Screen.height / 25,
             fontStyle = FontStyle.Bold,
             normal = new GUIStyleState
             {
                 textColor = new Color(0, 0, 1, 1f)
             }
         };
-        const float labelHeight = 30;
-        float labelY = 10;
+        float labelHeight = fontStyle.fontSize*1.1f;
+        float labelY = fontStyle.fontSize;
         foreach (var item in debugQuantities)
         {
             string debugString = item.Key + ": " + item.Value;
-            GUI.Label(new Rect(100, labelY, 1000, labelHeight), debugString, fontStyle);
+            GUI.Label(new Rect(fontStyle.fontSize, labelY, 1000, labelHeight), debugString, fontStyle);
             labelY += labelHeight;
         }
     }

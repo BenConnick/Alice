@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System;
-using Random = UnityEngine.Random;
 using System.Collections.Generic;
 
 public delegate void PlatformEventDelegate(int platformID);
@@ -21,6 +20,22 @@ public static class GM
         Gameplay, // the main gameplay mode
         Scoreboard,
         EnterName,
+    }
+
+    // Like LevelType, but more detailed
+    // the main-menu changes as you play
+    // it has the following appearance options
+    public enum MenuStage
+    {
+        PreRabbitHole,
+        RabbitHole,
+        DrinkMe,
+        Caterpillar,
+        Chess,
+        TeaParty,
+        QueenStart,
+        QueenDungeon,
+        GameWinMenu,
     }
 
     public enum NavigationEvent
@@ -51,18 +66,17 @@ public static class GM
         { LevelType.Caterpillar, "DRINK" },
         { LevelType.CheshireCat, "GROWN" },
         { LevelType.MadHatter, "GRINS" },
-        { LevelType.TweedleDum, "PARTY" },
         { LevelType.QueenOfHearts, "TWINS" },
     };
 
     public const int MAX_LIVES = 3;
+    public static MenuStage CurrentMenuStage { get; set; }
     public static LevelType CurrentLevel { get; set; }
 
     #region gamestate
     // Game State
     public static bool IsGameplayPaused { get; private set; } = true;
     public static bool InputFrozen => IsGameplayPaused;
-    public static bool FellThroughFloor { get; set; }
     public static GameMode CurrentMode { get; private set; }
     public static int CurrentScore { get; set; }
     public static readonly List<int> PlayerHighScores = new List<int>();
@@ -71,6 +85,7 @@ public static class GM
 
     // Screen Quick References
     public static GameObject MainMenu => helperObject.MainMenu;
+    public static GameObject GameplayScreen => helperObject.Gameplay;
     public static GameObject Scoreboard => helperObject.ScoreBoard;
     public static GameObject EnterNameScreen => helperObject.EnterNameScreen;
 
@@ -132,9 +147,11 @@ public static class GM
             case GameMode.MainMenu:
                 IsGameplayPaused = true;
                 activeScreen = MainMenu;
+                MainMenu.GetComponent<Animator>().SetTrigger("ResetAnimationTrigger");
                 break;
             case GameMode.Gameplay:
                 IsGameplayPaused = false;
+                activeScreen = GameplayScreen;
                 break;
             case GameMode.Scoreboard:
                 IsGameplayPaused = true;
@@ -154,6 +171,7 @@ public static class GM
             g.SetActive(g == activeScreen);
         }
         ShowHide(MainMenu);
+        ShowHide(GameplayScreen);
         ShowHide(Scoreboard);
         ShowHide(EnterNameScreen);
 
@@ -184,12 +202,6 @@ public static class GM
                 }
                 break;
             case LevelType.MadHatter:
-                if (unlockCode == LevelType.TweedleDum)
-                {
-                    CurrentLevel = unlockCode;
-                }
-                break;
-            case LevelType.TweedleDum:
                 if (unlockCode == LevelType.QueenOfHearts)
                 {
                     CurrentLevel = unlockCode;
@@ -203,6 +215,28 @@ public static class GM
         }
     }
 
+    public static float GetLevelLength(LevelType level)
+    {
+        switch (level)
+        {
+            case LevelType.Default:
+                break;
+            case LevelType.RabbitHole:
+                return 20f;
+            case LevelType.Caterpillar:
+                return 30f;
+            case LevelType.CheshireCat:
+                break;
+            case LevelType.MadHatter:
+                break;
+            case LevelType.QueenOfHearts:
+                break;
+            default:
+                break;
+        }
+        return 100f;
+    }
+
     public static void OnGameEvent(NavigationEvent e)
     {
         switch (CurrentMode)
@@ -212,7 +246,10 @@ public static class GM
                 {
                     if (CurrentLevel == LevelType.Default) CurrentLevel = LevelType.RabbitHole;
                     SetLevel(CurrentLevel);
-                    FindSingle<RabbitHole>().Reset();
+                    foreach (var r in UnityEngine.Object.FindObjectsOfType<RabbitHole>())
+                    {
+                        r.Reset();
+                    }
                     ChangeMode(GameMode.Gameplay);
                 }
                 break;
@@ -221,7 +258,13 @@ public static class GM
                 {
                     ChangeMode(GameMode.MainMenu);
                 }
+                else if (e == NavigationEvent.PlatformerLevelUp)
+                {
+                    CurrentMenuStage++;
+                    ChangeMode(GameMode.MainMenu);
+                }
                 break;
+                
             //case GameMode.Scoreboard:
             //    if (e == NavigationEvent.OpenNamePicker)
             //    {
@@ -277,7 +320,8 @@ public static class GM
             return (T)gameplayComponentsCache[typeof(T)];
         // slow search
         var found = UnityEngine.Object.FindObjectOfType<T>();
-        gameplayComponentsCache[typeof(T)] = found;
+        if (found != null)
+            gameplayComponentsCache[typeof(T)] = found;
         return found;
     }
 

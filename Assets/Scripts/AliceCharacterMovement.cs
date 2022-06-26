@@ -50,70 +50,45 @@ public class AliceCharacterMovement : LaneEntity
     //private RaycastHit[] raycastHits = new RaycastHit[1];
     private void ProcessInput()
     {
-        int layer_mask = LayerMask.GetMask("MovieScreen");
-        Camera raycastCam = GM.FindSingle("GameDisplayCamera").GetComponent<Camera>();
-        // note: phyiscs raycasts behaved in a buggy way (probably because I turned off phyiscs) using ortho math instead
-        Ray ray = raycastCam.ScreenPointToRay(Input.mousePosition);
-        Vector3 worldPoint = raycastCam.ScreenToWorldPoint(Input.mousePosition);
-        Plane viewPlane = new Plane(ray.direction, 0);
-
         // compare the mouse position against every display
-        RabbitHoleDisplay closest = null;
+        PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
+        var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var viewport in FindObjectsOfType<RabbitHoleDisplay>())
         {
-            // what are the extents of the display
-            Vector3 quadCenter = viewport.DisplayShape.position;
-            Vector3 quadScale = viewport.DisplayShape.lossyScale;
-            float xRelative = (worldPoint.x - quadCenter.x) + quadScale.x * .5f;
-            float yRelative = (worldPoint.y - quadCenter.y) + quadScale.y * .5f;
-            Vector2 posInQuad = new Vector2(xRelative / quadScale.x, yRelative / quadScale.y); // normalized
-            // is the mouse position contained within those extents?
-            if (posInQuad.x >= 0 && posInQuad.x <= 1 && posInQuad.y >= 0 && posInQuad.y <= 1) {
-                float viewportDist = Vector3.Dot(viewport.DisplayShape.position - raycastCam.transform.position, ray.direction);
-                PerFrameVariableWatches.SetDebugQuantity("ray " + viewport.GetInstanceID(), viewportDist.ToString());
-
-                // sort by the display closest to the camera along the camera's forward vector
-                if (closest == null || Vector3.Dot(closest.DisplayShape.position - raycastCam.transform.position, ray.direction) > viewportDist)
-                {
-                    closest = viewport;
-                }
+            Vector2 normalizedCursorPos = GetNormalizedCursorPos(cam, viewport);
+            if (IsInBounds(normalizedCursorPos))
+            {
+                laneContext = viewport;
+                viewWorldCursorPos = GetCursorViewportWorldPos(viewport, normalizedCursorPos);
+                break;
             }
-        }
-        if (closest != null)
-        {
-            PerFrameVariableWatches.SetDebugQuantity("closest: ", closest.GetInstanceID().ToString());
-            laneContext = closest;
-            viewWorldCursorPos = GetCursorInnerViewportPos(raycastCam, laneContext);
-            PerFrameVariableWatches.SetDebugQuantity("viewWorldCursorPos", viewWorldCursorPos.ToString());
-        }
-        else
-        {
-            Debug.DrawRay(ray.origin, ray.direction);
         }
     }
 
-    private Vector3 GetCursorInnerViewportPos(Camera finalCam, RabbitHoleDisplay viewportQuad)
+    private static bool IsInBounds(Vector2 norm)
     {
-        // coordinate
-        // mouse pos to worldPos
+        return norm.x >= 0 && norm.x <= 1 && norm.y >= 0 && norm.y <= 1;
+    }
+
+    private Vector2 GetNormalizedCursorPos(Camera finalCam, RabbitHoleDisplay viewportUI)
+    {
+        // mouse pos
         PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
-        Vector3 worldPos = finalCam.ScreenToWorldPoint(Input.mousePosition);
-        // worldPos to normalized quad pos
-        // get quad bounds
-        // (quad has dimensions of 1x1, so we can use the scale to get the size)
-        Vector3 quadCenter = viewportQuad.transform.position;
-        Vector3 quadScale = viewportQuad.transform.lossyScale;
-        float xRelative = (worldPos.x - quadCenter.x) + quadScale.x * .5f;
-        float yRelative = (worldPos.y - quadCenter.y) + quadScale.y * .5f;
-        Vector2 posInQuad = new Vector2(xRelative / quadScale.x, yRelative / quadScale.y); // normalized
-        PerFrameVariableWatches.SetDebugQuantity("posInQuad", posInQuad.ToString());
-        // norm quad pos to norm viewportCam pos
-        Vector2 posInViewport = Vector2.Scale(posInQuad, viewportQuad.AssociatedMaterial.mainTextureScale) - viewportQuad.AssociatedMaterial.mainTextureOffset;
+        // rect pos
+        var rt = viewportUI.GetComponent<RectTransform>();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, finalCam, out Vector2 localPos);
+        // rect pos to norm viewportCam pos
+        Vector2 posInViewport = new Vector2((localPos.x + rt.rect.width*.5f) / (rt.rect.width), (localPos.y + rt.rect.height * .5f) / (rt.rect.height));
         PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
+        return posInViewport;
+    }
+
+    private Vector3 GetCursorViewportWorldPos(RabbitHoleDisplay rabbitHoleDisplay, Vector2 cursorViewportPos)
+    {
         // norm viewportCam pos to world* pos
-        Vector3 gameplayPos = viewportQuad.GameplayCamera.ViewportToWorldPoint(posInViewport);
+        Vector3 gameplayPos = rabbitHoleDisplay.GameplayCamera.ViewportToWorldPoint(cursorViewportPos);
         PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
-        gameplayPos.z = viewportQuad.ObstacleContext.transform.position.z; // z pos
+        gameplayPos.z = rabbitHoleDisplay.ObstacleContext.transform.position.z; // z pos
         return gameplayPos;
     }
 

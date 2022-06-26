@@ -6,9 +6,14 @@ public class GMHelperObject : MonoBehaviour
     //public PlatformManager PlatformManager;
     //public CameraController CameraController;
     //public WalkaboutUI LabUI;
+    [Header("Screens")]
     public GameObject MainMenu;
+    public GameObject Gameplay;
     public GameObject ScoreBoard;
     public GameObject EnterNameScreen;
+
+    [Header("MenuSprites")]
+    public Sprite[] MenuSprites;
 
     // Start is called before the first frame update
     private void Awake()

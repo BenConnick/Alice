@@ -22,6 +22,7 @@ public class RabbitHole : MonoBehaviour
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
     private float initialHeight;
+    private readonly List<LevelChunk> activeChunks = new List<LevelChunk>();
     private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
@@ -47,19 +48,13 @@ public class RabbitHole : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
 
         // clean up game objects
-        foreach (var ob in activeObstacles)
+        foreach (var chunk in activeChunks)
         {
-            if (ob != null && ob.gameObject != null)
-            {
-                // destroy chunk
-                var chunk = ob.GetComponentInParent<LevelChunk>();
-                if (chunk != null && chunk.gameObject != null) Destroy(chunk.gameObject);
-                // fallback on individual obstacle destroy
-                else Destroy(ob.gameObject);
-            }
+            if (chunk != null) Destroy(chunk.gameObject);
         }
 
         // clear queue
+        activeChunks.Clear();
         activeObstacles.Clear();
     }
 
@@ -68,8 +63,11 @@ public class RabbitHole : MonoBehaviour
     {
         if (!GM.IsGameplayPaused)
         {
+            var player = GM.FindSingle<Alice>();
+            bool hasFocus = player?.laneContext?.ObstacleContext == this;
+
             transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            totalFallDistance = transform.position.y;
+            totalFallDistance = transform.position.y - initialHeight;
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -79,8 +77,7 @@ public class RabbitHole : MonoBehaviour
             }
 
             // check collisions
-            var player = GM.FindSingle<Alice>();
-            if (!player.IsFlashing() && player?.laneContext?.ObstacleContext == this)
+            if (!player.IsFlashing() && hasFocus)
             {
                 foreach (var obstacle in activeObstacles)
                 {
@@ -99,7 +96,16 @@ public class RabbitHole : MonoBehaviour
                 LevelChunk newChunk = Instantiate(newChunkPrefab, transform);
                 chunkCursor -= LevelChunk.height;
                 newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
+                activeChunks.Add(newChunk);
                 activeObstacles.AddRange(newChunk.Obstacles);
+
+                const int maxChunks = 3;
+                if (activeChunks.Count > maxChunks)
+                {
+                    var oldest = activeChunks[0];
+                    activeChunks.RemoveAt(0);
+                    Destroy(oldest.gameObject);
+                }
             }
 
             // update UI
@@ -116,6 +122,11 @@ public class RabbitHole : MonoBehaviour
                 // grow
                 GM.FindSingle<Alice>().OnGrow();
             }
+
+            if (hasFocus && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
+            {
+                GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelUp);
+            }
         }
     }
 
@@ -128,7 +139,7 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
         vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "SCORE:<br>"+vpScore;
+        scoreLabel.text = "<mspace=0.5em>SCORE: " + vpScore.ToString("D4")+"</mspace>";
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {

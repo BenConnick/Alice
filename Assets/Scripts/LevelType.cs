@@ -5,6 +5,5 @@
     Caterpillar,
     CheshireCat,
     MadHatter,
-    TweedleDum,
     QueenOfHearts
 }

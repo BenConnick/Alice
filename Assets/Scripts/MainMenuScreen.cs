@@ -15,7 +15,7 @@ public class MainMenuScreen : MonoBehaviour
 
     void OnEnable()
     {
-        bg.sprite = levelSprites[(int)GM.CurrentLevel];
+        bg.sprite = levelSprites[(int)GM.CurrentMenuStage];
         animator.SetTrigger("ResetAnimationTrigger");
     }
 
@@ -23,6 +23,10 @@ public class MainMenuScreen : MonoBehaviour
     void Update()
     {
         // debug stuff
+        if (Input.GetKeyUp(KeyCode.Alpha0)) SetSprite(0);
+        if (Input.GetKeyUp(KeyCode.Alpha1)) SetSprite(1);
+        if (Input.GetKeyUp(KeyCode.Alpha2)) SetSprite(2);
+        if (Input.GetKeyUp(KeyCode.Alpha3)) SetSprite(3);
         if (Input.GetKeyUp(KeyCode.Alpha4))
         {
             GM.OnDebugEvent(GM.DebugEvent.ShowNameEntryScreen);
@@ -31,6 +35,11 @@ public class MainMenuScreen : MonoBehaviour
         {
             GM.OnDebugEvent(GM.DebugEvent.SetLevelCaterpillar);
         }
+    }
+
+    private void SetSprite(int i)
+    {
+        bg.sprite = levelSprites[i];
     }
 
     public void OnStartPressed()
