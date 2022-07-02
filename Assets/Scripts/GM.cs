@@ -152,6 +152,7 @@ public static class GM
             case GameMode.Gameplay:
                 IsGameplayPaused = false;
                 activeScreen = GameplayScreen;
+                FindSingle<RabbitHole>().PlayIntroAnimation();
                 break;
             case GameMode.Scoreboard:
                 IsGameplayPaused = true;

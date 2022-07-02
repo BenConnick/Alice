@@ -14,8 +14,12 @@ public class RabbitHole : MonoBehaviour
     public ObstacleSpawnersConfig SpawnersConfig;
 
     [Header("Assets")]
-    [SerializeField] private LevelChunk[] chunkPrefabs;
     [SerializeField] private GameObject[] obstaclePrefabs;
+    [SerializeField] private LevelChunk[] rabbitChunkPrefabs;
+    [SerializeField] private LevelChunk[] caterpillarChunkPrefabs;
+    [SerializeField] private LevelChunk[] chessChunkPrefabs;
+    [SerializeField] private LevelChunk[] teaPartyChunkPrefabs;
+    [SerializeField] private LevelChunk[] queenChunkPrefabs;
 
     // fields
     public RabbitHoleDisplay OwnerLink { get; set; }
@@ -26,6 +30,32 @@ public class RabbitHole : MonoBehaviour
     private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
+    private bool isPlayingIntroAnimation;
+
+    private LevelChunk[] chunkPrefabs
+    {
+        get
+        {
+            switch (GM.CurrentLevel)
+            {
+                case LevelType.Default:
+                    break;
+                case LevelType.RabbitHole:
+                    return rabbitChunkPrefabs;
+                case LevelType.Caterpillar:
+                    return caterpillarChunkPrefabs;
+                case LevelType.CheshireCat:
+                    return chessChunkPrefabs;
+                case LevelType.MadHatter:
+                    return rabbitChunkPrefabs;
+                case LevelType.QueenOfHearts:
+                    return queenChunkPrefabs;
+                default:
+                    break;
+            }
+            return rabbitChunkPrefabs;
+        }
+    }
 
     // per viewport values
     private int vpLives;
@@ -38,6 +68,12 @@ public class RabbitHole : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void PlayIntroAnimation()
+    {
+        isPlayingIntroAnimation = true;
+        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight - 5f, transform.localPosition.x);
+    }
+
     public void Reset()
     {
         vpLives = 99;//GM.MAX_LIVES;
@@ -45,7 +81,7 @@ public class RabbitHole : MonoBehaviour
         chunkCursor = -LevelChunk.height;
 
         // reset level height
-        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, 0);
+        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, transform.localPosition.z);
 
         // clean up game objects
         foreach (var chunk in activeChunks)
@@ -58,6 +94,11 @@ public class RabbitHole : MonoBehaviour
         activeObstacles.Clear();
     }
 
+    public float GetIntroOffset()
+    {
+        return transform.localPosition.y - initialHeight;
+    }
+
     // runs every tick
     private void Update()
     {
@@ -66,7 +107,13 @@ public class RabbitHole : MonoBehaviour
             var player = GM.FindSingle<Alice>();
             bool hasFocus = player?.laneContext?.ObstacleContext == this;
 
-            transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
+            if (isPlayingIntroAnimation)
+            {
+                transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + 1, Time.deltaTime * 5f), transform.localPosition.z);
+                if (transform.localPosition.y > initialHeight) isPlayingIntroAnimation = false;
+            }
+            else
+                transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
             totalFallDistance = transform.position.y - initialHeight;
 
             // update active obstacles
