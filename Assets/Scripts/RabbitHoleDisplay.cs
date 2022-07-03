@@ -7,6 +7,7 @@ public class RabbitHoleDisplay : MonoBehaviour
     public Camera GameplayCamera;
     public RabbitHole ObstacleContext;
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
+    public GameObject Overlay;
 
     public void Awake()
     {

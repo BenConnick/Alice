@@ -146,8 +146,8 @@ public static class GM
         {
             case GameMode.MainMenu:
                 IsGameplayPaused = true;
-                activeScreen = MainMenu;
-                MainMenu.GetComponent<Animator>().SetTrigger("ResetAnimationTrigger");
+                activeScreen = GameplayScreen;
+                //MainMenu.GetComponent<Animator>().SetTrigger("ResetAnimationTrigger");
                 break;
             case GameMode.Gameplay:
                 IsGameplayPaused = false;
@@ -223,7 +223,7 @@ public static class GM
             case LevelType.Default:
                 break;
             case LevelType.RabbitHole:
-                return 20f;
+                return 12f;
             case LevelType.Caterpillar:
                 return 30f;
             case LevelType.CheshireCat:
@@ -262,6 +262,7 @@ public static class GM
                 else if (e == NavigationEvent.PlatformerLevelUp)
                 {
                     CurrentMenuStage++;
+                    FindSingle<RabbitHole>().PlayOutroAnimation();
                     ChangeMode(GameMode.MainMenu);
                 }
                 break;

@@ -13,6 +13,11 @@ public class RabbitHole : MonoBehaviour
     public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
 
+    [Header("Animation")]
+    public float introAnimationDistance;
+    public float introAnimationSpeed;
+    public Transform menuGraphics;
+
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
     [SerializeField] private LevelChunk[] rabbitChunkPrefabs;
@@ -26,11 +31,20 @@ public class RabbitHole : MonoBehaviour
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
     private float initialHeight;
+    private float outroStartHeight;
     private readonly List<LevelChunk> activeChunks = new List<LevelChunk>();
     private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
-    private bool isPlayingIntroAnimation;
+    private AnimationMode mode;
+
+    public enum AnimationMode
+    {
+        Default,
+        Interactive,
+        Intro,
+        Outro
+    }
 
     private LevelChunk[] chunkPrefabs
     {
@@ -70,15 +84,23 @@ public class RabbitHole : MonoBehaviour
 
     public void PlayIntroAnimation()
     {
-        isPlayingIntroAnimation = true;
-        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight - 5f, transform.localPosition.x);
+        mode = AnimationMode.Intro;
+        OwnerLink?.Overlay?.SetActive(false);
+    }
+
+    public void PlayOutroAnimation()
+    {
+        outroStartHeight = transform.localPosition.y;
+        mode = AnimationMode.Outro;
+        OwnerLink?.Overlay?.SetActive(false);
+        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
     }
 
     public void Reset()
     {
         vpLives = 99;//GM.MAX_LIVES;
 
-        chunkCursor = -LevelChunk.height;
+        chunkCursor = -LevelChunk.height - introAnimationDistance;
 
         // reset level height
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, transform.localPosition.z);
@@ -96,25 +118,41 @@ public class RabbitHole : MonoBehaviour
 
     public float GetIntroOffset()
     {
-        return transform.localPosition.y - initialHeight;
+        return transform.localPosition.y - (initialHeight+introAnimationDistance);
     }
 
     // runs every tick
     private void Update()
     {
+        if (mode == AnimationMode.Intro)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            if (transform.localPosition.y > initialHeight + introAnimationDistance)
+            {
+                OwnerLink.Overlay?.SetActive(true);
+                mode = AnimationMode.Interactive;
+            }
+        }
+        else if (mode == AnimationMode.Outro)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, outroStartHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            if (transform.localPosition.y > outroStartHeight + introAnimationDistance)
+            {
+                OwnerLink.Overlay?.SetActive(false);
+                mode = AnimationMode.Default;
+            }
+        }
+
         if (!GM.IsGameplayPaused)
         {
             var player = GM.FindSingle<Alice>();
             bool hasFocus = player?.laneContext?.ObstacleContext == this;
 
-            if (isPlayingIntroAnimation)
+            if (mode == AnimationMode.Interactive)
             {
-                transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + 1, Time.deltaTime * 5f), transform.localPosition.z);
-                if (transform.localPosition.y > initialHeight) isPlayingIntroAnimation = false;
-            }
-            else
                 transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            totalFallDistance = transform.position.y - initialHeight;
+            }
+            totalFallDistance = transform.position.y - (initialHeight+introAnimationDistance);
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
