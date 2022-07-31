@@ -20,23 +20,24 @@ public static class GM
         Gameplay, // the main gameplay mode
         Scoreboard,
         EnterName,
+        GameOver,
     }
 
     // Like LevelType, but more detailed
     // the main-menu changes as you play
     // it has the following appearance options
-    public enum MenuStage
-    {
-        PreRabbitHole,
-        RabbitHole,
-        DrinkMe,
-        Caterpillar,
-        Chess,
-        TeaParty,
-        QueenStart,
-        QueenDungeon,
-        GameWinMenu,
-    }
+    //public enum MenuStage
+    //{
+    //    PreRabbitHole,
+    //    RabbitHole,
+    //    DrinkMe,
+    //    Caterpillar,
+    //    Chess,
+    //    TeaParty,
+    //    QueenStart,
+    //    QueenDungeon,
+    //    GameWinMenu,
+    //}
 
     public enum NavigationEvent
     {
@@ -70,7 +71,7 @@ public static class GM
     };
 
     public const int MAX_LIVES = 3;
-    public static MenuStage CurrentMenuStage { get; set; }
+    //public static MenuStage CurrentMenuStage { get; set; }
     public static LevelType CurrentLevel { get; set; }
 
     #region gamestate
@@ -235,7 +236,7 @@ public static class GM
             default:
                 break;
         }
-        return 100f;
+        return 10f;
     }
 
     public static void OnGameEvent(NavigationEvent e)
@@ -257,11 +258,11 @@ public static class GM
             case GameMode.Gameplay:
                 if (e == NavigationEvent.PlatformerGameOver)
                 {
-                    ChangeMode(GameMode.MainMenu);
+                    ChangeMode(GameMode.GameOver);
                 }
                 else if (e == NavigationEvent.PlatformerLevelUp)
                 {
-                    CurrentMenuStage++;
+                    CurrentLevel++;
                     FindSingle<RabbitHole>().PlayOutroAnimation();
                     ChangeMode(GameMode.MainMenu);
                 }

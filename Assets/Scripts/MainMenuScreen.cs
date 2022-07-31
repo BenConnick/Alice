@@ -15,7 +15,7 @@ public class MainMenuScreen : MonoBehaviour
 
     void OnEnable()
     {
-        bg.sprite = levelSprites[(int)GM.CurrentMenuStage];
+        //bg.sprite = levelSprites[(int)GM.CurrentMenuStage];
         animator.SetTrigger("ResetAnimationTrigger");
     }
 

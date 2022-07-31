@@ -18,12 +18,11 @@ public class StartButtonBehavior : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void OnEnable()
     {
-        GetComponent<Button>().interactable = true;
+
     }
 
     public void OnPressed()
     {
-        GetComponent<Button>().interactable = false;
         GM.OnGameEvent(GM.NavigationEvent.StartButton);
     }
 }

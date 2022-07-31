@@ -8,6 +8,7 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreLabel;
     [SerializeField] private GameObject[] heartIcons;
     [SerializeField] private RectTransform progressMarker;
+    [SerializeField] private UnityEngine.UI.Button startButton;
 
     [Header("Config")]
     public float fallSpeed;
@@ -16,7 +17,7 @@ public class RabbitHole : MonoBehaviour
     [Header("Animation")]
     public float introAnimationDistance;
     public float introAnimationSpeed;
-    public Transform menuGraphics;
+    public MenuGraphics menuGraphics;
 
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
@@ -61,7 +62,7 @@ public class RabbitHole : MonoBehaviour
                 case LevelType.CheshireCat:
                     return chessChunkPrefabs;
                 case LevelType.MadHatter:
-                    return rabbitChunkPrefabs;
+                    return teaPartyChunkPrefabs;
                 case LevelType.QueenOfHearts:
                     return queenChunkPrefabs;
                 default:
@@ -84,8 +85,16 @@ public class RabbitHole : MonoBehaviour
 
     public void PlayIntroAnimation()
     {
+        startButton.interactable = false;
+        menuGraphics.ShowStageArt(GM.CurrentLevel);
         mode = AnimationMode.Intro;
         OwnerLink?.Overlay?.SetActive(false);
+    }
+
+    private void OnIntroComplete()
+    {
+        OwnerLink.Overlay?.SetActive(true);
+        mode = AnimationMode.Interactive;
     }
 
     public void PlayOutroAnimation()
@@ -94,10 +103,22 @@ public class RabbitHole : MonoBehaviour
         mode = AnimationMode.Outro;
         OwnerLink?.Overlay?.SetActive(false);
         menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
+        menuGraphics.ShowStageArt(GM.CurrentLevel);
+    }
+
+    private void OnOutroComplete()
+    {
+        OwnerLink.Overlay?.SetActive(false);
+        mode = AnimationMode.Default;
+        startButton.interactable = true;
+        menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
+        Reset();
     }
 
     public void Reset()
     {
+        chunkSpawner = new ChunkSpawner(chunkPrefabs);
+
         vpLives = 99;//GM.MAX_LIVES;
 
         chunkCursor = -LevelChunk.height - introAnimationDistance;
@@ -129,8 +150,7 @@ public class RabbitHole : MonoBehaviour
             transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
             if (transform.localPosition.y > initialHeight + introAnimationDistance)
             {
-                OwnerLink.Overlay?.SetActive(true);
-                mode = AnimationMode.Interactive;
+                OnIntroComplete();
             }
         }
         else if (mode == AnimationMode.Outro)
@@ -138,8 +158,7 @@ public class RabbitHole : MonoBehaviour
             transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, outroStartHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
             if (transform.localPosition.y > outroStartHeight + introAnimationDistance)
             {
-                OwnerLink.Overlay?.SetActive(false);
-                mode = AnimationMode.Default;
+                OnOutroComplete();
             }
         }
 
