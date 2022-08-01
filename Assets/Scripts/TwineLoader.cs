@@ -10,6 +10,43 @@ public class TwineLoader {
     }
 }
 
+public class TwineStoryWrapper
+{
+    private TwineStory story;
+    private int pid;
+    public Passage CurrentPassage => GetPassage(pid);
+
+    public TwineStoryWrapper(TwineStory s)
+    {
+        story = s;
+        pid = int.Parse(s.startnode);
+    }
+
+    public Passage GetPassage(int pid)
+    {
+        return story.passages[pid - 1];
+    }
+
+    public Passage ChangePassage(Link link)
+    {
+        pid = link.pid;
+        return GetPassage(pid);
+    }
+
+    public Passage ChangePassage(int linkPID)
+    {
+        if (pid > 0 && pid < story.passages.Length)
+        {
+            pid = linkPID;
+        }
+        else
+        {
+            Debug.LogError("Cannot change passage, invalid pid " + pid);
+        }
+        return GetPassage(pid);
+    }
+}
+
 [System.Serializable]
 public class TwineStory : System.Object
 {

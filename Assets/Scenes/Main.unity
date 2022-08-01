@@ -7621,6 +7621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 889142795}
   - component: {fileID: 889142797}
+  - component: {fileID: 889142798}
   - component: {fileID: 889142796}
   m_Layer: 5
   m_Name: StoryLabel
@@ -7645,7 +7646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.999998}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: -30, y: -29.999998}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &889142796
@@ -7667,7 +7668,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Stuff goes here blah blah blah etc wraps onto two lines
+  m_text: <link="2">Stuff</link> goes here blah blah blah etc wraps onto two lines
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8753e11afa31e42f8b0302ef72af9640, type: 2}
   m_sharedMaterial: {fileID: 21233605781033530, guid: 8753e11afa31e42f8b0302ef72af9640,
@@ -7741,7 +7742,7 @@ MonoBehaviour:
     spriteCount: 0
     spaceCount: 10
     wordCount: 11
-    linkCount: 0
+    linkCount: 1
     lineCount: 2
     pageCount: 1
     materialCount: 1
@@ -7768,6 +7769,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889142794}
   m_CullTransparentMesh: 0
+--- !u!114 &889142798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889142794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d942525b171e4824b31df8233be338d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &896399295
 PrefabInstance:
   m_ObjectHideFlags: 0
