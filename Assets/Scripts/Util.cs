@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public static class Util
 {
     public const int UNSET = -1;
+    public const char CurrencyChar = '¤';
 
     private static Canvas CachedCanvas;
     private static Camera CachedCamera;
