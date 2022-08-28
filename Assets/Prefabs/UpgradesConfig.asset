@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: UpgradesConfig
   m_EditorClassIdentifier: 
   AllUpgrades:
-  - Name: Fragile Mushroom
+  - Type: 0
+    DisplayName: A
     ShopSprite: {fileID: -8633203281069561234, guid: 71463cd4f55dd4f6d8eb58a13d271489,
       type: 3}
     ShopDescription: One side makes you smaller...
     ShopCost: 999
-  - Name: Example Teapot
+  - Type: 0
+    DisplayName: 
     ShopSprite: {fileID: -4094303373952925740, guid: 410beaa4a2ded4d7ea9dc4c8558f421b,
       type: 3}
     ShopDescription: Short and stout

@@ -12,22 +12,27 @@ public static class TimeDistortionController
 
     public static void SlowResume()
     {
-        StartCoroutine(LerpTimescaleCoroutine(0.01f, 1f));
+        StartCoroutine(LerpTimescaleCoroutine(defaultResumeDuration, 0.01f, 1f));
+    }
+
+    public static void PlayImpactFrame()
+    {
+        StartCoroutine(ArcLerpTimescaleCoroutine(0.05f, 0.1f, 1));
     }
 
     public static void PlaySlowmoAndResume()
     {
-        StartCoroutine(ArcLerpTimescaleCoroutine(0.1f, 1f));
+        StartCoroutine(ArcLerpTimescaleCoroutine(defaultResumeDuration, 0.1f, 1f));
     }
 
     public static void PlaySlowmoWithCallback(Action callback)
     {
-        StartCoroutine(LerpTimescaleCoroutine(0.1f, 0.01f, callback));
+        StartCoroutine(LerpTimescaleCoroutine(defaultResumeDuration, 0.1f, 0.01f, callback));
     }
 
     public static void PlayRewind()
     {
-        StartCoroutine(RewindCoroutine(resumeDuration));
+        StartCoroutine(RewindCoroutine(defaultResumeDuration));
     }
 
     private static IEnumerator RewindCoroutine(float duration)
@@ -47,8 +52,8 @@ public static class TimeDistortionController
     }
 
     private static float resumeStart;
-    private const float resumeDuration = 1f;
-    private static IEnumerator LerpTimescaleCoroutine(float initial, float final, Action callback = null)
+    private const float defaultResumeDuration = 1f;
+    private static IEnumerator LerpTimescaleCoroutine(float resumeDuration, float initial, float final, Action callback = null)
     {
         resumeStart = Time.unscaledTime;
         while (Time.unscaledTime < resumeStart + resumeDuration)
@@ -64,7 +69,7 @@ public static class TimeDistortionController
         //Debug.Log("timescale " + Time.timeScale);
     }
 
-    private static IEnumerator ArcLerpTimescaleCoroutine(float middle, float final)
+    private static IEnumerator ArcLerpTimescaleCoroutine(float resumeDuration, float middle, float final)
     {
         resumeStart = Time.unscaledTime;
         while (Time.unscaledTime < resumeStart + resumeDuration)

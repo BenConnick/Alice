@@ -4,22 +4,32 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UpgradesConfig", menuName = "ScriptableObjects/UpgradesConfig")]
 public class UpgradesConfig : ScriptableObject
 {
-    public UpgradeStats[] AllUpgrades;
+    public Upgrade[] AllUpgrades;
 
-    public UpgradeStats Find(string name)
+    public Upgrade Find(string name)
     {
         foreach (var u in AllUpgrades)
         {
-            if (u.Name == name) return u;
+            if (u.DisplayName == name) return u;
+        }
+        return default;
+    }
+
+    public Upgrade Find(UpgradeType upgrade)
+    {
+        foreach (var u in AllUpgrades)
+        {
+            if (u.Type == upgrade) return u;
         }
         return default;
     }
 }
 
 [Serializable]
-public struct UpgradeStats
+public struct Upgrade
 {
-    public string Name;
+    public UpgradeType Type;
+    public string DisplayName;
     public Sprite ShopSprite;
     public string ShopDescription;
     public int ShopCost;

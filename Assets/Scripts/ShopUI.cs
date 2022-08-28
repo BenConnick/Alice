@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,40 @@ public class ShopUI : MonoBehaviour
     public void Show(string upgradeName)
     {
         var config = FindObjectOfType<UpgradesConfig>();
-        upgradeHeaderLabel.text = upgradeName;
         var upgrade = config.Find(upgradeName);
-        upgradeHeaderLabel.text = upgrade.Name;
+        ShowInner(upgrade);
+    }
+
+    public void Show(UpgradeType upgradeType)
+    {
+        var config = FindObjectOfType<UpgradesConfig>();
+        var upgrade = config.Find(upgradeType);
+        ShowInner(upgrade);
+    }
+
+    private void ShowInner(Upgrade upgrade)
+    {
+        upgradeHeaderLabel.text = upgrade.DisplayName;
         upgradeDescriptionLabel.text = upgrade.ShopDescription;
         buyLabel.text = "Buy for " + upgrade.ShopCost + Util.CurrencyChar;
         bankLabel.text = "TODO" + Util.CurrencyChar;
         upgradeImage.sprite = upgrade.ShopSprite;
+
+        gameObject.SetActive(true);
+        StartCoroutine(FadeIn(.75f));
+    }
+
+    private IEnumerator FadeIn(float duration)
+    {
+        if (duration == 0) duration = 1f;
+        canvasGroup.alpha = 0;
+        float startTime = Time.time;
+        while (Time.time < startTime + duration)
+        {
+            float t = (Time.time - startTime) / duration;
+            canvasGroup.alpha = t;
+            yield return new WaitForEndOfFrame();
+        }
+        canvasGroup.alpha = 1;
     }
 }

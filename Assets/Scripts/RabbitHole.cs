@@ -275,7 +275,8 @@ public class RabbitHole : MonoBehaviour
             if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
 
             // shake, flash, subtract lives
-            // GM.FindSingle<GameplayCameraBehavior>().Shake(); DISABLED FOR EDITING
+            TimeDistortionController.PlayImpactFrame();
+            GM.FindSingle<GameplayCameraBehavior>().Shake(); // DISABLED FOR EDITING
             player.StartFlashing();
             //SubtractLife();
         }

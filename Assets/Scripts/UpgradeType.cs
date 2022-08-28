@@ -1,0 +1,23 @@
+﻿public enum UpgradeType
+{
+    ExtraLife,
+    ExtraLifeTemp,
+    SlowTime,
+    SlowTimeTemp,
+    Shrink,
+    ShrinkTemp,
+    Grow,
+    GrowTemp,
+    MoneyMagnet,
+    MoneyMagnetTemp,
+    BigMoney,
+    BigMoneyTemp,
+    Blink,
+    BlinkTemp,
+    MushroomForestSkip,
+    TeaPartySkip,
+    ChessboardSkip,
+    QueensCastleSkip,
+    OublietteSkip,
+    Mirror,
+}
