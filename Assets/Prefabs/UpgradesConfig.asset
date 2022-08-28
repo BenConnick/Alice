@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee352b7df063242d99c0d4f0066cd044, type: 3}
+  m_Name: UpgradesConfig
+  m_EditorClassIdentifier: 
+  AllUpgrades:
+  - Name: Fragile Mushroom
+    ShopSprite: {fileID: -8633203281069561234, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+      type: 3}
+    ShopDescription: One side makes you smaller...
+    ShopCost: 999
+  - Name: Example Teapot
+    ShopSprite: {fileID: -4094303373952925740, guid: 410beaa4a2ded4d7ea9dc4c8558f421b,
+      type: 3}
+    ShopDescription: Short and stout
+    ShopCost: 123

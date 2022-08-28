@@ -3226,6 +3226,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b227a7cf9ad47eeaad575441d406ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 473675716}
+  upgradeHeaderLabel: {fileID: 1257088434}
+  upgradeDescriptionLabel: {fileID: 1805076428}
+  buyLabel: {fileID: 1334885124}
+  cancelLabel: {fileID: 2056241119}
+  bankLabel: {fileID: 299679878}
+  upgradeImage: {fileID: 1706349306}
 --- !u!1001 &514578826
 PrefabInstance:
   m_ObjectHideFlags: 0

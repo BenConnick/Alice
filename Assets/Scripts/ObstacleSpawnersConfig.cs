@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "ObstacleSpawnersConfig", menuName = "ScriptableObjects/ObstacleSpawnersConfig")]
 public class ObstacleSpawnersConfig : ScriptableObject
 {
     [Header("Shared")]
