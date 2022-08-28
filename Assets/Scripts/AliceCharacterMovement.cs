@@ -55,41 +55,14 @@ public class AliceCharacterMovement : LaneEntity
         var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var viewport in FindObjectsOfType<RabbitHoleDisplay>())
         {
-            Vector2 normalizedCursorPos = GetNormalizedCursorPos(cam, viewport);
-            if (IsInBounds(normalizedCursorPos))
+            Vector2 normalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
+            if (Util.IsInBounds(normalizedCursorPos))
             {
                 laneContext = viewport;
-                viewWorldCursorPos = GetCursorViewportWorldPos(viewport, normalizedCursorPos);
+                viewWorldCursorPos = viewport.GetCursorViewportWorldPos(normalizedCursorPos);
                 break;
             }
         }
-    }
-
-    private static bool IsInBounds(Vector2 norm)
-    {
-        return norm.x >= 0 && norm.x <= 1 && norm.y >= 0 && norm.y <= 1;
-    }
-
-    private Vector2 GetNormalizedCursorPos(Camera finalCam, RabbitHoleDisplay viewportUI)
-    {
-        // mouse pos
-        PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
-        // rect pos
-        var rt = viewportUI.GetComponent<RectTransform>();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, finalCam, out Vector2 localPos);
-        // rect pos to norm viewportCam pos
-        Vector2 posInViewport = new Vector2((localPos.x + rt.rect.width*.5f) / (rt.rect.width), (localPos.y + rt.rect.height * .5f) / (rt.rect.height));
-        PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
-        return posInViewport;
-    }
-
-    private Vector3 GetCursorViewportWorldPos(RabbitHoleDisplay rabbitHoleDisplay, Vector2 cursorViewportPos)
-    {
-        // norm viewportCam pos to world* pos
-        Vector3 gameplayPos = rabbitHoleDisplay.GameplayCamera.ViewportToWorldPoint(cursorViewportPos);
-        PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
-        gameplayPos.z = rabbitHoleDisplay.ObstacleContext.transform.position.z; // z pos
-        return gameplayPos;
     }
 
     public void StartFlashing()

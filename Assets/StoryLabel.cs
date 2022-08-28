@@ -63,7 +63,26 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             string colorStr = (i == highlightedLink ? "#4444dd" : "#6666ff");
             output += splits[i];
             if (i < links.Length)
-                output += $"<color={colorStr}><link=\"{links[i].pid}\">{links[i].name}</link></color>";
+            {
+                if (links[i].name.Contains("|"))
+                {
+                    var split = links[i].name.Split('|'); ;
+                    int brokenPid = Story.FindPassageWithName(split[1]);
+
+                    if (brokenPid < 0)
+                    {
+                        output += $"<color=#aa2222><link>{split[0]}</link></color>";
+                    }
+                    else
+                    {
+                        output += $"<color={colorStr}><link=\"{brokenPid}\">{split[0]}</link></color>";
+                    }
+                }
+                else
+                {
+                    output += $"<color={colorStr}><link=\"{links[i].pid}\">{links[i].name}</link></color>";
+                }
+            }
         }
 
         // return the new combined string

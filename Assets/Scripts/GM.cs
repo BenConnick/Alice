@@ -224,7 +224,7 @@ public static class GM
             case LevelType.Default:
                 break;
             case LevelType.RabbitHole:
-                return 12f;
+                return 30f;
             case LevelType.Caterpillar:
                 return 30f;
             case LevelType.CheshireCat:

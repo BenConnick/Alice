@@ -15,6 +15,7 @@ public class TwineStoryWrapper
     private TwineStory story;
     private int pid;
     public Passage CurrentPassage => GetPassage(pid);
+    public TwineStory Raw => story;
 
     public TwineStoryWrapper(TwineStory s)
     {
@@ -44,6 +45,15 @@ public class TwineStoryWrapper
             Debug.LogError("Cannot change passage, invalid pid " + pid);
         }
         return GetPassage(pid);
+    }
+
+    public int FindPassageWithName(string passageName)
+    {
+        foreach (var p in story.passages)
+        {
+            if (p.name == passageName) return p.pid;
+        }
+        return -1;
     }
 }
 

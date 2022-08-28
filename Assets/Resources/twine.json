@@ -1,1768 +1,339 @@
 {
     "passages": [
         {
-            "text": "Characters:\n------------\n*Key Characters*\n[[Self-Checkout]]\n[[Cashier]] (required)\n[[Free Samples Guy]] (required)\n[[Grocery Store workers]] (helpful)\n[[Police Officer]]\n\n*Side Characters*\n[[Deli Worker]]\n[[Single Mom + Nosy Kid]]\n[[Awkward College Kid]]\n[[Lost Elderly Foreigner]]\n[[Religious Fanatic]]",
+            "text": "I'm in my [[sister]]'s room. \n\nWhat should I do?\n\n[[Look around]]\n[[Leave]]",
             "links": [
                 {
-                    "name": "Self-Checkout",
-                    "link": "Self-Checkout",
-                    "pid": "64"
-                },
-                {
-                    "name": "Cashier",
-                    "link": "Cashier",
+                    "name": "sister",
+                    "link": "sister",
                     "pid": "2"
                 },
                 {
-                    "name": "Free Samples Guy",
-                    "link": "Free Samples Guy",
+                    "name": "Look around",
+                    "link": "Look around",
                     "pid": "3"
                 },
                 {
-                    "name": "Grocery Store workers",
-                    "link": "Grocery Store workers",
+                    "name": "Leave",
+                    "link": "Leave",
                     "pid": "4"
+                }
+            ],
+            "name": "Init",
+            "pid": "1",
+            "position": {
+                "x": "683",
+                "y": "361"
+            }
+        },
+        {
+            "text": "I'm in my sister's room. \n\nMy sister dissappeared two days ago without a trace. I'm worried what might have happened.\n\nWhat should I do?\n\n[[Look around]]\n[[Leave]]",
+            "links": [
+                {
+                    "name": "Look around",
+                    "link": "Look around",
+                    "pid": "3"
                 },
                 {
-                    "name": "Police Officer",
-                    "link": "Police Officer",
+                    "name": "Leave",
+                    "link": "Leave",
+                    "pid": "4"
+                }
+            ],
+            "name": "sister",
+            "pid": "2",
+            "position": {
+                "x": "683",
+                "y": "511"
+            }
+        },
+        {
+            "text": "It's a bit of a mess. Sis hasn't been keeping tidy lately. \n\nAgainst the back wall, there's a table with a [[computer]] on it.\n\nOn the left is her [[bed]].\n\nOn the right is her [[closet]].\n\nBehind me is the [[exit]].",
+            "links": [
+                {
+                    "name": "computer",
+                    "link": "computer",
                     "pid": "5"
                 },
                 {
-                    "name": "Deli Worker",
-                    "link": "Deli Worker",
+                    "name": "bed",
+                    "link": "bed",
                     "pid": "6"
                 },
                 {
-                    "name": "Single Mom + Nosy Kid",
-                    "link": "Single Mom + Nosy Kid",
+                    "name": "closet",
+                    "link": "closet",
                     "pid": "7"
                 },
                 {
-                    "name": "Awkward College Kid",
-                    "link": "Awkward College Kid",
+                    "name": "exit",
+                    "link": "exit",
                     "pid": "8"
+                }
+            ],
+            "name": "Look around",
+            "pid": "3",
+            "position": {
+                "x": "833",
+                "y": "511"
+            }
+        },
+        {
+            "text": "I came in here to find clues. I'm not leaving until I find something. I'm going to [[look around|Look around]].",
+            "links": [
+                {
+                    "name": "look around|Look around",
+                    "link": "look around|Look around",
+                    "broken": true
+                }
+            ],
+            "name": "Leave",
+            "pid": "4",
+            "position": {
+                "x": "983",
+                "y": "511"
+            }
+        },
+        {
+            "text": "It looks like she left a game running on the computer. \n\n[[Look elsewhere|Look around]]\n[[Play game]]",
+            "links": [
+                {
+                    "name": "Look elsewhere|Look around",
+                    "link": "Look elsewhere|Look around",
+                    "broken": true
                 },
                 {
-                    "name": "Lost Elderly Foreigner",
-                    "link": "Lost Elderly Foreigner",
+                    "name": "Play game",
+                    "link": "Play game",
+                    "pid": "13"
+                }
+            ],
+            "name": "computer",
+            "pid": "5",
+            "position": {
+                "x": "833",
+                "y": "661"
+            }
+        },
+        {
+            "text": "A twin bed. Not made up. On top of the fitted sheet is a [[stuffed cat]]. I'm hesitant to check [[underneath|under the bed]].",
+            "links": [
+                {
+                    "name": "stuffed cat",
+                    "link": "stuffed cat",
                     "pid": "9"
                 },
                 {
-                    "name": "Religious Fanatic",
-                    "link": "Religious Fanatic",
-                    "pid": "10"
+                    "name": "underneath|under the bed",
+                    "link": "underneath|under the bed",
+                    "broken": true
                 }
             ],
-            "name": "Start",
-            "pid": "1",
-            "position": {
-                "x": "2800",
-                "y": "332"
-            }
-        },
-        {
-            "text": "(The cashier scans your items)\n\nDid you find everything okay?\n\n[[I found you okay]]\n[[No->did_not_find]]\n[[Yes->found]]\n[[I didn't steal anything!]]\n\n// note: add unidentified price to the dialogue ",
-            "links": [
-                {
-                    "name": "I found you okay",
-                    "link": "I found you okay",
-                    "pid": "14"
-                },
-                {
-                    "name": "No",
-                    "link": "did_not_find",
-                    "pid": "15"
-                },
-                {
-                    "name": "Yes",
-                    "link": "found",
-                    "pid": "16"
-                },
-                {
-                    "name": "I didn't steal anything!",
-                    "link": "I didn't steal anything!",
-                    "pid": "17"
-                }
-            ],
-            "name": "Cashier",
-            "pid": "2",
-            "position": {
-                "x": "1409",
-                "y": "380"
-            }
-        },
-        {
-            "text": "Would you like to try a free sample?\n\n[[I w-w-w-would love to! What?->Yes]]\n[[I am very busy, no time for samples.->No]]\n[[Yes]]\n[[No]]",
-            "links": [
-                {
-                    "name": "I w-w-w-would love to! What?",
-                    "link": "Yes",
-                    "pid": "11"
-                },
-                {
-                    "name": "I am very busy, no time for samples.",
-                    "link": "No",
-                    "pid": "12"
-                },
-                {
-                    "name": "Yes",
-                    "link": "Yes",
-                    "pid": "11"
-                },
-                {
-                    "name": "No",
-                    "link": "No",
-                    "pid": "12"
-                }
-            ],
-            "name": "Free Samples Guy",
-            "pid": "3",
-            "position": {
-                "x": "596",
-                "y": "640"
-            }
-        },
-        {
-            "text": "Can I help you find anything?\n\n[[Bread]]\n[[Milk]]\n[[Eggs]]\n[[Agh!]]",
-            "links": [
-                {
-                    "name": "Bread",
-                    "link": "Bread",
-                    "pid": "41"
-                },
-                {
-                    "name": "Milk",
-                    "link": "Milk",
-                    "pid": "42"
-                },
-                {
-                    "name": "Eggs",
-                    "link": "Eggs",
-                    "pid": "43"
-                },
-                {
-                    "name": "Agh!",
-                    "link": "Agh!",
-                    "pid": "44"
-                }
-            ],
-            "name": "Grocery Store workers",
-            "pid": "4",
-            "position": {
-                "x": "2073",
-                "y": "585"
-            }
-        },
-        {
-            "text": "Is everything alright?\n\n[[Everything is under control!]]\n[[Sir yes sir ma'am]]\n[[I'm sorry I'm sorry I was just nervous->pol_awk]]\n[[Uh, no, wait yes, wait...->pol_awk]]",
-            "links": [
-                {
-                    "name": "Everything is under control!",
-                    "link": "Everything is under control!",
-                    "pid": "46"
-                },
-                {
-                    "name": "Sir yes sir ma'am",
-                    "link": "Sir yes sir ma'am",
-                    "pid": "53"
-                },
-                {
-                    "name": "I'm sorry I'm sorry I was just nervous",
-                    "link": "pol_awk",
-                    "pid": "49"
-                },
-                {
-                    "name": "Uh, no, wait yes, wait...",
-                    "link": "pol_awk",
-                    "pid": "49"
-                }
-            ],
-            "name": "Police Officer",
-            "pid": "5",
-            "position": {
-                "x": "2728",
-                "y": "576"
-            }
-        },
-        {
-            "text": "Hi what can I get for you?\n\n[[milk->not deli]]\n[[eggs->not deli]]\n[[bread->not deli]]\n[[sliced turkey]]",
-            "links": [
-                {
-                    "name": "milk",
-                    "link": "not deli",
-                    "pid": "55"
-                },
-                {
-                    "name": "eggs",
-                    "link": "not deli",
-                    "pid": "55"
-                },
-                {
-                    "name": "bread",
-                    "link": "not deli",
-                    "pid": "55"
-                },
-                {
-                    "name": "sliced turkey",
-                    "link": "sliced turkey",
-                    "pid": "56"
-                }
-            ],
-            "name": "Deli Worker",
+            "name": "bed",
             "pid": "6",
             "position": {
-                "x": "3360",
-                "y": "572"
+                "x": "983",
+                "y": "661"
             }
         },
         {
-            "text": "Double-click this passage to edit it.",
-            "name": "Single Mom + Nosy Kid",
+            "text": "You'd never catch me dead in one of her layered blue dresses with white lace. Sometimes I wonder how we're related. \n\nThere's some [[new boxes]] on the floor here.",
+            "links": [
+                {
+                    "name": "new boxes",
+                    "link": "new boxes",
+                    "pid": "11"
+                }
+            ],
+            "name": "closet",
             "pid": "7",
             "position": {
-                "x": "3720",
-                "y": "564"
+                "x": "1133",
+                "y": "661"
             }
         },
         {
-            "text": "Double-click this passage to edit it.",
-            "name": "Awkward College Kid",
+            "text": "I came in here to find clues. I'm not leaving until I find something. I'm going to [[look around|Look around]].",
+            "links": [
+                {
+                    "name": "look around|Look around",
+                    "link": "look around|Look around",
+                    "broken": true
+                }
+            ],
+            "name": "exit",
             "pid": "8",
             "position": {
-                "x": "4044",
-                "y": "556"
+                "x": "1283",
+                "y": "661"
             }
         },
         {
-            "text": "Bu hao yi si, ni zhi bu zhi dao xue xiao zai nar?\n\n[[I'm sorry, I don't understand->understand]]\n[[Um...->understand]]\n[[Could you repeat that?->understand]]\n[[Do you speak english?->understand]]",
+            "text": "It's a little creepy. Should it really smile this wide? It doesn't feel like a clue. \n\nI'm going to look [[somewhere else|Look around]].",
             "links": [
                 {
-                    "name": "I'm sorry, I don't understand",
-                    "link": "understand",
-                    "pid": "33"
-                },
-                {
-                    "name": "Um...",
-                    "link": "understand",
-                    "pid": "33"
-                },
-                {
-                    "name": "Could you repeat that?",
-                    "link": "understand",
-                    "pid": "33"
-                },
-                {
-                    "name": "Do you speak english?",
-                    "link": "understand",
-                    "pid": "33"
+                    "name": "somewhere else|Look around",
+                    "link": "somewhere else|Look around",
+                    "broken": true
                 }
             ],
-            "name": "Lost Elderly Foreigner",
+            "name": "stuffed cat",
             "pid": "9",
             "position": {
-                "x": "4388",
-                "y": "556"
-            }
-        },
-        {
-            "text": "Double-click this passage to edit it.",
-            "name": "Religious Fanatic",
-            "pid": "10",
-            "position": {
-                "x": "4760",
-                "y": "552"
-            }
-        },
-        {
-            "text": "So, how do you like it?\n\n[[Yum. Good. Yes.->Good]]\n[[It's delicious.->Good]]\n[[Thanks. Bye.->end]]\n[[Not much...]]",
-            "links": [
-                {
-                    "name": "Yum. Good. Yes.",
-                    "link": "Good",
-                    "pid": "13"
-                },
-                {
-                    "name": "It's delicious.",
-                    "link": "Good",
-                    "pid": "13"
-                },
-                {
-                    "name": "Thanks. Bye.",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Not much...",
-                    "link": "Not much...",
-                    "pid": "59"
-                }
-            ],
-            "name": "Yes",
-            "pid": "11",
-            "position": {
-                "x": "733",
-                "y": "786"
-            }
-        },
-        {
-            "text": "END\nHe looks sad\nWhat if he's depressed?\nWhat if I made him suicidal?\nHe must think I'm a snob",
-            "name": "No",
-            "pid": "12",
-            "position": {
-                "x": "596",
-                "y": "785"
-            }
-        },
-        {
-            "text": "Well, you can buy it, from this shelf!\n\n[[I'll take one->end]]\n[[Uhhhhh... bye->leave without]]\n[[I will come back later]]\n[[No thank you->leave without]]",
-            "links": [
-                {
-                    "name": "I'll take one",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Uhhhhh... bye",
-                    "link": "leave without",
-                    "pid": "60"
-                },
-                {
-                    "name": "I will come back later",
-                    "link": "I will come back later",
-                    "pid": "61"
-                },
-                {
-                    "name": "No thank you",
-                    "link": "leave without",
-                    "pid": "60"
-                }
-            ],
-            "name": "Good",
-            "pid": "13",
-            "position": {
-                "x": "733",
-                "y": "938"
-            }
-        },
-        {
-            "text": "END\nMisunderstanding!\nShe thinks I'm flirting!\nSexual harassment?\nI'm turning red!\nShe'll think that's a sign\nThis is really bad!\nMy life is over!",
-            "name": "I found you okay",
-            "pid": "14",
-            "position": {
-                "x": "1406",
-                "y": "526"
-            }
-        },
-        {
-            "text": "What are you looking for? :(\n\n[[Nothing!->found]]\n[[Actually, I misspoke. I found everything]]\n[[Potatoes]]",
-            "links": [
-                {
-                    "name": "Nothing!",
-                    "link": "found",
-                    "pid": "16"
-                },
-                {
-                    "name": "Actually, I misspoke. I found everything",
-                    "link": "Actually, I misspoke. I found everything",
-                    "pid": "63"
-                },
-                {
-                    "name": "Potatoes",
-                    "link": "Potatoes",
-                    "pid": "20"
-                }
-            ],
-            "name": "did_not_find",
-            "pid": "15",
-            "position": {
-                "x": "1691",
-                "y": "525"
-            }
-        },
-        {
-            "text": "Ugh. This bread isn't scanning. How much was it?\n\n[[Lie]]\n[[I don't know]]\n[[About three dollars]]\n[[I can go check]]",
-            "links": [
-                {
-                    "name": "Lie",
-                    "link": "Lie",
-                    "pid": "72"
-                },
-                {
-                    "name": "I don't know",
-                    "link": "I don't know",
-                    "pid": "73"
-                },
-                {
-                    "name": "About three dollars",
-                    "link": "About three dollars",
-                    "pid": "74"
-                },
-                {
-                    "name": "I can go check",
-                    "link": "I can go check",
-                    "pid": "75"
-                }
-            ],
-            "name": "found",
-            "pid": "16",
-            "position": {
-                "x": "1543",
-                "y": "671"
-            }
-        },
-        {
-            "text": "END\nThey didn't ask!\nI was too nervous\nThey'll think I did\nI'll go to jail\nMy life is over",
-            "name": "I didn't steal anything!",
-            "pid": "17",
-            "position": {
-                "x": "1260",
-                "y": "525"
-            }
-        },
-        {
-            "text": "(You dig through your wallet, but you only have a hundred dollar bill and a couple of pennies)\n\n[[Pay with the hundred]]\n[[On second thought, I will use my card->Credit2]]\n[[Uh I uh only have a hundred...->Pay with the hundred]]\n[[PANIC!]]",
-            "links": [
-                {
-                    "name": "Pay with the hundred",
-                    "link": "Pay with the hundred",
-                    "pid": "23"
-                },
-                {
-                    "name": "On second thought, I will use my card",
-                    "link": "Credit2",
-                    "pid": "39"
-                },
-                {
-                    "name": "Uh I uh only have a hundred...",
-                    "link": "Pay with the hundred",
-                    "pid": "23"
-                },
-                {
-                    "name": "PANIC!",
-                    "link": "PANIC!",
-                    "pid": "67"
-                }
-            ],
-            "name": "Cash",
-            "pid": "18",
-            "position": {
-                "x": "1545",
-                "y": "1171"
-            }
-        },
-        {
-            "text": "(You swipe your card through the card-reader. The interface reads \"error\".) \n\n[[What happened?]]\n[[On second thought, I'll pay with cash->Cash2]]\n[[PANIC!]]",
-            "links": [
-                {
-                    "name": "What happened?",
-                    "link": "What happened?",
-                    "pid": "66"
-                },
-                {
-                    "name": "On second thought, I'll pay with cash",
-                    "link": "Cash2",
-                    "pid": "40"
-                },
-                {
-                    "name": "PANIC!",
-                    "link": "PANIC!",
-                    "pid": "67"
-                }
-            ],
-            "name": "Credit",
-            "pid": "19",
-            "position": {
-                "x": "1391",
-                "y": "1170"
-            }
-        },
-        {
-            "text": "Potatoes are in the vegatable isle.\n\n[[*Leave to go get a potato*->end]]\n[[I changed my mind, I am ready to check out->found]]",
-            "links": [
-                {
-                    "name": "*Leave to go get a potato*",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "I changed my mind, I am ready to check out",
-                    "link": "found",
-                    "pid": "16"
-                }
-            ],
-            "name": "Potatoes",
-            "pid": "20",
-            "position": {
-                "x": "1691",
-                "y": "671"
-            }
-        },
-        {
-            "text": "END\nShe didn't laugh\nIt's not funny\nOh no\nShe looks angry\nA mistake\nHow can I pay now?\nThis is bad",
-            "name": "I'm broke",
-            "pid": "21",
-            "position": {
-                "x": "1226",
-                "y": "1175"
-            }
-        },
-        {
-            "text": "You win! In the actual game you would be taken back to walking around and you will never see this text.\n\n[[Start]]",
-            "links": [
-                {
-                    "name": "Start",
-                    "link": "Start",
-                    "pid": "1"
-                }
-            ],
-            "name": "end",
-            "pid": "22",
-            "position": {
-                "x": "5108",
-                "y": "4106"
-            }
-        },
-        {
-            "text": "(She takes the bill from you and looks at you strangely)\n\n[[Sorry! It is all I have->sorry]]\n[[*Wait for her to make change*]]\n[[Oh god you hate me now, I'm so sorry->sorry]]\n[[Wait! I want to pay with credit->Credit2]]",
-            "links": [
-                {
-                    "name": "Sorry! It is all I have",
-                    "link": "sorry",
-                    "pid": "24"
-                },
-                {
-                    "name": "*Wait for her to make change*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                },
-                {
-                    "name": "Oh god you hate me now, I'm so sorry",
-                    "link": "sorry",
-                    "pid": "24"
-                },
-                {
-                    "name": "Wait! I want to pay with credit",
-                    "link": "Credit2",
-                    "pid": "39"
-                }
-            ],
-            "name": "Pay with the hundred",
-            "pid": "23",
-            "position": {
-                "x": "1756",
-                "y": "1325"
-            }
-        },
-        {
-            "text": "It is alright. Let me see that. :(\n\n[[*wait*->*Wait for her to make change*]]\n[[*wait*->*Wait for her to make change*]]\n[[*wait*->*Wait for her to make change*]]\n[[*wait*->*Wait for her to make change*]]",
-            "links": [
-                {
-                    "name": "*wait*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                },
-                {
-                    "name": "*wait*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                },
-                {
-                    "name": "*wait*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                },
-                {
-                    "name": "*wait*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                }
-            ],
-            "name": "sorry",
-            "pid": "24",
-            "position": {
-                "x": "1545",
-                "y": "1776"
-            }
-        },
-        {
-            "text": "(She rubs a conterfeit marker over the bill and then places it in the register. She hands you back four twenties, a ten, and a nickel. She also hands you your reciept, and a single bag with your three items.)\n\n[[Thank you!->end]]\n[[Excuse me, you shortchanged me.->change]]\n[[That is not enough->change]]\n[[Keep the change!]]",
-            "links": [
-                {
-                    "name": "Thank you!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Excuse me, you shortchanged me.",
-                    "link": "change",
-                    "pid": "26"
-                },
-                {
-                    "name": "That is not enough",
-                    "link": "change",
-                    "pid": "26"
-                },
-                {
-                    "name": "Keep the change!",
-                    "link": "Keep the change!",
-                    "pid": "27"
-                }
-            ],
-            "name": "*Wait for her to make change*",
-            "pid": "25",
-            "position": {
-                "x": "1398",
-                "y": "1780"
-            }
-        },
-        {
-            "text": "No I didn't. I gave you back ninety-one-oh-five.\n\n[[*Look through the bills again*]]\n[[No, you gave me back ninety and a nickel. I still need a dollar->insist]]\n[[But... I am the customer... you have no right...->insist]]\n[[Count them again->insist]]",
-            "links": [
-                {
-                    "name": "*Look through the bills again*",
-                    "link": "*Look through the bills again*",
-                    "pid": "28"
-                },
-                {
-                    "name": "No, you gave me back ninety and a nickel. I still need a dollar",
-                    "link": "insist",
-                    "pid": "29"
-                },
-                {
-                    "name": "But... I am the customer... you have no right...",
-                    "link": "insist",
-                    "pid": "29"
-                },
-                {
-                    "name": "Count them again",
-                    "link": "insist",
-                    "pid": "29"
-                }
-            ],
-            "name": "change",
-            "pid": "26",
-            "position": {
-                "x": "1398",
-                "y": "1930"
-            }
-        },
-        {
-            "text": "I'm not allowed to take tips. \n\n[[Oh, right, sorry, um, I'll go now->ignored]]\n[[But you shortchanged me...->change]]",
-            "links": [
-                {
-                    "name": "Oh, right, sorry, um, I'll go now",
-                    "link": "ignored",
-                    "pid": "30"
-                },
-                {
-                    "name": "But you shortchanged me...",
-                    "link": "change",
-                    "pid": "26"
-                }
-            ],
-            "name": "Keep the change!",
-            "pid": "27",
-            "position": {
-                "x": "1548",
-                "y": "1930"
-            }
-        },
-        {
-            "text": "(You find the one stuck to the back of the ten that she gave you)\n\n[[Ah, it is here. My mistake. Have a good day.->end]]\n[[*pretend* You should count them again->insist]]\n[[Oh no I'm so sorry I'm sorry I'm so sorry->ignored]]\n[[*run away*->end]]",
-            "links": [
-                {
-                    "name": "Ah, it is here. My mistake. Have a good day.",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "*pretend* You should count them again",
-                    "link": "insist",
-                    "pid": "29"
-                },
-                {
-                    "name": "Oh no I'm so sorry I'm sorry I'm so sorry",
-                    "link": "ignored",
-                    "pid": "30"
-                },
-                {
-                    "name": "*run away*",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "*Look through the bills again*",
-            "pid": "28",
-            "position": {
-                "x": "1398",
-                "y": "2080"
-            }
-        },
-        {
-            "text": "(She looks through the stack of bills that you hand back to her) Sorry about that, I was sure I gave it to you. Here. (She opens the register again and takes out a one dollar bill)\n\n[[Thank you.->end]]\n[[Ugh, finally!->ignored]]\n[[I always get my way in the end!->ignored]]\n[[*walk away*->end]]",
-            "links": [
-                {
-                    "name": "Thank you.",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Ugh, finally!",
-                    "link": "ignored",
-                    "pid": "30"
-                },
-                {
-                    "name": "I always get my way in the end!",
-                    "link": "ignored",
-                    "pid": "30"
-                },
-                {
-                    "name": "*walk away*",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "insist",
-            "pid": "29",
-            "position": {
-                "x": "1548",
-                "y": "2080"
-            }
-        },
-        {
-            "text": "Have a nice day. (She turns to the next customer and begins bagging his groceries)\n\n[[*walk away*->end]]\n[[*slink away*->end]]",
-            "links": [
-                {
-                    "name": "*walk away*",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "*slink away*",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "ignored",
-            "pid": "30",
-            "position": {
-                "x": "1396",
-                "y": "2233"
-            }
-        },
-        {
-            "text": "(She waits impatiently while you fumble with the pin code)\n\n[[I uh... forgot my pin number->pin]]\n[[Four... six... three... eight... who do we appreciate?->pin]]\n[[What is it again?->pin]]",
-            "links": [
-                {
-                    "name": "I uh... forgot my pin number",
-                    "link": "pin",
-                    "pid": "32"
-                },
-                {
-                    "name": "Four... six... three... eight... who do we appreciate?",
-                    "link": "pin",
-                    "pid": "32"
-                },
-                {
-                    "name": "What is it again?",
-                    "link": "pin",
-                    "pid": "32"
-                }
-            ],
-            "name": "Debit",
-            "pid": "31",
-            "position": {
-                "x": "1393",
-                "y": "1320"
-            }
-        },
-        {
-            "text": "You're holding up the line. Please pay.\n\n[[Almost got it...->forgot]]\n[[I'll just use cash->Cash2]]\n[[Ah, sorry...->forgot]]\n[[I'm just nervous->forgot]]",
-            "links": [
-                {
-                    "name": "Almost got it...",
-                    "link": "forgot",
-                    "pid": "69"
-                },
-                {
-                    "name": "I'll just use cash",
-                    "link": "Cash2",
-                    "pid": "40"
-                },
-                {
-                    "name": "Ah, sorry...",
-                    "link": "forgot",
-                    "pid": "69"
-                },
-                {
-                    "name": "I'm just nervous",
-                    "link": "forgot",
-                    "pid": "69"
-                }
-            ],
-            "name": "pin",
-            "pid": "32",
-            "position": {
-                "x": "1248",
-                "y": "1473"
-            }
-        },
-        {
-            "text": "You... look... school?\n\n[[I'm still not getting it.->understand2]]\n[[Are you lost?]]\n[[I'm sorry, I cannot help you.->end]]\n[[Um... I, er...->understand2]]",
-            "links": [
-                {
-                    "name": "I'm still not getting it.",
-                    "link": "understand2",
-                    "pid": "34"
-                },
-                {
-                    "name": "Are you lost?",
-                    "link": "Are you lost?",
-                    "pid": "35"
-                },
-                {
-                    "name": "I'm sorry, I cannot help you.",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Um... I, er...",
-                    "link": "understand2",
-                    "pid": "34"
-                }
-            ],
-            "name": "understand",
-            "pid": "33",
-            "position": {
-                "x": "4388",
-                "y": "706"
-            }
-        },
-        {
-            "text": "School... you know... where?\n\n[[Are you looking for the school?]]\n[[I'm still not getting it->understand3]]\n[[Ehh?->understand3]]\n[[I'm going to walk away now->end]]",
-            "links": [
-                {
-                    "name": "Are you looking for the school?",
-                    "link": "Are you looking for the school?",
-                    "pid": "36"
-                },
-                {
-                    "name": "I'm still not getting it",
-                    "link": "understand3",
-                    "pid": "37"
-                },
-                {
-                    "name": "Ehh?",
-                    "link": "understand3",
-                    "pid": "37"
-                },
-                {
-                    "name": "I'm going to walk away now",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "understand2",
-            "pid": "34",
-            "position": {
-                "x": "4388",
-                "y": "856"
-            }
-        },
-        {
-            "text": "Yes! Yes! You know school?\n\n[[Are you looking for the school?]]\n[[There's a school nearby->Are you looking for the school?]]\n[[I'm sorry, I can't help you->end]]\n[[Um... I...->understand3]]",
-            "links": [
-                {
-                    "name": "Are you looking for the school?",
-                    "link": "Are you looking for the school?",
-                    "pid": "36"
-                },
-                {
-                    "name": "There's a school nearby",
-                    "link": "Are you looking for the school?",
-                    "pid": "36"
-                },
-                {
-                    "name": "I'm sorry, I can't help you",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Um... I...",
-                    "link": "understand3",
-                    "pid": "37"
-                }
-            ],
-            "name": "Are you lost?",
-            "pid": "35",
-            "position": {
-                "x": "4538",
-                "y": "856"
-            }
-        },
-        {
-            "text": "Yes! yes. Where?\n\n[[A couple of blocks from here.->confuse]]\n[[I'm sorry, I do not know.->understand3]]",
-            "links": [
-                {
-                    "name": "A couple of blocks from here.",
-                    "link": "confuse",
-                    "pid": "38"
-                },
-                {
-                    "name": "I'm sorry, I do not know.",
-                    "link": "understand3",
-                    "pid": "37"
-                }
-            ],
-            "name": "Are you looking for the school?",
-            "pid": "36",
-            "position": {
-                "x": "4388",
-                "y": "1006"
-            }
-        },
-        {
-            "text": "Unh! No no no. Sank. (The man turns and walks away)\n\n[[Uh... goodbye?->end]]\n[[*Say nothing*->end]]",
-            "links": [
-                {
-                    "name": "Uh... goodbye?",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "*Say nothing*",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "understand3",
-            "pid": "37",
-            "position": {
-                "x": "4538",
-                "y": "1006"
-            }
-        },
-        {
-            "text": "? :(\n\n[[Um...->confuse]]\n[[I don't think I can explain it->bad]]\n[[Excuse me->end]]",
-            "links": [
-                {
-                    "name": "Um...",
-                    "link": "confuse",
-                    "pid": "38"
-                },
-                {
-                    "name": "I don't think I can explain it",
-                    "link": "bad",
-                    "pid": "45"
-                },
-                {
-                    "name": "Excuse me",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "confuse",
-            "pid": "38",
-            "position": {
-                "x": "4388",
-                "y": "1156"
-            }
-        },
-        {
-            "text": "(You swipe your card through the card-reader. The interface reads \"error\".) \n\n[[What happened?]]\n[[PANIC!]]",
-            "links": [
-                {
-                    "name": "What happened?",
-                    "link": "What happened?",
-                    "pid": "66"
-                },
-                {
-                    "name": "PANIC!",
-                    "link": "PANIC!",
-                    "pid": "67"
-                }
-            ],
-            "name": "Credit2",
-            "pid": "39",
-            "position": {
-                "x": "1551",
-                "y": "1321"
-            }
-        },
-        {
-            "text": "(You dig through your wallet, but you only have a hundred dollar bill and a couple of pennies)\n\n[[Pay with the hundred->Pay with the hundred2]]\n[[Uh I uh only have a hundred...->Pay with the hundred2]]\n[[PANIC!]]",
-            "links": [
-                {
-                    "name": "Pay with the hundred",
-                    "link": "Pay with the hundred2",
-                    "pid": "71"
-                },
-                {
-                    "name": "Uh I uh only have a hundred...",
-                    "link": "Pay with the hundred2",
-                    "pid": "71"
-                },
-                {
-                    "name": "PANIC!",
-                    "link": "PANIC!",
-                    "pid": "67"
-                }
-            ],
-            "name": "Cash2",
-            "pid": "40",
-            "position": {
-                "x": "1398",
-                "y": "1473"
-            }
-        },
-        {
-            "text": "The bread is in aisle 14.\n\n[[Thanks!->end]]\n[[Thank you->end]]\n[[Bye->end]]\n[[Kay->nonchalant]]",
-            "links": [
-                {
-                    "name": "Thanks!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Thank you",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Kay",
-                    "link": "nonchalant",
-                    "pid": "62"
-                }
-            ],
-            "name": "Bread",
-            "pid": "41",
-            "position": {
-                "x": "2073",
-                "y": "735"
-            }
-        },
-        {
-            "text": "The milk is in the dairy section at the back of the store.\n\n[[Thanks!->end]]\n[[Thank you->end]]\n[[Bye->end]]\n[[Kay->nonchalant]]",
-            "links": [
-                {
-                    "name": "Thanks!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Thank you",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Kay",
-                    "link": "nonchalant",
-                    "pid": "62"
-                }
-            ],
-            "name": "Milk",
-            "pid": "42",
-            "position": {
-                "x": "2223",
-                "y": "735"
-            }
-        },
-        {
-            "text": "The eggs are in the back of the store.\n\n[[Thanks!->end]]\n[[Thank you->end]]\n[[Bye->end]]\n[[Kay->nonchalant]]",
-            "links": [
-                {
-                    "name": "Thanks!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Thank you",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Kay",
-                    "link": "nonchalant",
-                    "pid": "62"
-                }
-            ],
-            "name": "Eggs",
-            "pid": "43",
-            "position": {
-                "x": "2373",
-                "y": "735"
-            }
-        },
-        {
-            "text": "END\nWhy did I scream?\nThey're staring\nOh no...\nThis is a nightmare\nThey're scared of me\nThey think I'm weird",
-            "name": "Agh!",
-            "pid": "44",
-            "position": {
-                "x": "2523",
-                "y": "735"
-            }
-        },
-        {
-            "text": "GAME OVER, you lose, restart. You'll never see this text in the actual game.\n[[Start]]",
-            "links": [
-                {
-                    "name": "Start",
-                    "link": "Start",
-                    "pid": "1"
-                }
-            ],
-            "name": "bad",
-            "pid": "45",
-            "position": {
-                "x": "308",
-                "y": "4108"
-            }
-        },
-        {
-            "text": "Then what's got you running through the aisles?\n\n[[I was just in a hurry->pol_kids]]\n[[Nothing->pol_kids]]\n[[Sorry->pol_kids]]\n[[I'm running from someone]]",
-            "links": [
-                {
-                    "name": "I was just in a hurry",
-                    "link": "pol_kids",
-                    "pid": "47"
-                },
-                {
-                    "name": "Nothing",
-                    "link": "pol_kids",
-                    "pid": "47"
-                },
-                {
-                    "name": "Sorry",
-                    "link": "pol_kids",
-                    "pid": "47"
-                },
-                {
-                    "name": "I'm running from someone",
-                    "link": "I'm running from someone",
-                    "pid": "48"
-                }
-            ],
-            "name": "Everything is under control!",
-            "pid": "46",
-            "position": {
-                "x": "2728",
-                "y": "726"
-            }
-        },
-        {
-            "text": "Kids these days, always in a hurry. Don't run anymore, you'll hurt someone.\n\n[[Thank you Officer!->end]]\n[[Bye!->end]]\n[[I will never run again!->bad]]",
-            "links": [
-                {
-                    "name": "Thank you Officer!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "I will never run again!",
-                    "link": "bad",
-                    "pid": "45"
-                }
-            ],
-            "name": "pol_kids",
-            "pid": "47",
-            "position": {
-                "x": "2728",
-                "y": "873"
-            }
-        },
-        {
-            "text": "What? Who?\n\n[[That was just a joke! hahaha...->pol_awk]]\n[[Eep!->pol_awk]]\n[[I'm running from you!->bad]]",
-            "links": [
-                {
-                    "name": "That was just a joke! hahaha...",
-                    "link": "pol_awk",
-                    "pid": "49"
-                },
-                {
-                    "name": "Eep!",
-                    "link": "pol_awk",
-                    "pid": "49"
-                },
-                {
-                    "name": "I'm running from you!",
-                    "link": "bad",
-                    "pid": "45"
-                }
-            ],
-            "name": "I'm running from someone",
-            "pid": "48",
-            "position": {
-                "x": "2878",
-                "y": "876"
-            }
-        },
-        {
-            "text": "... do you need to come with me back to the station?\n[[No officer!->pol_no]]\n[[yes->bad]]",
-            "links": [
-                {
-                    "name": "No officer!",
-                    "link": "pol_no",
-                    "pid": "50"
-                },
-                {
-                    "name": "yes",
-                    "link": "bad",
-                    "pid": "45"
-                }
-            ],
-            "name": "pol_awk",
-            "pid": "49",
-            "position": {
-                "x": "2878",
-                "y": "1026"
-            }
-        },
-        {
-            "text": "...sigh. Just don't run around in the grocery store ok?\n\n[[Thank you officer!->end]]\n[[Bye!->end]]\n[[I will never run again!->bad]]",
-            "links": [
-                {
-                    "name": "Thank you officer!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "I will never run again!",
-                    "link": "bad",
-                    "pid": "45"
-                }
-            ],
-            "name": "pol_no",
-            "pid": "50",
-            "position": {
-                "x": "2878",
-                "y": "1176"
-            }
-        },
-        {
-            "text": "You can address me as \"officer\". That is what I think you are trying to say.\n\n[[Yeah...->polite]]\n[[Sorry->polite]]\n[[Yes officer->polite]]",
-            "links": [
-                {
-                    "name": "Yeah...",
-                    "link": "polite",
-                    "pid": "54"
-                },
-                {
-                    "name": "Sorry",
-                    "link": "polite",
-                    "pid": "54"
-                },
-                {
-                    "name": "Yes officer",
-                    "link": "polite",
-                    "pid": "54"
-                }
-            ],
-            "name": "pol_double",
-            "pid": "51",
-            "position": {
-                "x": "3170",
-                "y": "876"
-            }
-        },
-        {
-            "text": "You seem alright. Just don't go running around ok?\n\n[[Thank you Sir!->end]]\n[[Bye!->end]]\n[[I will never run again!->bad]]",
-            "links": [
-                {
-                    "name": "Thank you Sir!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "I will never run again!",
-                    "link": "bad",
-                    "pid": "45"
-                }
-            ],
-            "name": "I was trying to be polite",
-            "pid": "52",
-            "position": {
-                "x": "3028",
-                "y": "876"
-            }
-        },
-        {
-            "text": "You're not mocking me, are you?\n\n[[No sir, I mean, ma'am!->pol_double]]\n[[I was trying to be polite]]\n[[Eep!->pol_awk]]",
-            "links": [
-                {
-                    "name": "No sir, I mean, ma'am!",
-                    "link": "pol_double",
-                    "pid": "51"
-                },
-                {
-                    "name": "I was trying to be polite",
-                    "link": "I was trying to be polite",
-                    "pid": "52"
-                },
-                {
-                    "name": "Eep!",
-                    "link": "pol_awk",
-                    "pid": "49"
-                }
-            ],
-            "name": "Sir yes sir ma'am",
-            "pid": "53",
-            "position": {
-                "x": "2876",
-                "y": "731"
-            }
-        },
-        {
-            "text": "You seem alright. Just don't go running around ok?\n\n[[Thank you Sir!->bad]]\n[[Bye Ma'am!->bad]]\n[[I won't run officer!->end]]\n[[Okay, thank you officer->end]]",
-            "links": [
-                {
-                    "name": "Thank you Sir!",
-                    "link": "bad",
-                    "pid": "45"
-                },
-                {
-                    "name": "Bye Ma'am!",
-                    "link": "bad",
-                    "pid": "45"
-                },
-                {
-                    "name": "I won't run officer!",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Okay, thank you officer",
-                    "link": "end",
-                    "pid": "22"
-                }
-            ],
-            "name": "polite",
-            "pid": "54",
-            "position": {
-                "x": "3170",
-                "y": "1026"
-            }
-        },
-        {
-            "text": "Ah, I'm afraid this is the deli.\n\n[[Sorry!->bad_deli]]\n[[My bad->bad_deli]]\n[[Oh...->bad_deli]]\n[[I knew that->bad_deli]]",
-            "links": [
-                {
-                    "name": "Sorry!",
-                    "link": "bad_deli",
-                    "pid": "76"
-                },
-                {
-                    "name": "My bad",
-                    "link": "bad_deli",
-                    "pid": "76"
-                },
-                {
-                    "name": "Oh...",
-                    "link": "bad_deli",
-                    "pid": "76"
-                },
-                {
-                    "name": "I knew that",
-                    "link": "bad_deli",
-                    "pid": "76"
-                }
-            ],
-            "name": "not deli",
-            "pid": "55",
-            "position": {
-                "x": "3360",
-                "y": "722"
-            }
-        },
-        {
-            "text": "Would you like thin or tick sliced? Honey roasted or spiced? Light or dark? How much?\n\n[[Uh... four darks, thin pounds, honey sliced?->nonsense]]\n[[Um... a pound of the store brand.->turkey]]\n[[Er... Honey spiced with thick please...->nonsense]]\n[[Agh, light sliced with honey?->nonsense]]",
-            "links": [
-                {
-                    "name": "Uh... four darks, thin pounds, honey sliced?",
-                    "link": "nonsense",
-                    "pid": "57"
-                },
-                {
-                    "name": "Um... a pound of the store brand.",
-                    "link": "turkey",
-                    "pid": "58"
-                },
-                {
-                    "name": "Er... Honey spiced with thick please...",
-                    "link": "nonsense",
-                    "pid": "57"
-                },
-                {
-                    "name": "Agh, light sliced with honey?",
-                    "link": "nonsense",
-                    "pid": "57"
-                }
-            ],
-            "name": "sliced turkey",
-            "pid": "56",
-            "position": {
-                "x": "3510",
-                "y": "722"
-            }
-        },
-        {
-            "text": "END\nWhat did I just say?\nThat was jibberish\nIt's not my fault\nIt's too confusing\nHe's looking at me\nHe thinks I'm an idiot\n",
-            "name": "nonsense",
-            "pid": "57",
-            "position": {
-                "x": "3510",
-                "y": "872"
-            }
-        },
-        {
-            "text": "Here you go!\n\n[[Thanks->end]]\n[[Bye->end]]\n[[Actually... I don't want turkey... sorry->bad_deli]]\n[[I changed my mind.->bad_deli]]",
-            "links": [
-                {
-                    "name": "Thanks",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Bye",
-                    "link": "end",
-                    "pid": "22"
-                },
-                {
-                    "name": "Actually... I don't want turkey... sorry",
-                    "link": "bad_deli",
-                    "pid": "76"
-                },
-                {
-                    "name": "I changed my mind.",
-                    "link": "bad_deli",
-                    "pid": "76"
-                }
-            ],
-            "name": "turkey",
-            "pid": "58",
-            "position": {
-                "x": "3660",
-                "y": "872"
-            }
-        },
-        {
-            "text": "END\nHe looks upset\nDid he make it himself?\nI insulted him\nWhat if he hates me?\nWhat it he's depressed?",
-            "name": "Not much...",
-            "pid": "59",
-            "position": {
-                "x": "906",
-                "y": "938"
-            }
-        },
-        {
-            "text": "END\nHe thinks I didn't like it\nWhat if he blames himself?\nWhat if he made it?\nThis is so awkward\nI can feel him watching",
-            "name": "leave without",
-            "pid": "60",
-            "position": {
-                "x": "733",
-                "y": "1088"
-            }
-        },
-        {
-            "text": "END\nHe knows I won't\nWhy did this happen?\nHe trapped me\nI have to go back\nI have to leave\nHe sees through me\nWhat if he blames himself?",
-            "name": "I will come back later",
-            "pid": "61",
-            "position": {
-                "x": "608",
-                "y": "1088"
-            }
-        },
-        {
-            "text": "END\nIs \"Kay\" passive aggressive?\nWas I bratty?\nDoes he hate me now?\nHe'll compain about me\nI ruined his night.",
-            "name": "nonchalant",
-            "pid": "62",
-            "position": {
-                "x": "2373",
-                "y": "885"
-            }
-        },
-        {
-            "text": "END\nWhat?\nShe's so annoyed\nWhy am I so nervous?\nI screwed it all up\nThis is bad",
-            "name": "Actually, I misspoke. I found everything",
-            "pid": "63",
-            "position": {
-                "x": "1830",
-                "y": "671"
-            }
-        },
-        {
-            "text": "Thank you for shopping at PriceMart!\nPlease scan your first item\n[[scan milk->error]]\n[[scan bread->error]]\n[[scan eggs->error]]\n[[scan sponge->error]]",
-            "links": [
-                {
-                    "name": "scan milk",
-                    "link": "error",
-                    "pid": "65"
-                },
-                {
-                    "name": "scan bread",
-                    "link": "error",
-                    "pid": "65"
-                },
-                {
-                    "name": "scan eggs",
-                    "link": "error",
-                    "pid": "65"
-                },
-                {
-                    "name": "scan sponge",
-                    "link": "error",
-                    "pid": "65"
-                }
-            ],
-            "name": "Self-Checkout",
-            "pid": "64",
-            "position": {
-                "x": "975",
-                "y": "381"
-            }
-        },
-        {
-            "text": "Malfunction! Error! 101010101011101! \nCALLING ATTENDANT TO ASSIST!\n\n[[NO!->Cashier]]\n[[NO!->Cashier]]\n[[NO!->Cashier]]\n[[NO!->Cashier]]\n",
-            "links": [
-                {
-                    "name": "NO!",
-                    "link": "Cashier",
-                    "pid": "2"
-                },
-                {
-                    "name": "NO!",
-                    "link": "Cashier",
-                    "pid": "2"
-                },
-                {
-                    "name": "NO!",
-                    "link": "Cashier",
-                    "pid": "2"
-                },
-                {
-                    "name": "NO!",
-                    "link": "Cashier",
-                    "pid": "2"
-                }
-            ],
-            "name": "error",
-            "pid": "65",
-            "position": {
-                "x": "975",
-                "y": "531"
-            }
-        },
-        {
-            "text": "Looks like you've got a debit card. You have to push the button for debit and then enter your pin.\n\n[[Oh okay->Debit]]\n[[But... I thought...]]\n[[Of course->smug_debit]]",
-            "links": [
-                {
-                    "name": "Oh okay",
-                    "link": "Debit",
-                    "pid": "31"
-                },
-                {
-                    "name": "But... I thought...",
-                    "link": "But... I thought...",
-                    "pid": "68"
-                },
-                {
-                    "name": "Of course",
-                    "link": "smug_debit",
-                    "pid": "70"
-                }
-            ],
-            "name": "What happened?",
-            "pid": "66",
-            "position": {
-                "x": "1246",
-                "y": "1320"
-            }
-        },
-        {
-            "text": "END\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA\nAAAAAAAA",
-            "name": "PANIC!",
-            "pid": "67",
-            "position": {
-                "x": "2110",
-                "y": "1605"
-            }
-        },
-        {
-            "text": "END\nOh no\nI look stupid\nI want to hide\nI can't do this\nI annoyed her",
-            "name": "But... I thought...",
-            "pid": "68",
-            "position": {
-                "x": "1111",
-                "y": "1471"
-            }
-        },
-        {
-            "text": "END\nShe doesn't believe me\nWhy is it wrong?\nI'm sweating\nIt's hard to type\nI can't remember it.\nThey're all laughing\nToo nervous...",
-            "name": "forgot",
-            "pid": "69",
-            "position": {
-                "x": "1248",
-                "y": "1623"
-            }
-        },
-        {
-            "text": "END\nOf course?!\nI look like an idiot\nWhat am I saying?\nI'm obviously lying\nShe thinks I'm shit\nI am shit",
-            "name": "smug_debit",
-            "pid": "70",
-            "position": {
-                "x": "960",
-                "y": "1470"
-            }
-        },
-        {
-            "text": "(She takes the bill from you and looks at you strangely)\n\n[[Sorry! It is all I have->sorry]]\n[[*Wait for her to make change*]]\n[[Oh god you hate me now, I'm so sorry->sorry]]",
-            "links": [
-                {
-                    "name": "Sorry! It is all I have",
-                    "link": "sorry",
-                    "pid": "24"
-                },
-                {
-                    "name": "*Wait for her to make change*",
-                    "link": "*Wait for her to make change*",
-                    "pid": "25"
-                },
-                {
-                    "name": "Oh god you hate me now, I'm so sorry",
-                    "link": "sorry",
-                    "pid": "24"
-                }
-            ],
-            "name": "Pay with the hundred2",
-            "pid": "71",
-            "position": {
-                "x": "1398",
-                "y": "1623"
-            }
-        },
-        {
-            "text": "END\nI can't do it\nI'm such a bad liar\nI'm shaking\nShe already knows\nShe sees right through me\nWhy did I try to lie?\nThis is REALLY bad!",
-            "name": "Lie",
-            "pid": "72",
-            "position": {
-                "x": "1538",
-                "y": "815"
-            }
-        },
-        {
-            "text": "END\nWhy does she look surprised?\nShe must think I'm spoiled!\nSo embarassing!\nA normal person would know.",
-            "name": "I don't know",
-            "pid": "73",
-            "position": {
-                "x": "1400",
-                "y": "818"
-            }
-        },
-        {
-            "text": "Okay. We'll call it three. Your total will be $8.95. Cash or credit?\n\n[[Cash]]\n[[Credit]]\n[[I'm broke]]\n[[Uh, uhh... uh.......->PANIC!]]",
-            "links": [
-                {
-                    "name": "Cash",
-                    "link": "Cash",
-                    "pid": "18"
-                },
-                {
-                    "name": "Credit",
-                    "link": "Credit",
-                    "pid": "19"
-                },
-                {
-                    "name": "I'm broke",
-                    "link": "I'm broke",
-                    "pid": "21"
-                },
-                {
-                    "name": "Uh, uhh... uh.......",
-                    "link": "PANIC!",
-                    "pid": "67"
-                }
-            ],
-            "name": "About three dollars",
-            "pid": "74",
-            "position": {
-                "x": "1238",
+                "x": "983",
                 "y": "811"
             }
         },
         {
-            "text": "No, I'll just look it up. There. Your total will be $8.95. Cash or credit?\n\n[[Cash]]\n[[Credit]]\n[[I'm broke]]\n[[Uh, uhh... uh.......->PANIC!]]",
+            "text": "For a brief moment, I thought I saw her stuffed rabbit, but there's nothing down here but pillows.\n\nI had better check [[somewhere else|Look around]].",
             "links": [
                 {
-                    "name": "Cash",
-                    "link": "Cash",
-                    "pid": "18"
-                },
-                {
-                    "name": "Credit",
-                    "link": "Credit",
-                    "pid": "19"
-                },
-                {
-                    "name": "I'm broke",
-                    "link": "I'm broke",
-                    "pid": "21"
-                },
-                {
-                    "name": "Uh, uhh... uh.......",
-                    "link": "PANIC!",
-                    "pid": "67"
+                    "name": "somewhere else|Look around",
+                    "link": "somewhere else|Look around",
+                    "broken": true
                 }
             ],
-            "name": "I can go check",
-            "pid": "75",
+            "name": "under the bed",
+            "pid": "10",
             "position": {
-                "x": "1691",
-                "y": "815"
+                "x": "1133",
+                "y": "811"
             }
         },
         {
-            "text": "END\nOf course\nWhy did I say that?\nI look so stupid\nWhy did I come here?\nWhat was I thinking?\nI don't need anything here",
-            "name": "bad_deli",
-            "pid": "76",
+            "text": "The boxes used to hold fruit, but someone has written \"demo disks\" on them with black marker. Inside, in a heap, floppy disks with [[handritten labels]]. \n\n[[look elsewhere|Look around]]",
+            "links": [
+                {
+                    "name": "handritten labels",
+                    "link": "handritten labels",
+                    "pid": "12"
+                },
+                {
+                    "name": "look elsewhere|Look around",
+                    "link": "look elsewhere|Look around",
+                    "broken": true
+                }
+            ],
+            "name": "new boxes",
+            "pid": "11",
             "position": {
-                "x": "3360",
-                "y": "872"
+                "x": "833",
+                "y": "811"
+            }
+        },
+        {
+            "text": "The boxes used to hold fruit, but someone has written \"demo disks\" on them with black marker. Inside, in a heap, floppy disks with handritten labels. \n\n\"Fighter Tournament\", \"Blip Blop\", \"Heli Hero\", \"Puzzle Master 3\". The names don't ring any bells for me.\n\n[[Look elsewhere|Look around]]",
+            "links": [
+                {
+                    "name": "Look elsewhere|Look around",
+                    "link": "Look elsewhere|Look around",
+                    "broken": true
+                }
+            ],
+            "name": "handritten labels",
+            "pid": "12",
+            "position": {
+                "x": "833",
+                "y": "961"
+            }
+        },
+        {
+            "text": "[[Look around more]]",
+            "links": [
+                {
+                    "name": "Look around more",
+                    "link": "Look around more",
+                    "pid": "14"
+                }
+            ],
+            "name": "Play game",
+            "pid": "13",
+            "position": {
+                "x": "708",
+                "y": "811"
+            }
+        },
+        {
+            "text": "It's a bit of a mess. Sis hasn't been keeping tidy lately. \n\nAgainst the back wall, there's a table with a [[computer]] and a [[little bottle]] on it.\n\nOn the left is her [[bed]].\n\nOn the right is her [[closet]].\n\nBehind me is the [[exit]].",
+            "links": [
+                {
+                    "name": "computer",
+                    "link": "computer",
+                    "pid": "5"
+                },
+                {
+                    "name": "little bottle",
+                    "link": "little bottle",
+                    "pid": "15"
+                },
+                {
+                    "name": "bed",
+                    "link": "bed",
+                    "pid": "6"
+                },
+                {
+                    "name": "closet",
+                    "link": "closet",
+                    "pid": "7"
+                },
+                {
+                    "name": "exit",
+                    "link": "exit",
+                    "pid": "8"
+                }
+            ],
+            "name": "Look around more",
+            "pid": "14",
+            "position": {
+                "x": "708",
+                "y": "961"
+            }
+        },
+        {
+            "text": "It's a little glass bottle with a glass stopper.\n\nTied around the neck is a string and [[a tag]]\n\nI wonder why I didn't notice this before?",
+            "links": [
+                {
+                    "name": "a tag",
+                    "link": "a tag",
+                    "pid": "16"
+                }
+            ],
+            "name": "little bottle",
+            "pid": "15",
+            "position": {
+                "x": "708",
+                "y": "1111"
+            }
+        },
+        {
+            "text": "\"[[Drink Me]]\"",
+            "links": [
+                {
+                    "name": "Drink Me",
+                    "link": "Drink Me",
+                    "pid": "17"
+                }
+            ],
+            "name": "a tag",
+            "pid": "16",
+            "position": {
+                "x": "708",
+                "y": "1261"
+            }
+        },
+        {
+            "text": "Double-click this passage to edit it.",
+            "name": "Drink Me",
+            "pid": "17",
+            "position": {
+                "x": "708",
+                "y": "1411"
             }
         }
     ],
-    "name": "Social Anxiety Survival Horror",
+    "name": "Alice",
     "startnode": "1",
     "creator": "Twine",
     "creator-version": "2.0.11",
-    "ifid": "76FF7D43-225F-4E13-B457-EC85CA5D45CB"
+    "ifid": "36746CF2-EE6C-4B19-9DD1-40FF3D2B8281"
 }

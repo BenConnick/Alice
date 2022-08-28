@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 585188cdc4600544eb408bee749e4b3a
+guid: e7bb34f5d5a614f6cb4a30bee7dd61ae
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 32
+  fontSize: 16
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: ThaleahFat
+  fontName: Press Start 2P
   fontNames:
-  - ThaleahFat
+  - Press Start 2P
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 2
+  fontRenderingMode: 0
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1

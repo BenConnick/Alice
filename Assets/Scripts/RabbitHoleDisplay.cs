@@ -9,6 +9,10 @@ public class RabbitHoleDisplay : MonoBehaviour
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
     public GameObject Overlay;
 
+    private (int frame, Vector3 norm, Vector3 world) cachedCursorPositions = default;
+
+    private readonly List<InteractableWorldObject> interactables = new List<InteractableWorldObject>();
+
     public void Awake()
     {
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
@@ -68,5 +72,59 @@ public class RabbitHoleDisplay : MonoBehaviour
         {
             return new RenderTexture(new RenderTextureDescriptor(RTW,RTH,RenderTextureFormat.Default));
         }
+    }
+
+    public void Register(InteractableWorldObject worldObject)
+    {
+        interactables.Add(worldObject);
+    }
+
+    public Vector2 GetNormalizedCursorPos(Camera finalCam = null)
+    {
+        // only compute this once per frame
+        if (Time.frameCount == cachedCursorPositions.frame)
+            return cachedCursorPositions.norm;
+
+        // fallback to default
+        if (finalCam == null)
+            finalCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+
+        // mouse pos
+        PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
+        // rect pos
+        var viewportUI = this;
+        var rt = viewportUI.GetComponent<RectTransform>();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, finalCam, out Vector2 localPos);
+        // rect pos to norm viewportCam pos
+        Vector2 posInViewport = new Vector2((localPos.x + rt.rect.width * .5f) / (rt.rect.width), (localPos.y + rt.rect.height * .5f) / (rt.rect.height));
+        PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
+
+        // cache
+        cachedCursorPositions = (Time.frameCount, posInViewport, GetCursorViewportWorldPos(posInViewport));
+
+        // return
+        return posInViewport;
+    }
+
+    public Vector3 GetCursorViewportWorldPos(Vector2 cursorViewportPos)
+    {
+        // only compute this once per frame
+        if (Time.frameCount == cachedCursorPositions.frame)
+            return cachedCursorPositions.world;
+
+        // norm viewportCam pos to world* pos
+        Vector3 gameplayPos = GameplayCamera.ViewportToWorldPoint(cursorViewportPos);
+        PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
+        gameplayPos.z = ObstacleContext.transform.position.z; // z pos
+
+        // cache
+        cachedCursorPositions = (Time.frameCount, cachedCursorPositions.norm, gameplayPos);
+
+        return gameplayPos;
+    }
+
+    public Vector3 GetCursorWorldPos()
+    {
+        return GetCursorViewportWorldPos(GetNormalizedCursorPos());
     }
 }

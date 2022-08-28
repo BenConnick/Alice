@@ -44,7 +44,7 @@ public class RabbitHole : MonoBehaviour
         Default,
         Interactive,
         Intro,
-        Outro
+        Outro // no player control
     }
 
     private LevelChunk[] chunkPrefabs
@@ -88,7 +88,7 @@ public class RabbitHole : MonoBehaviour
         startButton.interactable = false;
         menuGraphics.ShowStageArt(GM.CurrentLevel);
         mode = AnimationMode.Intro;
-        OwnerLink?.Overlay?.SetActive(false);
+        //OwnerLink?.Overlay?.SetActive(false);
     }
 
     private void OnIntroComplete()
@@ -101,7 +101,7 @@ public class RabbitHole : MonoBehaviour
     {
         outroStartHeight = transform.localPosition.y;
         mode = AnimationMode.Outro;
-        OwnerLink?.Overlay?.SetActive(false);
+        //OwnerLink?.Overlay?.SetActive(false);
         menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
         menuGraphics.ShowStageArt(GM.CurrentLevel);
     }
@@ -147,7 +147,9 @@ public class RabbitHole : MonoBehaviour
     {
         if (mode == AnimationMode.Intro)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            float normalizedIntroDistance = Mathf.Clamp01(transform.localPosition.y - initialHeight) / (introAnimationDistance * 0.01f);
+            transform.position += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
+            //transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
             if (transform.localPosition.y > initialHeight + introAnimationDistance)
             {
                 OnIntroComplete();
@@ -155,7 +157,8 @@ public class RabbitHole : MonoBehaviour
         }
         else if (mode == AnimationMode.Outro)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, outroStartHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
+            //transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, outroStartHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
             if (transform.localPosition.y > outroStartHeight + introAnimationDistance)
             {
                 OnOutroComplete();
@@ -194,11 +197,13 @@ public class RabbitHole : MonoBehaviour
 
             // spawn new obstacles
             PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.position.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
-            if (initialHeight - transform.position.y < chunkCursor + 6)
+            if (initialHeight - transform.position.y < chunkCursor + 6
+                // stop spawning chunks before the level end
+                && totalFallDistance < GM.GetLevelLength(GM.CurrentLevel) - LevelChunk.height * 2)
             {
                 var newChunkPrefab = chunkSpawner.Force();
                 LevelChunk newChunk = Instantiate(newChunkPrefab, transform);
-                chunkCursor -= LevelChunk.height;
+                chunkCursor -= Mathf.Sign(fallSpeed) * LevelChunk.height;
                 newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
                 activeChunks.Add(newChunk);
                 activeObstacles.AddRange(newChunk.Obstacles);

@@ -256,4 +256,9 @@ public static class Util
             n--;
         }
     }
+
+    public static bool IsInBounds(Vector2 norm)
+    {
+        return norm.x >= 0 && norm.x <= 1 && norm.y >= 0 && norm.y <= 1;
+    }
 }
