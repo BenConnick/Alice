@@ -17,7 +17,7 @@ public static class TimeDistortionController
 
     public static void PlayImpactFrame()
     {
-        StartCoroutine(ArcLerpTimescaleCoroutine(0.05f, 0.1f, 1));
+        StartCoroutine(HitFrame(0.4f));
     }
 
     public static void PlaySlowmoAndResume()
@@ -77,6 +77,19 @@ public static class TimeDistortionController
             float t = (Time.unscaledTime - resumeStart) / resumeDuration;
             t = t * t - t + 0.25f;
             Time.timeScale = Mathf.Lerp(middle, final, t);
+            //Debug.Log("timescale " + Time.timeScale);
+            yield return null;
+        }
+        Time.timeScale = 1;
+        //Debug.Log("timescale " + Time.timeScale);
+    }
+
+    private static IEnumerator HitFrame(float freezeDuration)
+    {
+        float hitStart = Time.unscaledTime;
+        while (Time.unscaledTime < hitStart + freezeDuration)
+        {
+            Time.timeScale = 0;
             //Debug.Log("timescale " + Time.timeScale);
             yield return null;
         }

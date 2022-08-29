@@ -248,7 +248,7 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
         vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "<mspace=0.5em>SCORE: " + vpScore.ToString("D4")+"</mspace>";
+        scoreLabel.text = "SCORE: " + vpScore.ToString("D4")+"";
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
@@ -267,7 +267,7 @@ public class RabbitHole : MonoBehaviour
         {
             // flash the collider
             var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-            flashing.flashOffTime = 0.08f;
+            flashing.flashOffTime = 0.07f;
             flashing.StartFlashing();
 
             // bump up the removal time (if applicable)

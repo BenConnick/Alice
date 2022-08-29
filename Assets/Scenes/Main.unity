@@ -14893,7 +14893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50eca2b5e10d4449fbc37b9abef609ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashOffTime: 0.2
+  flashOffTime: 0.07
 --- !u!114 &1534927718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17787,11 +17787,11 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: -30
+  m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

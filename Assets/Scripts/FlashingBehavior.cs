@@ -19,7 +19,7 @@ public class FlashingBehavior : MonoBehaviour
         if (flashingTimer > 0)
         {
             spriteRenderer.enabled = flashingTimer % flashOffTime > flashOffTime * .5f;
-            flashingTimer -= Time.deltaTime;
+            flashingTimer -= Time.unscaledDeltaTime;
         }
         else
         {

@@ -15,14 +15,14 @@ public class ShopUI : MonoBehaviour
 
     public void Show(string upgradeName)
     {
-        var config = FindObjectOfType<UpgradesConfig>();
+        var config = Resources.Load<UpgradesConfig>("UpgradesConfig");
         var upgrade = config.Find(upgradeName);
         ShowInner(upgrade);
     }
 
     public void Show(UpgradeType upgradeType)
     {
-        var config = FindObjectOfType<UpgradesConfig>();
+        var config = Resources.Load<UpgradesConfig>("UpgradesConfig");
         var upgrade = config.Find(upgradeType);
         ShowInner(upgrade);
     }

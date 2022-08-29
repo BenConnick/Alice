@@ -40,7 +40,20 @@ public class AliceCharacterMovement : LaneEntity
         {
             // animate lane change
             // position in lane
-            transform.position = viewWorldCursorPos;
+            const float MaxInstantMovePerSecond = 15f;
+            float maxInstantMove = MaxInstantMovePerSecond * Time.deltaTime;
+            Vector3 prevPos = transform.position;
+            Vector3 toVec = viewWorldCursorPos - prevPos;
+            if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
+            {
+                // instant move to position (micro movements)
+                transform.position = viewWorldCursorPos;
+            }
+            else
+            {
+                // cap per-frame movement (macro movements)
+                transform.position = prevPos + toVec.normalized * maxInstantMove;
+            }
         }
 
         // update animations
