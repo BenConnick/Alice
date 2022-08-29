@@ -248,7 +248,7 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
         vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "SCORE: " + vpScore.ToString("D4")+"";
+        scoreLabel.text = "" + vpScore.ToString("D3")+Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
