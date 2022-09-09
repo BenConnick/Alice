@@ -342,4 +342,10 @@ public static class GM
         namedGameObjectsCache[name] = found;
         return found;
     }
+
+    [Command]
+    public static void Toot()
+    {
+        Debug.Log("toot");
+    }
 }

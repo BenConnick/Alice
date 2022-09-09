@@ -262,4 +262,13 @@ public static class Util
     {
         return norm.x >= 0 && norm.x <= 1 && norm.y >= 0 && norm.y <= 1;
     }
+
+    public static T[] Populate<T>(this T[] arr, T value)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            arr[i] = value;
+        }
+        return arr;
+    }
 }

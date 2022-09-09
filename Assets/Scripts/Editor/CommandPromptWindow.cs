@@ -95,6 +95,7 @@ public class CommandPromptWindow : EditorWindow
         // map suggestions
         CommandMapping.Clear();
         //MapCommands(typeof(LevelEditorWindow));
+        MapCommands(typeof(DebugCommands));
         MapCommands(typeof(GM));
 
         // create string list

@@ -9,6 +9,10 @@ public static class DebugCommands
     {
         // replace me when you have a platform
     }
-}
 
-public class CommandAttribute : System.Attribute{}
+    [Command]
+    public static void EditImage()
+    {
+        PixelEditorWindow.ShowPixelEditor();
+    }
+}
