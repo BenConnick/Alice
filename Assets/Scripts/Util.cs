@@ -271,4 +271,10 @@ public static class Util
         }
         return arr;
     }
+
+    public static string ColorMarkup(string content, Color color)
+    {
+        string colorString = ColorUtility.ToHtmlStringRGBA(color);
+        return $"<color=#{colorString}>{content}</color>";
+    }
 }

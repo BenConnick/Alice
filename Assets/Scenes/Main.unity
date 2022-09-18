@@ -8329,7 +8329,7 @@ MonoBehaviour:
     two lines"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aa5e139e5fa914027a35ced74e8d843b, type: 2}
-  m_sharedMaterial: {fileID: 21233605781033530, guid: 8753e11afa31e42f8b0302ef72af9640,
+  m_sharedMaterial: {fileID: 9045393251534931409, guid: aa5e139e5fa914027a35ced74e8d843b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8365,7 +8365,7 @@ MonoBehaviour:
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: -30
+  m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -8401,13 +8401,13 @@ MonoBehaviour:
     spaceCount: 10
     wordCount: 12
     linkCount: 1
-    lineCount: 4
+    lineCount: 3
     pageCount: 1
-    materialCount: 2
+    materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 308904136}
@@ -8439,6 +8439,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d942525b171e4824b31df8233be338d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 1, g: 1, b: 1, a: 0.7607843}
 --- !u!1001 &896399295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11363,7 +11365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 35deacb7019b64ed5b04fe65881265f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 059c57512e3584cc6b7fa29d25835ee5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -14788,7 +14790,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 2
-  m_Spacing: -2
+  m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -17225,7 +17227,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 35deacb7019b64ed5b04fe65881265f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 059c57512e3584cc6b7fa29d25835ee5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -17456,7 +17458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 35deacb7019b64ed5b04fe65881265f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 059c57512e3584cc6b7fa29d25835ee5, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

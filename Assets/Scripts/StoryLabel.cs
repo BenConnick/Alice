@@ -8,6 +8,9 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 {
     const string storyFile = "twine"; // twine.json
 
+    public Color normalColor;
+    public Color hoverColor;
+
     private int highlightedLink = -1;
     private TextMeshProUGUI label;
     private TwineStoryWrapper _innerTwineStory;
@@ -60,28 +63,28 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         // replace the Twine links with TMP links
         for (int i = 0; i < splits.Length; i++)
         {
-            string colorStr = (i == highlightedLink ? "#4444dd" : "#6666ff");
             output += splits[i];
             if (i < links.Length)
             {
+                // link has two formatting, handled differently
+                // bug in json exporter means that when link text and link path are not an exact match, pid is missing
+                // to fix, we search for pid by matching the link path against all passage names
+                string link;
                 if (links[i].name.Contains("|"))
                 {
                     var split = links[i].name.Split('|'); ;
-                    int brokenPid = Story.FindPassageWithName(split[1]);
-
-                    if (brokenPid < 0)
-                    {
-                        output += $"<color=#aa2222><link>{split[0]}</link></color>";
-                    }
-                    else
-                    {
-                        output += $"<color={colorStr}><link=\"{brokenPid}\">{split[0]}</link></color>";
-                    }
+                    int pidLookup = Story.FindPassageWithName(split[1]);
+                    link = $"<link=\"{pidLookup}\">{split[0]}</link>";
                 }
                 else
                 {
-                    output += $"<color={colorStr}><link=\"{links[i].pid}\">{links[i].name}</link></color>";
+                    link = $"<link=\"{links[i].pid}\">{links[i].name}</link>";
                 }
+                // underline all links
+                link = $"<u>{link}</u>";
+                // color for hover
+                link = Util.ColorMarkup(link, i == highlightedLink ? hoverColor : normalColor);
+                output += link;
             }
         }
 
