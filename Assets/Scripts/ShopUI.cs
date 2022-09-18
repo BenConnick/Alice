@@ -39,7 +39,7 @@ public class ShopUI : MonoBehaviour
         upgradeImage.sprite = upgrade.ShopSprite;
 
         gameObject.SetActive(true);
-        fader.FadeInWithCallback(0.6f, null);
+        fader.FadeInWithCallback(0.4f, null);
         ContextualInputSystem.UICapturedInput = true;
     }
 
@@ -57,7 +57,7 @@ public class ShopUI : MonoBehaviour
     private void Close()
     {
         ContextualInputSystem.UICapturedInput = false;
-        fader.FadeOutWithCallback(0.4f, () => {
+        fader.FadeOutWithCallback(0.2f, () => {
             gameObject.SetActive(false);
         });
     }

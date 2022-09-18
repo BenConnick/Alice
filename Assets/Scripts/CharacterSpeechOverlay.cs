@@ -13,7 +13,7 @@ public class CharacterSpeechOverlay : MonoBehaviour
     {
         var self = GM.FindSingle<CharacterSpeechOverlay>();
         self.source = source;
-        self.fadeUIBehavior.FadeInWithCallback(0.6f, () =>
+        self.fadeUIBehavior.FadeInWithCallback(0.4f, () =>
         {
             self.ShowNextText();
         });
@@ -33,7 +33,7 @@ public class CharacterSpeechOverlay : MonoBehaviour
 
     public void OnClosePressed()
     {
-        fadeUIBehavior.FadeOutWithCallback(0.4f, () => {
+        fadeUIBehavior.FadeOutWithCallback(0.2f, () => {
             gameObject.SetActive(false);
         });
     }

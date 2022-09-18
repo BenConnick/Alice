@@ -26,31 +26,32 @@ public class FadeUIBehavior : MonoBehaviour
 
     private IEnumerator FadeIn(float duration, Action onComplete)
     {
-        if (duration == 0) duration = 1f;
-        canvasGroup.alpha = 0;
-        float startTime = Time.time;
-        while (Time.time < startTime + duration)
-        {
-            float t = (Time.time - startTime) / duration;
-            canvasGroup.alpha = t;
-            yield return new WaitForEndOfFrame();
-        }
-        canvasGroup.alpha = 1;
-        onComplete?.Invoke();
+        yield return FadeInOrOut(duration, onComplete, true);
     }
 
     private IEnumerator FadeOut(float duration, Action onComplete)
     {
+        yield return FadeInOrOut(duration, onComplete, false);
+    }
+
+    private IEnumerator FadeInOrOut(float duration, Action onComplete, bool fadeIn)
+    {
         if (duration == 0) duration = 1f;
-        canvasGroup.alpha = 1;
+        canvasGroup.alpha = fadeIn ? 0 : 1;
         float startTime = Time.time;
         while (Time.time < startTime + duration)
         {
             float t = (Time.time - startTime) / duration;
-            canvasGroup.alpha = 1 - t;
+            t = fadeIn ? t : 1 - t;
+
+            // stepped fade
+            const int steps = 3;
+            t = Mathf.Ceil(t * steps) / (float)steps;
+
+            canvasGroup.alpha = t;
             yield return new WaitForEndOfFrame();
         }
-        canvasGroup.alpha = 0;
+        canvasGroup.alpha = fadeIn ? 1 : 0;
         onComplete?.Invoke();
     }
 }
