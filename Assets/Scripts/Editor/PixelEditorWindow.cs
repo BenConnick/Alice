@@ -128,3 +128,89 @@ public class PixelEditorWindow : EditorWindow
         if (DEBUG) Debug.Log(log);
     }
 }
+
+public class NewImageFileWindow : EditorWindow
+{
+    private string folderPathString = "Images/2-bit/";
+    private string fileNameString = "NewImage";
+    private string widthString;
+    private string heightString;
+    const string defaultExt = ".png";
+
+    [MenuItem("Assets/Create/Image")]
+    public static void ShowCreateImageWindow()
+    {
+        GetWindow<NewImageFileWindow>().Show();
+    }
+
+    public void OnGUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical();
+        GUILayout.Label("File folder");
+        folderPathString = GUILayout.TextField(folderPathString);
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical();
+        GUILayout.Label("File name");
+        fileNameString = GUILayout.TextField(fileNameString);
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical();
+        GUILayout.Label("width");
+        widthString = GUILayout.TextField(widthString);
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical();
+        GUILayout.Label("height");
+        heightString = GUILayout.TextField(heightString);
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+        if (GUILayout.Button("Create"))
+        {
+            if (int.TryParse(widthString, out int width) && int.TryParse(heightString, out int height))
+            {
+                string fullPath = Path.Combine(Application.dataPath, folderPathString);
+                if (Directory.Exists(fullPath))
+                {
+                    fullPath = Path.Combine(fullPath, fileNameString + defaultExt);
+                    bool overwrite = true;
+                    if (File.Exists(fullPath))
+                    {
+                        overwrite = EditorUtility.DisplayDialog("WARNING", $"File ({fullPath}) already exists, overwrite?", "Overwrite", "Abort");
+                    }
+                    if (overwrite)
+                    {
+                        try
+                        {
+                            var inMemoryTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+                            inMemoryTexture.SetPixels(0, 0, width, height, new Color[width * height].Populate(Color.clear));
+                            File.WriteAllBytes(fullPath, inMemoryTexture.EncodeToPNG());
+                            AssetDatabase.Refresh();
+                            Debug.Log("File " + fullPath + " created");
+                            string localPath = Path.Combine(folderPathString, fileNameString + defaultExt);
+                            Selection.activeObject = AssetDatabase.LoadAssetAtPath<Texture>(localPath);
+                            PixelEditorWindow.ShowPixelEditor();
+
+                            // done, close as feedback
+                            Close(); 
+                        }
+                        catch (System.Exception e)
+                        {
+                            EditorUtility.DisplayDialog("Failed to create file", $"An error occured. See log for exception.", "Close");
+                            Debug.LogException(e);
+                        }
+                    }
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("Failed to create file", $"Directory ({folderPathString}) not found", "Close");
+                }
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Failed to create file", $"Width ({widthString}) and height ({heightString}) must be integer values", "Close");
+            }
+        }
+    }
+}
