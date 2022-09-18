@@ -112,6 +112,7 @@ public static class GM
     public static void Tick()
     {
         Tween.UpdateAll();
+        ContextualInputSystem.Update();
     }
 
     public static void LateTick()

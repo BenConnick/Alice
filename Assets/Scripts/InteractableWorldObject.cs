@@ -7,25 +7,23 @@ public class InteractableWorldObject : MonoBehaviour
     public UnityEvent ClickAction; 
 
     private SpriteRenderer spriteRenderer;
-    private Bounds bounds;
     private bool hover;
-    private RabbitHoleDisplay owner;
+    //private RabbitHoleDisplay owner;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        bounds = spriteRenderer.bounds;
-        owner = transform.GetComponentInParent<RabbitHole>().OwnerLink;
-        if (owner == null) Debug.LogError($"[Interactable] '{name}' Could not find required parent comp");
+        //owner = transform.GetComponentInParent<RabbitHole>().OwnerLink;
+        //if (owner == null) Debug.LogError($"[Interactable] '{name}' Could not find required parent comp");
     }
 
     private void Update()
     {
         // while active
-        if (owner.isActiveAndEnabled)
+        if (ContextualInputSystem.Context?.isActiveAndEnabled ?? false)
         {
             // check for overlap
-            var pos = owner.GetCursorWorldPos();
+            var pos = ContextualInputSystem.ViewWorldCursorPos;
             bool newHover = ContainsPoint2D(pos);
             if (newHover != hover)
             {
@@ -44,7 +42,7 @@ public class InteractableWorldObject : MonoBehaviour
 
     public bool ContainsPoint2D(Vector3 worldPos)
     {
-        return bounds.IntersectRay(new Ray(worldPos, Vector3.forward));
+        return spriteRenderer.bounds.IntersectRay(new Ray(worldPos - Vector3.forward * 100, Vector3.forward));
     }
 
     //public void OnMouseEnter()
@@ -68,5 +66,11 @@ public class InteractableWorldObject : MonoBehaviour
     public void OnClicked()
     {
         ClickAction?.Invoke();
+    }
+
+    public void Release()
+    {
+        SetHover(false);
+        enabled = false;
     }
 }

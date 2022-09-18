@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using StableFluids;
 using UnityEngine;
 
 public class AliceCharacterMovement : LaneEntity
 {
-    [NonSerialized] public RabbitHoleDisplay laneContext;
+    public RabbitHoleDisplay laneContext => ContextualInputSystem.Context;
     private RabbitHoleDisplay prevLaneContext;
 
     // inspector
@@ -15,16 +14,9 @@ public class AliceCharacterMovement : LaneEntity
     public float laneChangeSpeed = 2;
     public float invincibilityTime = 2f;
 
-    // where the cursor would be if it were in the world 
-    // shown in the (raycast-hit) viewport
-    private Vector3 viewWorldCursorPos; 
-
     public virtual void Update()
     {
         if (GM.IsGameplayPaused) return;
-
-        // process input
-        ProcessInput();
 
         if (laneContext == null) return;
 
@@ -33,7 +25,7 @@ public class AliceCharacterMovement : LaneEntity
         {
             prevLaneContext = laneContext;
             // position in lane
-            transform.position = viewWorldCursorPos;
+            transform.position = ContextualInputSystem.ViewWorldCursorPos;
         }
         // same viewport
         else
@@ -43,37 +35,16 @@ public class AliceCharacterMovement : LaneEntity
             const float MaxInstantMovePerSecond = 15f;
             float maxInstantMove = MaxInstantMovePerSecond * Time.deltaTime;
             Vector3 prevPos = transform.position;
-            Vector3 toVec = viewWorldCursorPos - prevPos;
+            Vector3 toVec = ContextualInputSystem.ViewWorldCursorPos - prevPos;
             if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
             {
                 // instant move to position (micro movements)
-                transform.position = viewWorldCursorPos;
+                transform.position = ContextualInputSystem.ViewWorldCursorPos;
             }
             else
             {
                 // cap per-frame movement (macro movements)
                 transform.position = prevPos + toVec.normalized * maxInstantMove;
-            }
-        }
-
-        // update animations
-        //HandleFlip(dir);
-    }
-
-    //private RaycastHit[] raycastHits = new RaycastHit[1];
-    private void ProcessInput()
-    {
-        // compare the mouse position against every display
-        PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
-        var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-        foreach (var viewport in FindObjectsOfType<RabbitHoleDisplay>())
-        {
-            Vector2 normalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
-            if (Util.IsInBounds(normalizedCursorPos))
-            {
-                laneContext = viewport;
-                viewWorldCursorPos = viewport.GetCursorViewportWorldPos(normalizedCursorPos);
-                break;
             }
         }
     }

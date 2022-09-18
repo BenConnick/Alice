@@ -83,4 +83,15 @@ public class Alice : AliceCharacterMovement
         }
         targetScale = DefaultScale * scale;
     }
+
+    public void OnStartLevelPressed()
+    {
+        GM.OnGameEvent(GM.NavigationEvent.StartButton);
+        GetComponent<InteractableWorldObject>().Release();
+    }
+
+    public void BecomeButton()
+    {
+        GetComponent<InteractableWorldObject>().enabled = true;
+    }
 }

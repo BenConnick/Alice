@@ -3810,7 +3810,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: A
+          m_StringArgument: Extra Blood
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &523564150
@@ -8240,7 +8240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &841374779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14809,6 +14809,7 @@ GameObject:
   - component: {fileID: 1534927718}
   - component: {fileID: 1534927719}
   - component: {fileID: 1534927720}
+  - component: {fileID: 1534927716}
   m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
@@ -14881,6 +14882,32 @@ Transform:
   m_Father: {fileID: 169287864}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1534927716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534927712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12e2170a5634947e99e8656d1bde4cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClickAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1534927720}
+        m_MethodName: OnStartLevelPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1534927717
 MonoBehaviour:
   m_ObjectHideFlags: 0

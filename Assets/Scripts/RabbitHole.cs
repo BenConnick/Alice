@@ -85,7 +85,6 @@ public class RabbitHole : MonoBehaviour
 
     public void PlayIntroAnimation()
     {
-        startButton.interactable = false;
         menuGraphics.ShowStageArt(GM.CurrentLevel);
         mode = AnimationMode.Intro;
         //OwnerLink?.Overlay?.SetActive(false);
@@ -110,7 +109,7 @@ public class RabbitHole : MonoBehaviour
     {
         OwnerLink.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
-        startButton.interactable = true;
+        GM.FindSingle<Alice>().BecomeButton();
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
         Reset();
     }
@@ -168,7 +167,7 @@ public class RabbitHole : MonoBehaviour
         if (!GM.IsGameplayPaused)
         {
             var player = GM.FindSingle<Alice>();
-            bool hasFocus = player?.laneContext?.ObstacleContext == this;
+            bool hasFocus = player.laneContext?.ObstacleContext == this;
 
             if (mode == AnimationMode.Interactive)
             {
