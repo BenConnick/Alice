@@ -125,7 +125,9 @@ public class PixelEditorWindow : EditorWindow
 
     private static void DebugLog(System.Object log)
     {
+#pragma warning disable CS0162 // Unreachable code detected
         if (DEBUG) Debug.Log(log);
+#pragma warning restore CS0162 // Unreachable code detected
     }
 }
 

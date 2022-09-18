@@ -142,7 +142,4 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             UpdateUI();
         }
     }
-
-    private bool madeDummyTexture = false;
-    private Texture2D myCursor;
 }

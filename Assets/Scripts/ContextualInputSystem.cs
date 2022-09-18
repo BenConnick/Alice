@@ -8,10 +8,18 @@ public static class ContextualInputSystem
     // shown in the (raycast-hit) viewport
     public static Vector3 ViewWorldCursorPos { get; private set; }
 
+    public static bool UICapturedInput { get; set; }
+
     public static void Update()
     {
-        // process input
-        ProcessInput();
+        if (UICapturedInput)
+        {
+            ViewWorldCursorPos = Vector3.zero;
+        }
+        else
+        {
+            ProcessInput();
+        }
     }
 
     //private RaycastHit[] raycastHits = new RaycastHit[1];

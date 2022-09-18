@@ -13,6 +13,8 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bankLabel;
     [SerializeField] private Image upgradeImage;
 
+    private Upgrade upgradeToBuy;
+
     public void Show(string upgradeName)
     {
         var config = Resources.Load<UpgradesConfig>("UpgradesConfig");
@@ -37,6 +39,7 @@ public class ShopUI : MonoBehaviour
 
         gameObject.SetActive(true);
         StartCoroutine(FadeIn(.75f));
+        ContextualInputSystem.UICapturedInput = true;
     }
 
     private IEnumerator FadeIn(float duration)
@@ -51,5 +54,30 @@ public class ShopUI : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         canvasGroup.alpha = 1;
+    }
+
+    private IEnumerator FadeOut(float duration)
+    {
+        if (duration == 0) duration = 1f;
+        canvasGroup.alpha = 1;
+        float startTime = Time.time;
+        while (Time.time < startTime + duration)
+        {
+            float t = (Time.time - startTime) / duration;
+            canvasGroup.alpha = 1-t;
+            yield return new WaitForEndOfFrame();
+        }
+        canvasGroup.alpha = 0;
+        gameObject.SetActive(true);
+    }
+
+    public void OnBuyPressed()
+    {
+        Debug.Log("purchase " + upgradeToBuy.DisplayName + " TODO");
+    }
+
+    public void OnCancelPressed()
+    {
+        StartCoroutine(FadeOut(.4f));
     }
 }

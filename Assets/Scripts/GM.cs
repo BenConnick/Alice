@@ -82,6 +82,7 @@ public static class GM
     public static int CurrentScore { get; set; }
     public static readonly List<int> PlayerHighScores = new List<int>();
     public static readonly List<string> PlayerHighScoreNames = new List<string>(); // assumed same length as scores^
+    public static int Money { get; set; }
     #endregion
 
     // Screen Quick References
