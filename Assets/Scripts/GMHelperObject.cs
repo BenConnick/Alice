@@ -11,6 +11,7 @@ public class GMHelperObject : MonoBehaviour
     public GameObject Gameplay;
     public GameObject ScoreBoard;
     public GameObject EnterNameScreen;
+    public Transform[] SearchRoots;
 
     [Header("MenuSprites")]
     public Sprite[] MenuSprites;

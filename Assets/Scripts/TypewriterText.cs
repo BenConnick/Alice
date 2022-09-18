@@ -23,15 +23,18 @@ public class TypewriterText : MonoBehaviour
     private InputData inputData;
     private float textAppearingAnimationProgress = 0;
     private int prevTextAppearingAnimationCharacter;
+    private const float defaultSpeed = 10;
 
-    public void PlayTypewriter(string text, float speed, AudioClip[] sounds, float delay = 0f)
+    public void PlayTypewriter(string text, float speed = defaultSpeed, AudioClip[] sounds = null, float delay = 0f)
     {
         if (text == null) return;
+
+        if (sounds == null) sounds = new AudioClip[] { soundSource.clip };
 
         string prev = inputData.FullText ?? "";
 
         // params
-        inputData = new InputData { FullText = text, TypewriterSounds = sounds ?? new AudioClip[0], TypewriterSpeed = speed };
+        inputData = new InputData { FullText = text, TypewriterSounds = sounds, TypewriterSpeed = speed };
 
         // appending?
         if (text.StartsWith(prev, System.StringComparison.Ordinal))
@@ -64,7 +67,7 @@ public class TypewriterText : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(textToAutoPlay))
         {
-            PlayTypewriter(textToAutoPlay, 10, new AudioClip[] { soundSource.clip });
+            PlayTypewriter(textToAutoPlay);
             textToAutoPlay = null;
         }
     }

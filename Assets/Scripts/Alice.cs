@@ -87,11 +87,11 @@ public class Alice : AliceCharacterMovement
     public void OnStartLevelPressed()
     {
         GM.OnGameEvent(GM.NavigationEvent.StartButton);
-        GetComponent<InteractableWorldObject>().Release();
+        GetComponent<WorldButton>().Release();
     }
 
     public void BecomeButton()
     {
-        GetComponent<InteractableWorldObject>().enabled = true;
+        GetComponent<WorldButton>().enabled = true;
     }
 }

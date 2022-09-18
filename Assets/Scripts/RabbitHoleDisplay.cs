@@ -10,9 +10,7 @@ public class RabbitHoleDisplay : MonoBehaviour
     public GameObject Overlay;
 
     private (int frame, Vector3 norm, Vector3 world) cachedCursorPositions = default;
-
-    private readonly List<InteractableWorldObject> interactables = new List<InteractableWorldObject>();
-
+    
     public void Awake()
     {
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
@@ -72,11 +70,6 @@ public class RabbitHoleDisplay : MonoBehaviour
         {
             return new RenderTexture(new RenderTextureDescriptor(RTW,RTH,RenderTextureFormat.Default));
         }
-    }
-
-    public void Register(InteractableWorldObject worldObject)
-    {
-        interactables.Add(worldObject);
     }
 
     public Vector2 GetNormalizedCursorPos(Camera finalCam = null)

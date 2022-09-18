@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private FadeUIBehavior fader;
     [SerializeField] private TextMeshProUGUI upgradeHeaderLabel;
     [SerializeField] private TextMeshProUGUI upgradeDescriptionLabel;
     [SerializeField] private TextMeshProUGUI buyLabel;
@@ -18,66 +18,47 @@ public class ShopUI : MonoBehaviour
     public void Show(string upgradeName)
     {
         var config = Resources.Load<UpgradesConfig>("UpgradesConfig");
-        var upgrade = config.Find(upgradeName);
-        ShowInner(upgrade);
+        upgradeToBuy = config.Find(upgradeName);
+        ShowInner(upgradeToBuy);
     }
 
     public void Show(UpgradeType upgradeType)
     {
         var config = Resources.Load<UpgradesConfig>("UpgradesConfig");
-        var upgrade = config.Find(upgradeType);
-        ShowInner(upgrade);
+        upgradeToBuy = config.Find(upgradeType);
+        ShowInner(upgradeToBuy);
     }
 
     private void ShowInner(Upgrade upgrade)
     {
+        upgradeToBuy = upgrade; // cache for click event
         upgradeHeaderLabel.text = upgrade.DisplayName;
         upgradeDescriptionLabel.text = upgrade.ShopDescription;
         buyLabel.text = "Buy for " + upgrade.ShopCost + Util.CurrencyChar;
-        bankLabel.text = "TODO" + Util.CurrencyChar;
+        bankLabel.text = "" + GM.Money + Util.CurrencyChar;
         upgradeImage.sprite = upgrade.ShopSprite;
 
         gameObject.SetActive(true);
-        StartCoroutine(FadeIn(.75f));
+        fader.FadeInWithCallback(0.6f, null);
         ContextualInputSystem.UICapturedInput = true;
-    }
-
-    private IEnumerator FadeIn(float duration)
-    {
-        if (duration == 0) duration = 1f;
-        canvasGroup.alpha = 0;
-        float startTime = Time.time;
-        while (Time.time < startTime + duration)
-        {
-            float t = (Time.time - startTime) / duration;
-            canvasGroup.alpha = t;
-            yield return new WaitForEndOfFrame();
-        }
-        canvasGroup.alpha = 1;
-    }
-
-    private IEnumerator FadeOut(float duration)
-    {
-        if (duration == 0) duration = 1f;
-        canvasGroup.alpha = 1;
-        float startTime = Time.time;
-        while (Time.time < startTime + duration)
-        {
-            float t = (Time.time - startTime) / duration;
-            canvasGroup.alpha = 1-t;
-            yield return new WaitForEndOfFrame();
-        }
-        canvasGroup.alpha = 0;
-        gameObject.SetActive(true);
     }
 
     public void OnBuyPressed()
     {
         Debug.Log("purchase " + upgradeToBuy.DisplayName + " TODO");
+        Close();
     }
 
     public void OnCancelPressed()
     {
-        StartCoroutine(FadeOut(.4f));
+        Close();
+    }
+
+    private void Close()
+    {
+        ContextualInputSystem.UICapturedInput = false;
+        fader.FadeOutWithCallback(0.4f, () => {
+            gameObject.SetActive(false);
+        });
     }
 }

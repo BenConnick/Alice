@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class InteractableWorldObject : MonoBehaviour
+public class WorldButton: MonoBehaviour
 {
     public UnityEvent ClickAction; 
 

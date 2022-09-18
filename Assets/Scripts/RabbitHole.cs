@@ -247,7 +247,7 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
         vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "" + vpScore.ToString("D3")+Util.CurrencyChar;
+        scoreLabel.text = "" + GM.Money + Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
@@ -257,12 +257,20 @@ public class RabbitHole : MonoBehaviour
 
     private static bool CheckOverlap(Alice player, LevelCollider levelCollider)
     {
-        return levelCollider.OverlapPoint(player.transform.position);
+        if (!levelCollider.isActiveAndEnabled) return false;
+        Vector3 pointToCheck = player.transform.position;
+        if (levelCollider.HasTag(LevelCollider.Tag_MoneyOnHit))
+        {
+            const float moneyRadius = 0.5f;
+            Vector3 toVec = levelCollider.transform.position - player.transform.position;
+            pointToCheck += Vector3.ClampMagnitude(toVec, moneyRadius);
+        }
+        return levelCollider.OverlapPoint(pointToCheck);
     }
 
     private void HandleObstacleCollision(Alice player, LevelCollider obstacle)
     {
-        if (obstacle.HasTag(LaneEntity.Tag_DamageOnHit))
+        if (obstacle.HasTag(LevelCollider.Tag_DamageOnHit))
         {
             // flash the collider
             var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
@@ -279,13 +287,20 @@ public class RabbitHole : MonoBehaviour
             player.StartFlashing();
             //SubtractLife();
         }
-        if (obstacle.HasTag(LaneEntity.Tag_GrowOnHit))
+        if (obstacle.HasTag(LevelCollider.Tag_GrowOnHit))
         {
             player.OnGrow();
         }
-        if (obstacle.HasTag(LaneEntity.Tag_ShrinkOnHit))
+        if (obstacle.HasTag(LevelCollider.Tag_ShrinkOnHit))
         {
             player.OnShrink();
+        }
+        if (obstacle.HasTag(LevelCollider.Tag_MoneyOnHit))
+        {
+            GM.Money++;
+            obstacle.gameObject.SetActive(false);
+            TimeDistortionController.PlayImpactFrame(.1f);
+            // TODO spawn collection celebration VFX
         }
     }
 

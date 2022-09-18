@@ -323,10 +323,19 @@ public static class GM
         // cached
         if (gameplayComponentsCache.ContainsKey(typeof(T)))
             return (T)gameplayComponentsCache[typeof(T)];
+
         // slow search
-        var found = UnityEngine.Object.FindObjectOfType<T>();
+        T found = null;
+        for (int i = 0; found == null && i < helperObject.SearchRoots.Length; i++)
+        {
+            var all = helperObject.SearchRoots[i].GetComponentsInChildren<T>(true);
+            if (all.Length > 0) found = all[0];
+        }
+
+        // cache
         if (found != null)
             gameplayComponentsCache[typeof(T)] = found;
+
         return found;
     }
 

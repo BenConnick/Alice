@@ -15,9 +15,9 @@ public static class TimeDistortionController
         StartCoroutine(LerpTimescaleCoroutine(defaultResumeDuration, 0.01f, 1f));
     }
 
-    public static void PlayImpactFrame()
+    public static void PlayImpactFrame(float duration = 0.4f)
     {
-        StartCoroutine(HitFrame(0.4f));
+        StartCoroutine(HitFrame(duration));
     }
 
     public static void PlaySlowmoAndResume()

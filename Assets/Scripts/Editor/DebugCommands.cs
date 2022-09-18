@@ -15,4 +15,10 @@ public static class DebugCommands
     {
         PixelEditorWindow.ShowPixelEditor();
     }
+
+    [Command]
+    public static void CreateNewImage()
+    {
+        NewImageFileWindow.ShowCreateImageWindow();
+    }
 }

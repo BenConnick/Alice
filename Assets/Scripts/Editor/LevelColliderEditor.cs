@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(LevelCollider))]
 public class LevelColliderEditor : Editor
 {
-    private static readonly string[] TagNames = { "Damage", "Shrink", "Grow" };
+    private static readonly string[] TagNames = { "Damage", "Shrink", "Grow", "Money" };
 
     public override void OnInspectorGUI()
     {
