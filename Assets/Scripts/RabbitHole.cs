@@ -167,7 +167,7 @@ public class RabbitHole : MonoBehaviour
         if (!GM.IsGameplayPaused)
         {
             var player = GM.FindSingle<Alice>();
-            bool hasFocus = player.laneContext?.ObstacleContext == this;
+            bool hasFocus = player.movementContext?.ObstacleContext == this;
 
             if (mode == AnimationMode.Interactive)
             {
@@ -183,13 +183,18 @@ public class RabbitHole : MonoBehaviour
             }
 
             // check collisions
-            if (!player.IsFlashing() && hasFocus)
+            if (hasFocus)
             {
                 foreach (var obstacle in activeObstacles)
                 {
-                    if (CheckOverlap(player, obstacle))
+                    bool ignoresInvincibility = obstacle.HasTag(LevelCollider.Tag_MoneyOnHit);
+                    bool invincible = player.IsFlashing();
+                    if (ignoresInvincibility || !invincible)
                     {
-                        HandleObstacleCollision(player, obstacle);
+                        if (CheckOverlap(player, obstacle))
+                        {
+                            HandleObstacleCollision(player, obstacle);
+                        }
                     }
                 }
             }
@@ -299,7 +304,6 @@ public class RabbitHole : MonoBehaviour
         {
             GM.Money++;
             obstacle.gameObject.SetActive(false);
-            TimeDistortionController.PlayImpactFrame(.1f);
             // TODO spawn collection celebration VFX
         }
     }

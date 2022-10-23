@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AliceCharacterMovement : LaneEntity
 {
-    public RabbitHoleDisplay laneContext => ContextualInputSystem.Context;
-    private RabbitHoleDisplay prevLaneContext;
+    public RabbitHoleDisplay movementContext => ContextualInputSystem.Context;
+    private RabbitHoleDisplay prevMovementContext;
 
     // inspector
     public float CharacterWidth = 1.5f;
@@ -13,17 +13,20 @@ public class AliceCharacterMovement : LaneEntity
     public float flipAnimationSpeed = 20;
     public float laneChangeSpeed = 2;
     public float invincibilityTime = 2f;
+    public float rotationSpeed;
+
+    private float angle;
 
     public virtual void Update()
     {
         if (GM.IsGameplayPaused) return;
 
-        if (laneContext == null) return;
+        if (movementContext == null) return;
 
         // switch viewport
-        if (prevLaneContext != laneContext)
+        if (prevMovementContext != movementContext)
         {
-            prevLaneContext = laneContext;
+            prevMovementContext = movementContext;
             // position in lane
             transform.position = ContextualInputSystem.ViewWorldCursorPos;
         }
@@ -47,6 +50,9 @@ public class AliceCharacterMovement : LaneEntity
                 transform.position = prevPos + toVec.normalized * maxInstantMove;
             }
         }
+
+        angle += Time.deltaTime * rotationSpeed;
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     public void StartFlashing()
