@@ -73,8 +73,8 @@ public class RabbitHole : MonoBehaviour
     }
 
     // per viewport values
-    private int vpLives;
-    private int vpScore;
+    public int VpLives { get; set; }
+    private int VpScore { get; set; }
 
     private void Awake()
     {
@@ -83,72 +83,13 @@ public class RabbitHole : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void PlayIntroAnimation()
-    {
-        menuGraphics.ShowStageArt(GM.CurrentLevel);
-        mode = AnimationMode.Intro;
-        //OwnerLink?.Overlay?.SetActive(false);
-    }
-
-    private void OnIntroComplete()
-    {
-        OwnerLink.Overlay?.SetActive(true);
-        mode = AnimationMode.Interactive;
-    }
-
-    public void PlayOutroAnimation()
-    {
-        outroStartHeight = transform.localPosition.y;
-        mode = AnimationMode.Outro;
-        //OwnerLink?.Overlay?.SetActive(false);
-        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
-        menuGraphics.ShowStageArt(GM.CurrentLevel);
-    }
-
-    private void OnOutroComplete()
-    {
-        OwnerLink.Overlay?.SetActive(false);
-        mode = AnimationMode.Default;
-        GM.FindSingle<Alice>().BecomeButton();
-        menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
-        Reset();
-    }
-
-    public void Reset()
-    {
-        chunkSpawner = new ChunkSpawner(chunkPrefabs);
-
-        vpLives = 99;//GM.MAX_LIVES;
-
-        chunkCursor = -LevelChunk.height - introAnimationDistance;
-
-        // reset level height
-        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, transform.localPosition.z);
-
-        // clean up game objects
-        foreach (var chunk in activeChunks)
-        {
-            if (chunk != null) Destroy(chunk.gameObject);
-        }
-
-        // clear queue
-        activeChunks.Clear();
-        activeObstacles.Clear();
-    }
-
-    public float GetIntroOffset()
-    {
-        return transform.localPosition.y - (initialHeight+introAnimationDistance);
-    }
-
     // runs every tick
     private void Update()
     {
         if (mode == AnimationMode.Intro)
         {
             float normalizedIntroDistance = Mathf.Clamp01(transform.localPosition.y - initialHeight) / (introAnimationDistance * 0.01f);
-            transform.position += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
-            //transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, initialHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
             if (transform.localPosition.y > initialHeight + introAnimationDistance)
             {
                 OnIntroComplete();
@@ -156,8 +97,7 @@ public class RabbitHole : MonoBehaviour
         }
         else if (mode == AnimationMode.Outro)
         {
-            transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            //transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Lerp(transform.localPosition.y, outroStartHeight + introAnimationDistance + 1f, Time.deltaTime * introAnimationSpeed), transform.localPosition.z);
+            transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
             if (transform.localPosition.y > outroStartHeight + introAnimationDistance)
             {
                 OnOutroComplete();
@@ -171,9 +111,9 @@ public class RabbitHole : MonoBehaviour
 
             if (mode == AnimationMode.Interactive)
             {
-                transform.position += new Vector3(0, Time.deltaTime * fallSpeed, 0);
+                transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
             }
-            totalFallDistance = transform.position.y - (initialHeight+introAnimationDistance);
+            totalFallDistance = transform.localPosition.y - (initialHeight+introAnimationDistance);
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -191,17 +131,17 @@ public class RabbitHole : MonoBehaviour
                     bool invincible = player.IsFlashing();
                     if (ignoresInvincibility || !invincible)
                     {
-                        if (CheckOverlap(player, obstacle))
+                        if (player.CheckOverlap(obstacle))
                         {
-                            HandleObstacleCollision(player, obstacle);
+                            player.HandleObstacleCollision(obstacle);
                         }
                     }
                 }
             }
 
             // spawn new obstacles
-            PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.position.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
-            if (initialHeight - transform.position.y < chunkCursor + 6
+            PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
+            if (initialHeight - transform.localPosition.y < chunkCursor + 6
                 // stop spawning chunks before the level end
                 && totalFallDistance < GM.GetLevelLength(GM.CurrentLevel) - LevelChunk.height * 2)
             {
@@ -251,69 +191,78 @@ public class RabbitHole : MonoBehaviour
         //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
         //progressMarker.anchoredPosition = Vector2.zero;
         // score
-        vpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
+        VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
         scoreLabel.text = "" + GM.Money + Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
-            heartIcons[i].SetActive(i < vpLives);
+            heartIcons[i].SetActive(i < VpLives);
         }
     }
 
-    private static bool CheckOverlap(Alice player, LevelCollider levelCollider)
+
+
+    public void PlayIntroAnimation()
     {
-        if (!levelCollider.isActiveAndEnabled) return false;
-        Vector3 pointToCheck = player.transform.position;
-        if (levelCollider.HasTag(LevelCollider.Tag_MoneyOnHit))
-        {
-            const float moneyRadius = 0.5f;
-            Vector3 toVec = levelCollider.transform.position - player.transform.position;
-            pointToCheck += Vector3.ClampMagnitude(toVec, moneyRadius);
-        }
-        return levelCollider.OverlapPoint(pointToCheck);
+        menuGraphics.ShowStageArt(GM.CurrentLevel);
+        mode = AnimationMode.Intro;
+        //OwnerLink?.Overlay?.SetActive(false);
     }
 
-    private void HandleObstacleCollision(Alice player, LevelCollider obstacle)
+    private void OnIntroComplete()
     {
-        if (obstacle.HasTag(LevelCollider.Tag_DamageOnHit))
-        {
-            // flash the collider
-            var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-            flashing.flashOffTime = 0.07f;
-            flashing.StartFlashing();
-
-            // bump up the removal time (if applicable)
-            var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
-            if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
-
-            // shake, flash, subtract lives
-            TimeDistortionController.PlayImpactFrame();
-            GM.FindSingle<GameplayCameraBehavior>().Shake(); // DISABLED FOR EDITING
-            player.StartFlashing();
-            //SubtractLife();
-        }
-        if (obstacle.HasTag(LevelCollider.Tag_GrowOnHit))
-        {
-            player.OnGrow();
-        }
-        if (obstacle.HasTag(LevelCollider.Tag_ShrinkOnHit))
-        {
-            player.OnShrink();
-        }
-        if (obstacle.HasTag(LevelCollider.Tag_MoneyOnHit))
-        {
-            GM.Money++;
-            obstacle.gameObject.SetActive(false);
-            // TODO spawn collection celebration VFX
-        }
+        OwnerLink.Overlay?.SetActive(true);
+        mode = AnimationMode.Interactive;
     }
 
-    private void SubtractLife()
+    public void PlayOutroAnimation()
     {
-        vpLives--;
-        if (vpLives <= 0)
+        outroStartHeight = transform.localPosition.y;
+        mode = AnimationMode.Outro;
+        //OwnerLink?.Overlay?.SetActive(false);
+        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
+        menuGraphics.ShowStageArt(GM.CurrentLevel);
+    }
+
+    private void OnOutroComplete()
+    {
+        OwnerLink.Overlay?.SetActive(false);
+        mode = AnimationMode.Default;
+        GM.FindSingle<Alice>().BecomeButton();
+        menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
+        Reset();
+    }
+
+    public void Reset()
+    {
+        chunkSpawner = new ChunkSpawner(chunkPrefabs);
+
+        VpLives = GM.MAX_LIVES;
+
+        chunkCursor = -LevelChunk.height - introAnimationDistance;
+
+        // reset level height
+        transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, transform.localPosition.z);
+
+        // clean up game objects
+        RemoveAllChunks();
+    }
+
+    private void RemoveAllChunks()
+    {
+        // clean up game objects
+        foreach (var chunk in activeChunks)
         {
-            GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
+            if (chunk != null) Destroy(chunk.gameObject);
         }
+
+        // clear queue
+        activeChunks.Clear();
+        activeObstacles.Clear();
+    }
+
+    public float GetIntroOffset()
+    {
+        return transform.localPosition.y - (initialHeight + introAnimationDistance);
     }
 }

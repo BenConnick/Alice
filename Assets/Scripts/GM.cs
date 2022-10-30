@@ -166,7 +166,7 @@ public static class GM
                 activeScreen = EnterNameScreen;
                 break;
             default:
-                throw new Exception("unhandled mode");
+                throw new Exception("unhandled mode: " + mode);
         }
 
         // activate screens

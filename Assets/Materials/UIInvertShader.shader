@@ -1,6 +1,6 @@
 ﻿// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "UI/Invert"
+Shader "UI/UIInvertShader"
 {
     Properties
     {
@@ -42,8 +42,7 @@ Shader "UI/Invert"
         Lighting Off
         ZWrite Off
         ZTest [unity_GUIZTestMode]
-        Blend Zero OneMinusSrcAlpha, Zero DstAlpha
-        BlendOp Sub
+        Blend SrcAlpha OneMinusSrcAlpha
         ColorMask [_ColorMask]
 
         Pass
@@ -100,6 +99,7 @@ Shader "UI/Invert"
             fixed4 frag(v2f IN) : SV_Target
             {
                 half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                color.rgb = 1 - color.rgb;
 
                 #ifdef UNITY_UI_CLIP_RECT
                 color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
@@ -115,18 +115,3 @@ Shader "UI/Invert"
         }
     }
 }
-
-    © 2022 GitHub, Inc.
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-

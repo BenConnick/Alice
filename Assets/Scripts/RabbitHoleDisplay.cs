@@ -9,10 +9,17 @@ public class RabbitHoleDisplay : MonoBehaviour
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
     public GameObject Overlay;
 
+    [SerializeField] private RawImage rawImageComponent;
+    [SerializeField] private Material defaultMaterial;
+    [SerializeField] private Material invertedMaterial;
+
+    private bool invertedColor;
+
     private (int frame, Vector3 norm, Vector3 world) cachedCursorPositions = default;
     
-    public void Awake()
+    private void Awake()
     {
+        invertedColor = rawImageComponent.material == invertedMaterial;
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
     }
 
@@ -33,6 +40,13 @@ public class RabbitHoleDisplay : MonoBehaviour
         {
             freeRTPool.Add(AssociatedTexture);
         }
+    }
+
+    public void SetColorInverted(bool inverted)
+    {
+        if (invertedColor == inverted) return;
+        rawImageComponent.material = inverted ? invertedMaterial : defaultMaterial;
+        invertedColor = inverted;
     }
 
     // assumes that there is a RabbitHoleDisplay instance
