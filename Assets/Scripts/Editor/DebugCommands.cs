@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public static class DebugCommands
 {
@@ -20,5 +21,19 @@ public static class DebugCommands
     public static void CreateNewImage()
     {
         NewImageFileWindow.ShowCreateImageWindow();
+    }
+
+    [Command]
+    public static void PlayFastDebug()
+    {
+        EditorPrefs.SetBool("ShortLevels", true);
+        EditorApplication.EnterPlaymode();
+    }
+
+    [Command]
+    public static void PlayNormal()
+    {
+        EditorPrefs.DeleteKey("ShortLevels");
+        EditorApplication.EnterPlaymode();
     }
 }

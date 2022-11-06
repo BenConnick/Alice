@@ -2,6 +2,12 @@
 
 public class Alice : AliceCharacterMovement
 {
+    public const string FallingAnimName = "falling";
+    public const string StandingAnimName = "standing";
+
+    // Inspector
+    [SerializeField] private SpriteAnimator spriteAnimator;
+
     public enum SizeCategory
     {
         Default,
@@ -87,11 +93,13 @@ public class Alice : AliceCharacterMovement
     public void OnStartLevelPressed()
     {
         GM.OnGameEvent(GM.NavigationEvent.StartButton);
+        SetStanding(false);
         GetComponent<WorldButton>().Release();
     }
 
     public void BecomeButton()
     {
+        SetStanding(true);
         GetComponent<WorldButton>().enabled = true;
     }
 
@@ -159,5 +167,14 @@ public class Alice : AliceCharacterMovement
         {
             GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
         }
+    }
+
+    public void SetStanding(bool standing)
+    {
+        string newAnimation = standing ? StandingAnimName : FallingAnimName;
+        if (spriteAnimator.GetAnimation() != newAnimation)
+            spriteAnimator.SetAnimation(newAnimation);
+        if (standing)
+            transform.localRotation = Quaternion.identity;
     }
 }

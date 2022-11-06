@@ -56,6 +56,12 @@ public class SpriteAnimator : MonoBehaviour
         }
     }
 
+    public string GetAnimation()
+    {
+        if (currentAnimation == null) return "";
+        return currentAnimation?.Name;
+    }
+
     public void SetAnimation(string name, int startingFrameNum=0)
     {
         for (int i = 0; i < animations.Length; i++)

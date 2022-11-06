@@ -221,6 +221,10 @@ public static class GM
 
     public static float GetLevelLength(LevelType level)
     {
+#if UNITY_EDITOR
+        if (UnityEditor.EditorPrefs.GetBool("ShortLevels"))
+            return 20f;
+#endif
         switch (level)
         {
             case LevelType.Default:

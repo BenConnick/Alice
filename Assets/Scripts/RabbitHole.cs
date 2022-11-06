@@ -1,15 +1,8 @@
 ﻿using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class RabbitHole : MonoBehaviour
 {
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI scoreLabel;
-    [SerializeField] private GameObject[] heartIcons;
-    [SerializeField] private RectTransform progressMarker;
-    [SerializeField] private UnityEngine.UI.Button startButton;
-
     [Header("Config")]
     public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
@@ -18,6 +11,8 @@ public class RabbitHole : MonoBehaviour
     public float introAnimationDistance;
     public float introAnimationSpeed;
     public MenuGraphics menuGraphics;
+
+    public float OutroAnimationDistance => introAnimationDistance;
 
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
@@ -32,6 +27,7 @@ public class RabbitHole : MonoBehaviour
     private float totalFallDistance;
     public float TotalFallDistance => totalFallDistance;
     private float initialHeight;
+    public float InitialHeight => initialHeight;
     private float outroStartHeight;
     private readonly List<LevelChunk> activeChunks = new List<LevelChunk>();
     private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
@@ -74,7 +70,7 @@ public class RabbitHole : MonoBehaviour
 
     // per viewport values
     public int VpLives { get; set; }
-    private int VpScore { get; set; }
+    public int VpScore { get; set; }
 
     private void Awake()
     {
@@ -98,7 +94,16 @@ public class RabbitHole : MonoBehaviour
         else if (mode == AnimationMode.Outro)
         {
             transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            if (transform.localPosition.y > outroStartHeight + introAnimationDistance)
+
+            // alice lerp to resting pos
+            {
+                float t = (transform.localPosition.y - outroStartHeight) / OutroAnimationDistance;
+                Vector3 characterTargetRestingPos = new Vector3(0, -2, 0);
+                Transform aliceTransform = GM.FindSingle<Alice>().transform;
+                aliceTransform.position = Vector3.Lerp(aliceTransform.position, characterTargetRestingPos, t);
+            }
+
+            if (transform.localPosition.y > outroStartHeight + OutroAnimationDistance)
             {
                 OnOutroComplete();
             }
@@ -161,9 +166,6 @@ public class RabbitHole : MonoBehaviour
                 }
             }
 
-            // update UI
-            UpdateGameplayUI();
-
             // debug
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -180,23 +182,6 @@ public class RabbitHole : MonoBehaviour
             {
                 GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelUp);
             }
-        }
-    }
-
-    private void UpdateGameplayUI()
-    {
-        float progressTotal = transform.localPosition.y - initialHeight;
-        //float progressPercent = progressTotal / GetLength(GM.LevelType);
-        // progress
-        //progressMarker.anchorMax = progressMarker.anchorMin = new Vector2(0.5f, 1 - progressPercent);
-        //progressMarker.anchoredPosition = Vector2.zero;
-        // score
-        VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = "" + GM.Money + Util.CurrencyChar;
-        // lives
-        for (int i = 0; i < heartIcons.Length; i++)
-        {
-            heartIcons[i].SetActive(i < VpLives);
         }
     }
 

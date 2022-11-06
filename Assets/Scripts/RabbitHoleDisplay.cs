@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,10 @@ public class RabbitHoleDisplay : MonoBehaviour
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
     public GameObject Overlay;
 
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI scoreLabel;
+    [SerializeField] private GameObject[] heartIcons;
     [SerializeField] private RawImage rawImageComponent;
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material invertedMaterial;
@@ -21,6 +26,12 @@ public class RabbitHoleDisplay : MonoBehaviour
     {
         invertedColor = rawImageComponent.material == invertedMaterial;
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
+    }
+
+    private void LateUpdate()
+    {
+        // update UI
+        UpdateGameplayUI();
     }
 
     public int GetLane(float worldX)
@@ -133,5 +144,19 @@ public class RabbitHoleDisplay : MonoBehaviour
     public Vector3 GetCursorWorldPos()
     {
         return GetCursorViewportWorldPos(GetNormalizedCursorPos());
+    }
+
+    private void UpdateGameplayUI()
+    {
+        float progressTotal = ObstacleContext.transform.localPosition.y - ObstacleContext.InitialHeight;
+        
+        // score
+        ObstacleContext.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
+        scoreLabel.text = "" + GM.Money + Util.CurrencyChar;
+        // lives
+        for (int i = 0; i < heartIcons.Length; i++)
+        {
+            heartIcons[i].SetActive(i < ObstacleContext.VpLives);
+        }
     }
 }
