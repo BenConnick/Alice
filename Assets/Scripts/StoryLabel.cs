@@ -8,9 +8,13 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 {
     const string storyFile = "twine"; // twine.json
 
+    // inspector
+    public CanvasGroup canvasGroup;
     public Color normalColor;
     public Color hoverColor;
+    public bool fadeBetweenPassages;
 
+    private float fadeProgress = 1;
     private int highlightedLink = -1;
     private TextMeshProUGUI label;
     private TwineStoryWrapper _innerTwineStory;
@@ -38,13 +42,36 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void UpdateUI()
     {
-        label.text = Format(Story.CurrentPassage);
-        //Debug.Log(Story.CurrentPassage.links);
-        //foreach (var item in Story.CurrentPassage.links)
-        //{
-        //    Debug.Log(item);
-        //    Debug.Log(item.name);
-        //}
+        // check for command
+        if (Story.CurrentPassage.text.Length > 0 && Story.CurrentPassage.text[0] == '$')
+        {
+            ExecuteSpecialCommand(Story.CurrentPassage.text);
+        }
+        else if (fadeBetweenPassages && fadeProgress < 1)
+        {
+            label.alpha = Mathf.Abs(2 * (fadeProgress-.5f));
+            fadeProgress += Time.deltaTime;
+            if (fadeProgress > 0.5f)
+                label.text = Format(Story.CurrentPassage);
+        }
+        else
+        {
+            label.alpha = 1;
+            label.text = Format(Story.CurrentPassage);
+        }
+    }
+
+    private void ExecuteSpecialCommand(string command)
+    {
+        switch (command.ToLowerInvariant())
+        {
+            case "$play":
+                Story.Reset();
+                GM.OnGameEvent(GM.NavigationEvent.CloseNamePicker);
+                break;
+            default:
+                throw new System.Exception("command not implemented: " + command);
+        }
     }
 
     private string Format(Passage passage)
@@ -92,19 +119,14 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         return output;
     }
 
-    public void OnLinkClicked()
-    {
-
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
-        
+        // required empty block
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        
+        // required empty block
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -123,6 +145,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             if (int.TryParse(linkValue, out int linkPID))
             {
                 Story.ChangePassage(linkPID);
+                fadeProgress = 0;
                 UpdateUI();
             }
             else
@@ -139,7 +162,12 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (highlightedLink != linkIndex)
         {
             highlightedLink = linkIndex;
-            UpdateUI();
         }
+        UpdateUI();
+    }
+
+    public void ShowStory(string passage)
+    {
+        Story.TryChangePassage(passage);
     }
 }

@@ -178,7 +178,7 @@ public class RabbitHole : MonoBehaviour
                 GM.FindSingle<Alice>().OnGrow();
             }
 
-            if (hasFocus && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
+            if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
             {
                 GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelUp);
             }
@@ -216,6 +216,7 @@ public class RabbitHole : MonoBehaviour
         GM.FindSingle<Alice>().BecomeButton();
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
         Reset();
+        GM.FindSingle<GameplayScreenBehavior>().ShowStory(GM.PassageStartPrefix);
     }
 
     public void Reset()

@@ -13,14 +13,14 @@ public class TwineLoader {
 public class TwineStoryWrapper
 {
     private TwineStory story;
-    private int pid;
-    public Passage CurrentPassage => GetPassage(pid);
+    private int currentPid;
+    public Passage CurrentPassage => GetPassage(currentPid);
     public TwineStory Raw => story;
 
     public TwineStoryWrapper(TwineStory s)
     {
         story = s;
-        pid = int.Parse(s.startnode);
+        currentPid = int.Parse(s.startnode);
     }
 
     public Passage GetPassage(int pid)
@@ -30,21 +30,44 @@ public class TwineStoryWrapper
 
     public Passage ChangePassage(Link link)
     {
-        pid = link.pid;
-        return GetPassage(pid);
+        currentPid = link.pid;
+        return GetPassage(currentPid);
+    }
+
+    public void Reset()
+    {
+        currentPid = int.Parse(story.startnode);
+    }
+
+    public bool TryChangePassage(string passageName)
+    {
+        foreach (Passage p in story.passages)
+        {
+            if (p.name == passageName)
+            {
+                ChangePassage(p.pid);
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public Passage ChangePassage(int linkPID)
     {
-        if (pid > 0 && pid < story.passages.Length)
+        bool found = false;
+        foreach (Passage p in story.passages)
         {
-            pid = linkPID;
+            if (p.pid == linkPID)
+            {
+                currentPid = linkPID;
+                found = true;
+                break;
+            }
         }
-        else
-        {
-            Debug.LogError("Cannot change passage, invalid pid " + pid);
-        }
-        return GetPassage(pid);
+        if (!found)
+            Debug.LogError("Cannot change passage, invalid pid " + linkPID);
+        return GetPassage(currentPid);
     }
 
     public int FindPassageWithName(string passageName)

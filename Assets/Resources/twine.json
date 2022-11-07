@@ -1,339 +1,123 @@
 {
     "passages": [
         {
-            "text": "I'm in my [[sister]]'s room. \n\nWhat should I do?\n\n[[Look around]]\n[[Leave]]",
+            "text": "What..? I'm still dreaming...? [[How?]]",
             "links": [
                 {
-                    "name": "sister",
-                    "link": "sister",
+                    "name": "How?",
+                    "link": "How?",
                     "pid": "2"
-                },
-                {
-                    "name": "Look around",
-                    "link": "Look around",
-                    "pid": "3"
-                },
-                {
-                    "name": "Leave",
-                    "link": "Leave",
-                    "pid": "4"
                 }
             ],
-            "name": "Init",
+            "name": "Down the Rabbit Hole",
             "pid": "1",
             "position": {
-                "x": "683",
-                "y": "361"
+                "x": "512",
+                "y": "300"
             }
         },
         {
-            "text": "I'm in my sister's room. \n\nMy sister dissappeared two days ago without a trace. I'm worried what might have happened.\n\nWhat should I do?\n\n[[Look around]]\n[[Leave]]",
+            "text": "that disk... \n\n...no explanation, just the note:\n\n[[\"play me\"]]",
             "links": [
                 {
-                    "name": "Look around",
-                    "link": "Look around",
-                    "pid": "3"
-                },
+                    "name": "\"play me\"",
+                    "link": "\"play me\"",
+                    "pid": "7"
+                }
+            ],
+            "name": "How?",
+            "pid": "2",
+            "position": {
+                "x": "515",
+                "y": "446"
+            }
+        },
+        {
+            "text": "$play",
+            "name": "reach the bottom",
+            "pid": "3",
+            "position": {
+                "x": "728.3333333333334",
+                "y": "853.3333333333334"
+            }
+        },
+        {
+            "text": "Inside the disk... Incredible places. Strange and fascinating people. \n\nYou could [[lose yourself]] in it forever.",
+            "links": [
                 {
-                    "name": "Leave",
-                    "link": "Leave",
+                    "name": "lose yourself",
+                    "link": "lose yourself",
+                    "pid": "5"
+                }
+            ],
+            "name": "wonderland",
+            "pid": "4",
+            "position": {
+                "x": "730",
+                "y": "435"
+            }
+        },
+        {
+            "text": "An ending?\n\nA perfect game needs no ending.\n\nSo... how do I [[wake up]]?",
+            "links": [
+                {
+                    "name": "wake up",
+                    "link": "wake up",
+                    "pid": "6"
+                }
+            ],
+            "name": "lose yourself",
+            "pid": "5",
+            "position": {
+                "x": "728.3333333333334",
+                "y": "573.3333333333334"
+            }
+        },
+        {
+            "text": "In a dream, you always wake up before you land... so if I can [[reach the bottom]]... I'll wake up? ",
+            "links": [
+                {
+                    "name": "reach the bottom",
+                    "link": "reach the bottom",
+                    "pid": "3"
+                }
+            ],
+            "name": "wake up",
+            "pid": "6",
+            "position": {
+                "x": "728.3333333333334",
+                "y": "718.3333333333334"
+            }
+        },
+        {
+            "text": "$play",
+            "name": "\"play me\"",
+            "pid": "7",
+            "position": {
+                "x": "514",
+                "y": "590"
+            }
+        },
+        {
+            "text": "...still dreaming...? \n\n...the [[wonderland]]...",
+            "links": [
+                {
+                    "name": "wonderland",
+                    "link": "wonderland",
                     "pid": "4"
                 }
             ],
-            "name": "sister",
-            "pid": "2",
-            "position": {
-                "x": "683",
-                "y": "511"
-            }
-        },
-        {
-            "text": "It's a bit of a mess. Sis hasn't been keeping tidy lately. \n\nAgainst the back wall, there's a table with a [[computer]] on it.\n\nOn the left is her [[bed]].\n\nOn the right is her [[closet]].\n\nBehind me is the [[exit]].",
-            "links": [
-                {
-                    "name": "computer",
-                    "link": "computer",
-                    "pid": "5"
-                },
-                {
-                    "name": "bed",
-                    "link": "bed",
-                    "pid": "6"
-                },
-                {
-                    "name": "closet",
-                    "link": "closet",
-                    "pid": "7"
-                },
-                {
-                    "name": "exit",
-                    "link": "exit",
-                    "pid": "8"
-                }
-            ],
-            "name": "Look around",
-            "pid": "3",
-            "position": {
-                "x": "833",
-                "y": "511"
-            }
-        },
-        {
-            "text": "I came in here to find clues. I'm not leaving until I find something. I'm going to [[look around|Look around]].",
-            "links": [
-                {
-                    "name": "look around|Look around",
-                    "link": "look around|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "Leave",
-            "pid": "4",
-            "position": {
-                "x": "983",
-                "y": "511"
-            }
-        },
-        {
-            "text": "It looks like she left a game running on the computer. \n\n[[Look elsewhere|Look around]]\n[[Play game]]",
-            "links": [
-                {
-                    "name": "Look elsewhere|Look around",
-                    "link": "Look elsewhere|Look around",
-                    "broken": true
-                },
-                {
-                    "name": "Play game",
-                    "link": "Play game",
-                    "pid": "13"
-                }
-            ],
-            "name": "computer",
-            "pid": "5",
-            "position": {
-                "x": "833",
-                "y": "661"
-            }
-        },
-        {
-            "text": "A twin bed. Not made up. On top of the fitted sheet is a [[stuffed cat]]. I'm hesitant to check [[underneath|under the bed]].",
-            "links": [
-                {
-                    "name": "stuffed cat",
-                    "link": "stuffed cat",
-                    "pid": "9"
-                },
-                {
-                    "name": "underneath|under the bed",
-                    "link": "underneath|under the bed",
-                    "broken": true
-                }
-            ],
-            "name": "bed",
-            "pid": "6",
-            "position": {
-                "x": "983",
-                "y": "661"
-            }
-        },
-        {
-            "text": "You'd never catch me dead in one of her layered blue dresses with white lace. Sometimes I wonder how we're related. \n\nThere's some [[new boxes]] on the floor here.",
-            "links": [
-                {
-                    "name": "new boxes",
-                    "link": "new boxes",
-                    "pid": "11"
-                }
-            ],
-            "name": "closet",
-            "pid": "7",
-            "position": {
-                "x": "1133",
-                "y": "661"
-            }
-        },
-        {
-            "text": "I came in here to find clues. I'm not leaving until I find something. I'm going to [[look around|Look around]].",
-            "links": [
-                {
-                    "name": "look around|Look around",
-                    "link": "look around|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "exit",
+            "name": "Down the Rabbit Hole 2",
             "pid": "8",
             "position": {
-                "x": "1283",
-                "y": "661"
-            }
-        },
-        {
-            "text": "It's a little creepy. Should it really smile this wide? It doesn't feel like a clue. \n\nI'm going to look [[somewhere else|Look around]].",
-            "links": [
-                {
-                    "name": "somewhere else|Look around",
-                    "link": "somewhere else|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "stuffed cat",
-            "pid": "9",
-            "position": {
-                "x": "983",
-                "y": "811"
-            }
-        },
-        {
-            "text": "For a brief moment, I thought I saw her stuffed rabbit, but there's nothing down here but pillows.\n\nI had better check [[somewhere else|Look around]].",
-            "links": [
-                {
-                    "name": "somewhere else|Look around",
-                    "link": "somewhere else|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "under the bed",
-            "pid": "10",
-            "position": {
-                "x": "1133",
-                "y": "811"
-            }
-        },
-        {
-            "text": "The boxes used to hold fruit, but someone has written \"demo disks\" on them with black marker. Inside, in a heap, floppy disks with [[handritten labels]]. \n\n[[look elsewhere|Look around]]",
-            "links": [
-                {
-                    "name": "handritten labels",
-                    "link": "handritten labels",
-                    "pid": "12"
-                },
-                {
-                    "name": "look elsewhere|Look around",
-                    "link": "look elsewhere|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "new boxes",
-            "pid": "11",
-            "position": {
-                "x": "833",
-                "y": "811"
-            }
-        },
-        {
-            "text": "The boxes used to hold fruit, but someone has written \"demo disks\" on them with black marker. Inside, in a heap, floppy disks with handritten labels. \n\n\"Fighter Tournament\", \"Blip Blop\", \"Heli Hero\", \"Puzzle Master 3\". The names don't ring any bells for me.\n\n[[Look elsewhere|Look around]]",
-            "links": [
-                {
-                    "name": "Look elsewhere|Look around",
-                    "link": "Look elsewhere|Look around",
-                    "broken": true
-                }
-            ],
-            "name": "handritten labels",
-            "pid": "12",
-            "position": {
-                "x": "833",
-                "y": "961"
-            }
-        },
-        {
-            "text": "[[Look around more]]",
-            "links": [
-                {
-                    "name": "Look around more",
-                    "link": "Look around more",
-                    "pid": "14"
-                }
-            ],
-            "name": "Play game",
-            "pid": "13",
-            "position": {
-                "x": "708",
-                "y": "811"
-            }
-        },
-        {
-            "text": "It's a bit of a mess. Sis hasn't been keeping tidy lately. \n\nAgainst the back wall, there's a table with a [[computer]] and a [[little bottle]] on it.\n\nOn the left is her [[bed]].\n\nOn the right is her [[closet]].\n\nBehind me is the [[exit]].",
-            "links": [
-                {
-                    "name": "computer",
-                    "link": "computer",
-                    "pid": "5"
-                },
-                {
-                    "name": "little bottle",
-                    "link": "little bottle",
-                    "pid": "15"
-                },
-                {
-                    "name": "bed",
-                    "link": "bed",
-                    "pid": "6"
-                },
-                {
-                    "name": "closet",
-                    "link": "closet",
-                    "pid": "7"
-                },
-                {
-                    "name": "exit",
-                    "link": "exit",
-                    "pid": "8"
-                }
-            ],
-            "name": "Look around more",
-            "pid": "14",
-            "position": {
-                "x": "708",
-                "y": "961"
-            }
-        },
-        {
-            "text": "It's a little glass bottle with a glass stopper.\n\nTied around the neck is a string and [[a tag]]\n\nI wonder why I didn't notice this before?",
-            "links": [
-                {
-                    "name": "a tag",
-                    "link": "a tag",
-                    "pid": "16"
-                }
-            ],
-            "name": "little bottle",
-            "pid": "15",
-            "position": {
-                "x": "708",
-                "y": "1111"
-            }
-        },
-        {
-            "text": "\"[[Drink Me]]\"",
-            "links": [
-                {
-                    "name": "Drink Me",
-                    "link": "Drink Me",
-                    "pid": "17"
-                }
-            ],
-            "name": "a tag",
-            "pid": "16",
-            "position": {
-                "x": "708",
-                "y": "1261"
-            }
-        },
-        {
-            "text": "Double-click this passage to edit it.",
-            "name": "Drink Me",
-            "pid": "17",
-            "position": {
-                "x": "708",
-                "y": "1411"
+                "x": "730",
+                "y": "301.6666666666667"
             }
         }
     ],
-    "name": "Alice",
+    "name": "Dream Alice Story",
     "startnode": "1",
     "creator": "Twine",
     "creator-version": "2.0.11",
-    "ifid": "36746CF2-EE6C-4B19-9DD1-40FF3D2B8281"
+    "ifid": "E9E35366-FA63-4A47-B665-3F9CB2816500"
 }

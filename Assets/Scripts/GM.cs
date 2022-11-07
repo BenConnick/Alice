@@ -70,7 +70,8 @@ public static class GM
         { LevelType.QueenOfHearts, "TWINS" },
     };
 
-    public const int MAX_LIVES = 3;
+    public const string PassageStartPrefix = "Down the Rabbit Hole";
+    public const int MAX_LIVES = 1;
     //public static MenuStage CurrentMenuStage { get; set; }
     public static LevelType CurrentLevel { get; set; }
 
@@ -83,6 +84,7 @@ public static class GM
     public static readonly List<int> PlayerHighScores = new List<int>();
     public static readonly List<string> PlayerHighScoreNames = new List<string>(); // assumed same length as scores^
     public static int Money { get; set; }
+    public static int DeathCount = 0;
     #endregion
 
     // Screen Quick References
@@ -223,7 +225,7 @@ public static class GM
     {
 #if UNITY_EDITOR
         if (UnityEditor.EditorPrefs.GetBool("ShortLevels"))
-            return 20f;
+            return 5f;
 #endif
         switch (level)
         {
@@ -264,7 +266,15 @@ public static class GM
             case GameMode.Gameplay:
                 if (e == NavigationEvent.PlatformerGameOver)
                 {
-                    ChangeMode(GameMode.GameOver);
+                    DeathCount++;
+                    IsGameplayPaused = true;
+                    FindSingle<GameplayScreenBehavior>().ShowStory(DeathCount < 2 ? PassageStartPrefix : (PassageStartPrefix + " " + DeathCount));
+                }
+                else if (e == NavigationEvent.CloseNamePicker)
+                {
+                    FindSingle<RabbitHole>().Reset();
+                    ChangeMode(GameMode.Gameplay);
+                    FindSingle<GameplayScreenBehavior>().ShowGame();
                 }
                 else if (e == NavigationEvent.PlatformerLevelUp)
                 {
