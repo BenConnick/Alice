@@ -96,13 +96,13 @@ public class EnterNameScreen : MonoBehaviour
     private void SubmitScoreName()
     {
         // check for cheat codes
-        foreach (var code in GM.CheatCodes)
+        foreach (var code in CheatCodes.All)
         {
             if (enteredName == code.Value)
             {
                 GM.PlayerHighScoreNames.Add(enteredName);
                 GM.PlayerHighScores.Add(GM.CurrentScore);
-                GM.OnCheatCode(code.Key);
+                CheatCodes.OnCheatCode(code.Key);
                 return;
             }
         }
@@ -110,7 +110,7 @@ public class EnterNameScreen : MonoBehaviour
         // not a cheat code
         GM.PlayerHighScoreNames.Add(enteredName);
         GM.PlayerHighScores.Add(GM.CurrentScore);
-        GM.OnGameEvent(GM.NavigationEvent.CloseNamePicker);
+        //GM.OnGameEvent(GM.NavigationEvent.CloseNamePicker);
     }
 
     public void UpdateDataDrivenUIInstant()
@@ -168,7 +168,7 @@ public class EnterNameScreen : MonoBehaviour
         // cheat-code UI
         // highlight the next letter in the "cheat" code
         int cheatHintIndex = -2;
-        if (GM.CheatCodes.TryGetValue(1+GM.CurrentLevel, out string cheatCode))
+        if (CheatCodes.All.TryGetValue(1+GM.CurrentLevel, out string cheatCode))
         {
             // if the code can still be entered
             if (enteredName.Length == 0 || cheatCode.Contains(enteredName))

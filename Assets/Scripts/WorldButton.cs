@@ -31,10 +31,15 @@ public class WorldButton: MonoBehaviour
             }
             if (hover)
             {
-                // click
+                // click confirmed
                 if (Input.GetMouseButtonUp(0))
                 {
                     OnClicked();
+                }
+                // press and hold color feedback
+                else if (Input.GetMouseButton(0))
+                {
+                    SetHover(false); // visual only
                 }
             }
         }

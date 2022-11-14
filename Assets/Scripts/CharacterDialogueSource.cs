@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[Obsolete]
 public class CharacterDialogueSource : MonoBehaviour
 {
     //public

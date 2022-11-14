@@ -82,43 +82,17 @@ public class RabbitHole : MonoBehaviour
     // runs every tick
     private void Update()
     {
-        if (mode == AnimationMode.Intro)
-        {
-            float normalizedIntroDistance = Mathf.Clamp01(transform.localPosition.y - initialHeight) / (introAnimationDistance * 0.01f);
-            transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
-            if (transform.localPosition.y > initialHeight + introAnimationDistance)
-            {
-                OnIntroComplete();
-            }
-        }
-        else if (mode == AnimationMode.Outro)
+        if (mode == AnimationMode.Intro) UpdateIntroAnim();
+        else if (mode == AnimationMode.Outro) UpdateOutroAnim();
+        else if (mode == AnimationMode.Interactive && !GM.IsGameplayPaused)
         {
             transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-
-            // alice lerp to resting pos
-            {
-                float t = (transform.localPosition.y - outroStartHeight) / OutroAnimationDistance;
-                Vector3 characterTargetRestingPos = new Vector3(0, -2, 0);
-                Transform aliceTransform = GM.FindSingle<Alice>().transform;
-                aliceTransform.position = Vector3.Lerp(aliceTransform.position, characterTargetRestingPos, t);
-            }
-
-            if (transform.localPosition.y > outroStartHeight + OutroAnimationDistance)
-            {
-                OnOutroComplete();
-            }
+            totalFallDistance = transform.localPosition.y - (initialHeight + introAnimationDistance);
         }
 
         if (!GM.IsGameplayPaused)
         {
             var player = GM.FindSingle<Alice>();
-            bool hasFocus = player.movementContext?.ObstacleContext == this;
-
-            if (mode == AnimationMode.Interactive)
-            {
-                transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            }
-            totalFallDistance = transform.localPosition.y - (initialHeight+introAnimationDistance);
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -128,6 +102,7 @@ public class RabbitHole : MonoBehaviour
             }
 
             // check collisions
+            bool hasFocus = player.movementContext?.ObstacleContext == this;
             if (hasFocus)
             {
                 foreach (var obstacle in activeObstacles)
@@ -166,32 +141,69 @@ public class RabbitHole : MonoBehaviour
                 }
             }
 
-            // debug
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                // shrink
-                GM.FindSingle<Alice>().OnShrink();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                // grow
-                GM.FindSingle<Alice>().OnGrow();
-            }
-
+            // check game over condition
             if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
             {
-                GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelUp);
+                GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelEndTrigger);
             }
+
+            // debug
+            UpdateDebug();
         }
     }
 
+    private void UpdateIntroAnim()
+    {
+        float normalizedIntroDistance = Mathf.Clamp01(transform.localPosition.y - initialHeight) / (introAnimationDistance * 0.01f);
+        transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
+        if (transform.localPosition.y > initialHeight + introAnimationDistance)
+        {
+            OnIntroComplete();
+        }
+    }
 
+    private void UpdateOutroAnim()
+    {
+        transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
 
-    public void PlayIntroAnimation()
+        // alice lerp to resting pos
+        {
+            float t = (transform.localPosition.y - outroStartHeight) / OutroAnimationDistance;
+            Vector3 characterTargetRestingPos = new Vector3(0, -2, 0);
+            Transform aliceTransform = GM.FindSingle<Alice>().transform;
+            aliceTransform.position = Vector3.Lerp(aliceTransform.position, characterTargetRestingPos, t);
+        }
+
+        if (transform.localPosition.y > outroStartHeight + OutroAnimationDistance)
+        {
+            OnOutroComplete();
+        }
+    }
+
+    private void UpdateDebug()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            // shrink
+            GM.FindSingle<Alice>().OnShrink();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            // grow
+            GM.FindSingle<Alice>().OnGrow();
+        }
+    }
+
+    public void PlayIntroAnimationForRestart()
+    {
+        menuGraphics.HideAllStageArt();
+        mode = AnimationMode.Intro;
+    }
+
+    public void PlayIntroAnimationForCurrentLevel()
     {
         menuGraphics.ShowStageArt(GM.CurrentLevel);
         mode = AnimationMode.Intro;
-        //OwnerLink?.Overlay?.SetActive(false);
     }
 
     private void OnIntroComplete()
@@ -206,17 +218,16 @@ public class RabbitHole : MonoBehaviour
         mode = AnimationMode.Outro;
         //OwnerLink?.Overlay?.SetActive(false);
         menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
-        menuGraphics.ShowStageArt(GM.CurrentLevel);
+        menuGraphics.ShowStageArt(GM.CurrentLevel+1);
     }
 
     private void OnOutroComplete()
     {
         OwnerLink.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
-        GM.FindSingle<Alice>().BecomeButton();
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
         Reset();
-        GM.FindSingle<GameplayScreenBehavior>().ShowStory(GM.PassageStartPrefix);
+        GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelEndPostAnimation);
     }
 
     public void Reset()

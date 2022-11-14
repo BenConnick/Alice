@@ -82,10 +82,10 @@ public class ScoreboardScreen : MonoBehaviour
         {
             if (!GM.PlayerHighScores.Contains(GM.CurrentScore) && GM.CurrentScore > scoresToUse[i])
             {
-                GM.OnGameEvent(GM.NavigationEvent.OpenNamePicker);
+                //GM.OnGameEvent(GM.NavigationEvent.OpenNamePicker);
                 return;
             }
         }
-        GM.OnGameEvent(GM.NavigationEvent.CloseScoreboard);
+        //GM.OnGameEvent(GM.NavigationEvent.CloseScoreboard);
     }
 }

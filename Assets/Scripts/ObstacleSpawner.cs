@@ -93,13 +93,40 @@ public class ChunkSpawner
     private float elapsedTime = 0;
     private LevelChunk prevChunk;
 
+    protected LevelChunk[] shuffledChunkQueue;
+    protected int shuffledChunkIndex = int.MaxValue;
+
     public ChunkSpawner(LevelChunk[] prefabs)
     {
         chunkPrefabs = prefabs;
         prevChunk = prefabs[0];
+        shuffledChunkQueue = new LevelChunk[prefabs.Length];
+        chunkPrefabs.CopyTo(shuffledChunkQueue, 0);
     }
 
     public virtual LevelChunk GetNextRandomChunk()
+    {
+        // spawn random obstacle
+        if (shuffledChunkIndex >= shuffledChunkQueue.Length)
+        {
+            // record the last chunk in order
+            LevelChunk prevChunk = shuffledChunkQueue[shuffledChunkQueue.Length - 1];
+
+            // shuffle the queue
+            Util.Shuffle(shuffledChunkQueue);
+            // reshuffle if there's two of the same chunk next to each other
+            while (shuffledChunkQueue.Length > 1 && shuffledChunkQueue[0] == prevChunk)
+            {
+                Util.Shuffle(shuffledChunkQueue);
+            }
+            shuffledChunkIndex = 0;
+        }
+        var prefab = chunkPrefabs[shuffledChunkIndex];
+        shuffledChunkIndex++;
+        return prefab;
+    }
+
+    public virtual LevelChunk GetNextValidChunk()
     {
         // spawn random obstacle
         var exitPoints = prevChunk.BottomSlots;

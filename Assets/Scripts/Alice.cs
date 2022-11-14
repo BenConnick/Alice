@@ -93,6 +93,10 @@ public class Alice : AliceCharacterMovement
     public void OnStartLevelPressed()
     {
         GM.OnGameEvent(GM.NavigationEvent.StartButton);
+    }
+
+    public void UnbecomeButton()
+    {
         SetStanding(false);
         GetComponent<WorldButton>().Release();
     }

@@ -70,25 +70,25 @@
   
               fixed4 SampleSpriteTexture (float2 uv)
               {
-                  fixed4 color = tex2D (_MainTex, uv);
-  
-  #if UNITY_TEXTURE_ALPHASPLIT_ALLOWED
-                  if (_AlphaSplitEnabled)
-                      color.a = tex2D (_AlphaTex, uv).r;
-  #endif //UNITY_TEXTURE_ALPHASPLIT_ALLOWED
-  
+                  fixed4 color = tex2D (_MainTex, uv);  
                   return color;
               }
   
               fixed4 frag(v2f IN) : SV_Target
               {
+                  fixed4 color = tex2D (_MainTex, IN.texcoord);  
+                  return color;
+
                   fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
                   
-                  if (_InvertColors == 1)
-                  {
-                      c.rgb = (1 - c);
-                  }
-                  c.rgb *= c.a;
+                  //if (_InvertColors == 1)
+                  //{
+                  //    c.r = (1 - c.r);
+                  //    c.g = (1 - c.g);
+                  //    c.b = (1 - c.b);
+                  //}
+                  //c.a = 1;
+                  //c.rgb *= c.a;
                   return c;
               }
           ENDCG

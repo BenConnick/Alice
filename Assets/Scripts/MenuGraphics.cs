@@ -12,4 +12,12 @@ public class MenuGraphics : MonoBehaviour
             PerStageArt[i].SetActive(i == stageIndex);
         }
     }
+
+    public void HideAllStageArt()
+    {
+        for (int i = 0; i < PerStageArt.Length; i++)
+        {
+            PerStageArt[i].SetActive(false);
+        }
+    }
 }
