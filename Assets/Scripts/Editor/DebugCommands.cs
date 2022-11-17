@@ -27,6 +27,7 @@ public static class DebugCommands
     public static void PlayFastDebug()
     {
         EditorPrefs.SetBool("ShortLevels", true);
+        EditorPrefs.SetBool("OneLife", true);
         EditorApplication.EnterPlaymode();
     }
 
@@ -34,6 +35,7 @@ public static class DebugCommands
     public static void PlayNormal()
     {
         EditorPrefs.DeleteKey("ShortLevels");
+        EditorPrefs.DeleteKey("OneLife");
         EditorApplication.EnterPlaymode();
     }
 }

@@ -159,4 +159,16 @@ public class RabbitHoleDisplay : MonoBehaviour
             heartIcons[i].SetActive(i < ObstacleContext.VpLives);
         }
     }
+
+    public void InvertForTime(float time)
+    {
+        Tween.Start(
+            (t) => {
+                SetColorInverted(false);
+            },
+            time,
+            () => {
+                SetColorInverted(true);
+            });
+    }
 }

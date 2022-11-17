@@ -60,7 +60,7 @@ public static class GM
 
     public const string PassageStartPrefix = "Down the Rabbit Hole";
     public const string Caterpillar = "Conversation With A Caterpillar";
-    public const int MAX_LIVES = 1;
+    public static int MAX_LIVES = 3;
     //public static MenuStage CurrentMenuStage { get; set; }
     public static LevelType CurrentLevel { get; set; }
 
@@ -91,6 +91,9 @@ public static class GM
         Application.targetFrameRate = 60;
         CurrentMode = GameMode.MainMenu;
         ChangeActiveScreen(GameMode.MainMenu);
+#if UNITY_EDITOR
+        MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : 3;
+#endif
     }
 
     public static void InitEditor()
@@ -324,6 +327,8 @@ public static class GM
         return found;
     }
 
+    // reminder that you can add debug commands
+    // directly to this class and they will be added
     [Command]
     public static void Toot()
     {

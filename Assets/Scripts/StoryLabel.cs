@@ -131,6 +131,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (fadeProgress > 0 && fadeProgress < 1) return; // no click during fade
         var linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, eventData.pointerPressRaycast.screenPosition, GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>());
         Debug.Log("link clicked with local index " + linkIndex);
         if (linkIndex >= 0)
