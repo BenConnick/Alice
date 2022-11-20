@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tween
 {
+    public static readonly List<Tween> QueuedTweens = new List<Tween>();
     public static readonly List<Tween> ActiveTweens = new List<Tween>();
 
     public delegate void InterpolationAction(float t);
@@ -40,11 +41,23 @@ public class Tween
 
     public static void Start(InterpolationAction action, float duration, CompletionCallback callback = null)
     {
-        ActiveTweens.Add(new Tween(action, Time.time, duration, callback));
+        QueuedTweens.Add(new Tween(action, Time.time, duration, callback));
+    }
+
+    public static void StartDelayedAction(float duration, CompletionCallback callback = null)
+    {
+        Start((t) => { }, duration, callback);
     }
 
     public static void UpdateAll()
     {
+        // add queued tweens
+        foreach (var t in QueuedTweens)
+        {
+            ActiveTweens.Add(t);
+        }
+        QueuedTweens.Clear();
+
         List<Tween> deadlist = new List<Tween>();
         foreach (var t in ActiveTweens)
         {

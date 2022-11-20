@@ -159,7 +159,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private void Update()
     {
         int linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, Input.mousePosition, GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>());
-        PerFrameVariableWatches.SetDebugQuantity("OverLink", linkIndex.ToString());
+        // PerFrameVariableWatches.SetDebugQuantity("OverLink", linkIndex.ToString());
         if (highlightedLink != linkIndex)
         {
             highlightedLink = linkIndex;

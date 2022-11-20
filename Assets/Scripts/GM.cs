@@ -49,6 +49,7 @@ public static class GM
         PlatformerLevelEndPostAnimation,
         CheatCodeEntered,
         FallFromMonologue,
+        SplitAnimationMidPoint,
     }
 
     public enum DebugEvent
@@ -200,6 +201,15 @@ public static class GM
                 IsGameplayPaused = false;
                 FindSingle<GameplayScreenBehavior>().ShowGame();
                 break;
+            case NavigationEvent.SplitAnimationMidPoint:
+                var rabbitHoles = GameObject.FindObjectsOfType<RabbitHole>();
+                FindSingle<Alice>().UnbecomeButton();
+                IsGameplayPaused = false;
+                foreach (var hole in rabbitHoles)
+                {
+                    hole.PlayIntroAnimationForCurrentLevel();
+                }
+                break;
             default:
                 throw new Exception("Unhandled game event: " + gameEvent);
         }
@@ -231,9 +241,7 @@ public static class GM
         // if this is the last step, start the next falling section
         if (last)
         {
-            FindSingle<Alice>().UnbecomeButton();
-            IsGameplayPaused = false;
-            FindSingle<RabbitHole>().PlayIntroAnimationForCurrentLevel();
+            FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
         }
     }
 

@@ -9,10 +9,11 @@ public class RabbitHole : MonoBehaviour
 
     [Header("Animation")]
     public float introAnimationDistance;
+    public float outroAnimationDistance;
     public float introAnimationSpeed;
     public MenuGraphics menuGraphics;
 
-    public float OutroAnimationDistance => introAnimationDistance;
+    public float OutroAnimationDistance => outroAnimationDistance; // now redundant
 
     [Header("Assets")]
     [SerializeField] private GameObject[] obstaclePrefabs;
@@ -120,7 +121,7 @@ public class RabbitHole : MonoBehaviour
             }
 
             // spawn new obstacles
-            PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
+            // PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
             if (initialHeight - transform.localPosition.y < chunkCursor + 6
                 // stop spawning chunks before the level end
                 && totalFallDistance < GM.GetLevelLength(GM.CurrentLevel) - LevelChunk.height * 2)
@@ -217,7 +218,7 @@ public class RabbitHole : MonoBehaviour
         outroStartHeight = transform.localPosition.y;
         mode = AnimationMode.Outro;
         //OwnerLink?.Overlay?.SetActive(false);
-        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - introAnimationDistance, 0);
+        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - outroAnimationDistance, 0);
         menuGraphics.ShowStageArt(GM.CurrentLevel+1);
     }
 
@@ -225,8 +226,15 @@ public class RabbitHole : MonoBehaviour
     {
         OwnerLink.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
+
+        // move the menu graphics to the new player position so that the player cannot tell that the height is back to zero
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
+
+        // clear the chunks
+        // set the position to zero instantly
         Reset();
+
+
         GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelEndPostAnimation);
     }
 

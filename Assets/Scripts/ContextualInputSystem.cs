@@ -26,7 +26,7 @@ public static class ContextualInputSystem
     private static void ProcessInput()
     {
         // compare the mouse position against every display
-        PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
+        // PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
         var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var viewport in UnityEngine.Object.FindObjectsOfType<RabbitHoleDisplay>())
         {

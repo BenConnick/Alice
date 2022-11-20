@@ -109,14 +109,14 @@ public class RabbitHoleDisplay : MonoBehaviour
             finalCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
 
         // mouse pos
-        PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
+        // PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
         // rect pos
         var viewportUI = this;
         var rt = viewportUI.GetComponent<RectTransform>();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, finalCam, out Vector2 localPos);
         // rect pos to norm viewportCam pos
         Vector2 posInViewport = new Vector2((localPos.x + rt.rect.width * .5f) / (rt.rect.width), (localPos.y + rt.rect.height * .5f) / (rt.rect.height));
-        PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
+        // PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
 
         // cache
         cachedCursorPositions = (Time.frameCount, posInViewport, GetCursorViewportWorldPos(posInViewport));
@@ -133,7 +133,7 @@ public class RabbitHoleDisplay : MonoBehaviour
 
         // norm viewportCam pos to world* pos
         Vector3 gameplayPos = GameplayCamera.ViewportToWorldPoint(cursorViewportPos);
-        PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
+        // PerFrameVariableWatches.SetDebugQuantity("gameplayPos", gameplayPos.ToString());
         gameplayPos.z = ObstacleContext.transform.position.z; // z pos
 
         // cache

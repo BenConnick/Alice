@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -43,6 +44,12 @@ public class WorldButton: MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Pulse()
+    {
+        // hacky flash
+        Tween.Start((t) => { SetHover(true); }, 0.01f, () => { SetHover(false); });
     }
 
     public bool ContainsPoint2D(Vector3 worldPos)
