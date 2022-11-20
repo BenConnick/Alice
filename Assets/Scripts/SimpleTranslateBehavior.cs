@@ -6,7 +6,7 @@ public class SimpleTranslateBehavior : MonoBehaviour
 
     public void Update()
     {
-        if (GM.IsGameplayPaused) return;
+        //if (GM.IsGameplayPaused) return;
         transform.localPosition += Time.deltaTime * DistancePerSecond;
     }
 }

@@ -9,7 +9,7 @@ public class CaterpillarDialogueBehavior : CharacterDialogueBehavior
         if (index >= Lines.Length)
         {
             GM.FindSingle<SplitGameplayMomentAnimationController>().PlayBigMomentAnimPart1();
-            return true;
+            return false;
         }
         GetComponent<TypewriterText>().PlayTypewriter(Lines[index]);
         index++;

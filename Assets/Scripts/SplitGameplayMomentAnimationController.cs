@@ -75,6 +75,9 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     public void PlayBigMomentAnimPart2()
     {
+        foreach (var g in MouseOverTriggers) g.SetActive(false);
+        PlayerCharacterAnimDummy.gameObject.SetActive(false);
+        ActualPlayerCharacter.SetActive(true);
         RabbitHoleDisplay2.gameObject.SetActive(true);
         Tween.Start((t) =>
         {
@@ -101,9 +104,11 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     public void OnMouseOverTrigger(int index)
     {
-        foreach (var g in MouseOverTriggers) g.SetActive(false);
-        PlayerCharacterAnimDummy.gameObject.SetActive(false);
-        ActualPlayerCharacter.SetActive(true);
+        // TODO
+    }
+
+    public void OnViewportClicked(int index)
+    {
         PlayBigMomentAnimPart2();
     }
 }
