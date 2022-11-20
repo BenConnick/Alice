@@ -92,7 +92,7 @@ public class Alice : AliceCharacterMovement
 
     public void OnStartLevelPressed()
     {
-        GM.OnGameEvent(GM.NavigationEvent.StartButton);
+        GM.OnGameEvent(GM.NavigationEvent.GoButton);
     }
 
     public void UnbecomeButton()

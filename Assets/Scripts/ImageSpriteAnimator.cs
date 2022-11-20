@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(SpriteRenderer))]
-public class SpriteAnimator : MonoBehaviour
+[RequireComponent(typeof(Image))]
+public class ImageSpriteAnimator : MonoBehaviour
 {
     [Serializable]
     public struct SpriteSequence
@@ -14,7 +15,7 @@ public class SpriteAnimator : MonoBehaviour
         public int LoopFrame;
     }
 
-    private SpriteRenderer spriteRenderer;
+    private Image spriteRenderer;
     [SerializeField] private SpriteSequence[] animations;
     [SerializeField] private string Autoplay;
 
@@ -24,7 +25,7 @@ public class SpriteAnimator : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<Image>();
     }
 
     void Start()
@@ -49,7 +50,7 @@ public class SpriteAnimator : MonoBehaviour
                 currentFrame++;
                 if (currentFrame >= numFrames)
                 {
-                    currentFrame = anim.Looping ? anim.LoopFrame : numFrames-1;
+                    currentFrame = anim.Looping ? anim.LoopFrame : numFrames - 1;
                 }
             }
             spriteRenderer.sprite = anim.Frames[currentFrame];
@@ -62,7 +63,7 @@ public class SpriteAnimator : MonoBehaviour
         return currentAnimation?.Name;
     }
 
-    public void SetAnimation(string name, int startingFrameNum=0)
+    public void SetAnimation(string name, int startingFrameNum = 0)
     {
         for (int i = 0; i < animations.Length; i++)
         {
@@ -75,7 +76,7 @@ public class SpriteAnimator : MonoBehaviour
         Debug.LogWarning("Missing animation: '" + name + "'");
     }
 
-    public void SetAnimationByIndex(int index, int startingFrameNum=0)
+    public void SetAnimationByIndex(int index, int startingFrameNum = 0)
     {
         currentAnimation = animations[index];
         currentFrame = startingFrameNum;

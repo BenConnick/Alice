@@ -43,7 +43,7 @@ public static class GM
     public enum NavigationEvent
     {
         Default,
-        StartButton,
+        GoButton,
         PlatformerGameOver,
         PlatformerLevelEndTrigger,
         PlatformerLevelEndPostAnimation,
@@ -94,6 +94,7 @@ public static class GM
 #if UNITY_EDITOR
         MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : 3;
 #endif
+        FindSingle<SplitGameplayMomentAnimationController>().SetToDefaultState();
     }
 
     public static void InitEditor()
@@ -177,8 +178,8 @@ public static class GM
     {
         switch (gameEvent)
         {
-            case NavigationEvent.StartButton:
-                HandleStartButtonInGlobalContext();
+            case NavigationEvent.GoButton:
+                HandleGoButtonInGlobalContext();
                 break;
             case NavigationEvent.PlatformerGameOver:
                 DoGameOver();
@@ -205,7 +206,7 @@ public static class GM
     }
 
     #region game event handlers
-    private static void HandleStartButtonInGlobalContext()
+    private static void HandleGoButtonInGlobalContext()
     {
         switch (CurrentMode)
         {

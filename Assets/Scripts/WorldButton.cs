@@ -50,18 +50,6 @@ public class WorldButton: MonoBehaviour
         return spriteRenderer.bounds.IntersectRay(new Ray(worldPos - Vector3.forward * 100, Vector3.forward));
     }
 
-    //public void OnMouseEnter()
-    //{
-    //    // set to hover state
-    //    SetHover(true);
-    //}
-
-    //public void OnMouseExit()
-    //{
-    //    // set back to default
-    //    SetHover(false);
-    //}
-
     public void SetHover(bool isHovering)
     {
         hover = isHovering;

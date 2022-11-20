@@ -5,9 +5,9 @@ public class CharacterDialogueBehavior : MonoBehaviour
 {
     public string[] Lines;
 
-    private int index;
+    protected int index;
 
-    public bool PlayNextLine()
+    public virtual bool PlayNextLine()
     {
         if (index >= Lines.Length) return true;
         GetComponent<TypewriterText>().PlayTypewriter(Lines[index]);
