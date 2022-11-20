@@ -8,48 +8,44 @@ public class TypewriterText : MonoBehaviour
     [SerializeField] private TextMeshPro dialogueTextMesh;
     [SerializeField] private AudioSource soundSource;
 
+    [Range(0.0f, 1.0f)]
+    public float ProgressNorm;
+
     [Header("Auto config")]
-    [SerializeField] private string textToAutoPlay;
-    [SerializeField] private float clearAfterPause;
+    [SerializeField] private string displayString;
+    [SerializeField] private bool autoPlay;
     [SerializeField] private float defaultSpeed = 10;
 
     private struct InputData
     {
-        public string FullText;
         public AudioClip[] TypewriterSounds;
         public float TypewriterSpeed;
     }
 
     // animation
+    
     private InputData inputData;
-    private float textAppearingAnimationProgress = 0;
     private int prevTextAppearingAnimationCharacter;
+    public bool IsAutoPlaying => inputData.TypewriterSpeed > 0;
 
     public void PlayTypewriter(string text, float speed = 0, AudioClip[] sounds = null, float delay = 0f)
     {
+        // invalid input
         if (text == null) return;
 
+        // defaults
         if (sounds == null) sounds = new AudioClip[] { soundSource.clip };
-
-        string prev = inputData.FullText ?? "";
-
         if (speed <= 0) speed = defaultSpeed;
 
         // params
-        inputData = new InputData { FullText = text, TypewriterSounds = sounds, TypewriterSpeed = speed };
+        displayString = text;
+        inputData = new InputData { TypewriterSounds = sounds, TypewriterSpeed = speed };
 
-        // appending?
-        if (text.StartsWith(prev, System.StringComparison.Ordinal))
-        {
-            textAppearingAnimationProgress = prev.Length;
-            SetText(prev); // dialogueLabel.text handled by Update()
-        }
         // resetting
-        else
-        {
-            VisualReset();
-        }
-        textAppearingAnimationProgress -= (inputData.TypewriterSpeed * delay); 
+        VisualReset();
+
+        // delay
+        ProgressNorm -= (inputData.TypewriterSpeed * delay * displayString.Length); 
     }
 
     public void Clear()
@@ -61,37 +57,36 @@ public class TypewriterText : MonoBehaviour
     private void VisualReset()
     {
         // reset ui
-        textAppearingAnimationProgress = 0;
+        ProgressNorm = 0;
         SetText(""); // dialogueLabel.text handled by Update()
     }
 
     private void Start()
     {
-        if (!string.IsNullOrEmpty(textToAutoPlay))
+        if (autoPlay)
         {
-            PlayTypewriter(textToAutoPlay);
-            textToAutoPlay = null;
+            PlayTypewriter(displayString);
         }
     }
 
     private void Update()
     {
-        if (inputData.FullText == null) return;
-        textAppearingAnimationProgress += Time.deltaTime * inputData.TypewriterSpeed;
-
-        if (clearAfterPause > 0 && (textAppearingAnimationProgress - inputData.FullText.Length) / inputData.TypewriterSpeed > clearAfterPause)
-        {
-            inputData.FullText = null;
-            SetText(null);
-            return;
-        }
+        if (displayString == null) return;
+        ProgressNorm += (Time.deltaTime * inputData.TypewriterSpeed) / displayString.Length;
 
         // update text
-        string fullText = inputData.FullText;
-        if (Mathf.FloorToInt(textAppearingAnimationProgress) < fullText.Length)
+        UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        string fullText = displayString;
+        if (ProgressNorm < 1)
         {
-            int character = Mathf.FloorToInt(textAppearingAnimationProgress);
+            int character = Mathf.FloorToInt(ProgressNorm * fullText.Length);
             if (character < 0) character = 0;
+
+            // play bleep for each character (if it's not whitespace)
             if (character < fullText.Length && character > prevTextAppearingAnimationCharacter && !char.IsWhiteSpace(fullText[character]))
             {
                 AudioClip[] audioClips = inputData.TypewriterSounds;
@@ -101,6 +96,8 @@ public class TypewriterText : MonoBehaviour
                 }
             }
             prevTextAppearingAnimationCharacter = character;
+
+            // show text one character at a time
             int split = Mathf.Min(character, fullText.Length);
             string visibleText = fullText.Substring(0, split);
             string invisibleText = fullText.Substring(split);
@@ -108,7 +105,7 @@ public class TypewriterText : MonoBehaviour
         }
         else
         {
-            SetText($"<alpha=#FF>{fullText}<alpha=#00>{""}");
+            SetText($"<alpha=#FF>{fullText}<alpha=#00>");
         }
     }
 
@@ -142,23 +139,23 @@ public class TypewriterText : MonoBehaviour
 
     public float GetProgress()
     {
-        if (string.IsNullOrEmpty(inputData.FullText)) return 0;
-        return textAppearingAnimationProgress / inputData.FullText.Length;
+        if (string.IsNullOrEmpty(displayString)) return 0;
+        return ProgressNorm;
     }
 
     public void Finish()
     {
-        textAppearingAnimationProgress = inputData.FullText.Length;
+        ProgressNorm = 1;
     }
 
-    private void Experimental()
-    {
-        int count = dialogueTextMesh.textInfo.characterCount;
-        for (int i = 0; i < count; i++)
-        {
-            Vector3 bottom = dialogueTextMesh.textInfo.characterInfo[i].bottomLeft;
+    //private void Experimental()
+    //{
+    //    int count = dialogueTextMesh.textInfo.characterCount;
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        Vector3 bottom = dialogueTextMesh.textInfo.characterInfo[i].bottomLeft;
             
-        }
-        //
-    }
+    //    }
+    //    //
+    //}
 }
