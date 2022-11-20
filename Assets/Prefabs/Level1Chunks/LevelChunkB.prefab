@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 462829364080782826}
   - component: {fileID: 1750494746535951219}
   - component: {fileID: 3284987795160283055}
+  - component: {fileID: 8212044849298214100}
   m_Layer: 0
   m_Name: picframe2 Variant
   m_TagString: Untagged
@@ -123,6 +124,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 1750494746535951219}
   Tags: 1
+--- !u!114 &8212044849298214100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462829364080782827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5616665065928106819
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +148,7 @@ GameObject:
   - component: {fileID: 7713208713833386988}
   - component: {fileID: 7810954778206454057}
   - component: {fileID: 6294414863866781764}
+  - component: {fileID: 95811404114855045}
   m_Layer: 0
   m_Name: shelf
   m_TagString: Untagged
@@ -269,6 +283,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 7810954778206454057}
   Tags: 1
+--- !u!114 &95811404114855045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5616665065928106819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5877540341622763180
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +307,7 @@ GameObject:
   - component: {fileID: 532027968334900304}
   - component: {fileID: 6500352204851303991}
   - component: {fileID: 8863883208043556202}
+  - component: {fileID: 742623066413933354}
   m_Layer: 0
   m_Name: ottoman
   m_TagString: Untagged
@@ -402,6 +429,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 6500352204851303991}
   Tags: 1
+--- !u!114 &742623066413933354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5877540341622763180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8163801343967973140
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +453,7 @@ GameObject:
   - component: {fileID: 2198896317809527206}
   - component: {fileID: 5016271220133944156}
   - component: {fileID: 6037007226598973297}
+  - component: {fileID: 3050632977362855605}
   m_Layer: 0
   m_Name: shelf (1)
   m_TagString: Untagged
@@ -548,6 +588,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 5016271220133944156}
   Tags: 1
+--- !u!114 &3050632977362855605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8163801343967973140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &229240704471865293
 PrefabInstance:
   m_ObjectHideFlags: 0

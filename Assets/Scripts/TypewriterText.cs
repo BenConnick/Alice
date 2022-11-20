@@ -11,6 +11,7 @@ public class TypewriterText : MonoBehaviour
     [Header("Auto config")]
     [SerializeField] private string textToAutoPlay;
     [SerializeField] private float clearAfterPause;
+    [SerializeField] private float defaultSpeed = 10;
 
     private struct InputData
     {
@@ -23,15 +24,16 @@ public class TypewriterText : MonoBehaviour
     private InputData inputData;
     private float textAppearingAnimationProgress = 0;
     private int prevTextAppearingAnimationCharacter;
-    private const float defaultSpeed = 10;
 
-    public void PlayTypewriter(string text, float speed = defaultSpeed, AudioClip[] sounds = null, float delay = 0f)
+    public void PlayTypewriter(string text, float speed = 0, AudioClip[] sounds = null, float delay = 0f)
     {
         if (text == null) return;
 
         if (sounds == null) sounds = new AudioClip[] { soundSource.clip };
 
         string prev = inputData.FullText ?? "";
+
+        if (speed <= 0) speed = defaultSpeed;
 
         // params
         inputData = new InputData { FullText = text, TypewriterSounds = sounds, TypewriterSpeed = speed };
@@ -147,5 +149,16 @@ public class TypewriterText : MonoBehaviour
     public void Finish()
     {
         textAppearingAnimationProgress = inputData.FullText.Length;
+    }
+
+    private void Experimental()
+    {
+        int count = dialogueTextMesh.textInfo.characterCount;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 bottom = dialogueTextMesh.textInfo.characterInfo[i].bottomLeft;
+            
+        }
+        //
     }
 }

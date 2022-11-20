@@ -24,7 +24,7 @@ public class RabbitHoleDisplay : MonoBehaviour
     
     private void Awake()
     {
-        invertedColor = rawImageComponent.material == invertedMaterial;
+        invertedColor = false; // rawImageComponent.material == invertedMaterial;
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
     }
 
@@ -56,7 +56,8 @@ public class RabbitHoleDisplay : MonoBehaviour
     public void SetColorInverted(bool inverted)
     {
         if (invertedColor == inverted) return;
-        rawImageComponent.material = inverted ? invertedMaterial : defaultMaterial;
+        //rawImageComponent.material = inverted ? invertedMaterial : defaultMaterial;
+        InvertSpriteTintBehavior.SetAllInverted(inverted);
         invertedColor = inverted;
     }
 
@@ -164,11 +165,11 @@ public class RabbitHoleDisplay : MonoBehaviour
     {
         Tween.Start(
             (t) => {
-                SetColorInverted(false);
+                SetColorInverted(true);
             },
             time,
             () => {
-                SetColorInverted(true);
+                SetColorInverted(false);
             });
     }
 }
