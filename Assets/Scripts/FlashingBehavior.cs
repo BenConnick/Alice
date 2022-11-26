@@ -16,10 +16,10 @@ public class FlashingBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flashingTimer > 0)
+        if (flashingTimer > 0 && Time.timeScale > 0)
         {
             spriteRenderer.enabled = flashingTimer % flashOffTime > flashOffTime * .5f;
-            flashingTimer -= Time.unscaledDeltaTime;
+            flashingTimer -= Time.deltaTime;
         }
         else
         {

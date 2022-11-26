@@ -66,7 +66,7 @@ public abstract class AbstractSpriteAnimator : MonoBehaviour
                 return;
             }
         }
-        Debug.LogWarning("Missing animation: '" + name + "'");
+        Debug.LogWarning(gameObject.name + " missing animation: '" + name + "'");
     }
 
     public void SetAnimationByIndex(int index, int startingFrameNum=0)
