@@ -24,6 +24,7 @@ Shader "FX/Glitch/Analog"
 {
     Properties
     {
+        _ScanLineJitter ("Scan Line Jitter", Vector) = (0.5, 0.5, 1 ,1)
         _MainTex ("-", 2D) = "" {}
     }
     CGINCLUDE
@@ -32,7 +33,6 @@ Shader "FX/Glitch/Analog"
 
     sampler2D _MainTex;
     float2 _MainTex_TexelSize;
-
     float2 _ScanLineJitter; // (displacement, threshold)
     float2 _VerticalJump;   // (amount, time)
     float _HorizontalShake;
