@@ -7,6 +7,9 @@ public class RabbitHole : MonoBehaviour
     public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
 
+    [Header("Children")]
+    public SpriteRenderer[] BackgroundTiles;
+
     [Header("Animation")]
     public float introAnimationDistance;
     public float outroAnimationDistance;
@@ -22,6 +25,7 @@ public class RabbitHole : MonoBehaviour
     [SerializeField] private LevelChunk[] chessChunkPrefabs;
     [SerializeField] private LevelChunk[] teaPartyChunkPrefabs;
     [SerializeField] private LevelChunk[] queenChunkPrefabs;
+    [SerializeField] private Sprite[] perLevelBackgroundSprites;
 
     // fields
     public RabbitHoleDisplay OwnerLink { get; set; }
@@ -198,13 +202,19 @@ public class RabbitHole : MonoBehaviour
     public void PlayIntroAnimationForRestart()
     {
         menuGraphics.HideAllStageArt();
-        mode = AnimationMode.Intro;
+        PlayIntroAnim();
     }
 
     public void PlayIntroAnimationForCurrentLevel()
     {
         menuGraphics.ShowStageArt(GM.CurrentLevel);
+        PlayIntroAnim();
+    }
+
+    private void PlayIntroAnim()
+    {
         mode = AnimationMode.Intro;
+        SetBackgroundSpritesForLevel((int) GM.CurrentLevel);
     }
 
     private void OnIntroComplete()
@@ -269,5 +279,19 @@ public class RabbitHole : MonoBehaviour
     public float GetIntroOffset()
     {
         return transform.localPosition.y - (initialHeight + introAnimationDistance);
+    }
+
+    private void SetBackgroundSpritesForLevel(int levelIndex)
+    {
+        if (perLevelBackgroundSprites.TryGet(levelIndex, out Sprite art)) {
+            foreach (var backgroundTile in BackgroundTiles)
+            {
+                backgroundTile.sprite = art;
+            }
+        }
+        else
+        {
+            Debug.Log(gameObject.name + "failed to find background for level " + levelIndex);
+        }
     }
 }

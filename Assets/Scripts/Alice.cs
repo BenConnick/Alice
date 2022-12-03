@@ -136,7 +136,7 @@ public class Alice : AliceCharacterMovement
             if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
 
             // shake, flash, subtract lives
-            movementContext.InvertForTime(0.01f);
+            movementContext.InvertColor(0.01f);
             TimeDistortionController.PlayImpactFrame();
             movementContext.GameplayCamera.GetComponent<GameplayInnerDisplayCamera>().Shake(); // DISABLED FOR EDITING
             player.StartFlashing();

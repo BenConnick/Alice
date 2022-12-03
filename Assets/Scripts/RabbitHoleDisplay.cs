@@ -1,31 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RabbitHoleDisplay : MonoBehaviour
 {
-    public Camera GameplayCamera;
-    public RabbitHole ObstacleContext;
+    public RabbitHoleGroup GameplayGroup;
+    public Camera GameplayCamera => GameplayGroup.GameplayCam;
+    public RabbitHole ObstacleContext => GameplayGroup.ObstacleContext;
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
-    public GameObject Overlay;
-
+    public GameObject Overlay => GameplayGroup.UIOverlay.gameObject;
+    public RenderTexture DefaultRT;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI scoreLabel;
-    [SerializeField] private GameObject[] heartIcons;
     [SerializeField] private RawImage rawImageComponent;
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material invertedMaterial;
 
+    // linked UI
+
+    private TextMeshProUGUI scoreLabel => GameplayGroup.UIOverlay.ScoreLabel;
+    private GameObject[] heartIcons => GameplayGroup.UIOverlay.HeartIcons;
+
     private bool invertedColor;
 
-    private (int frame, Vector3 norm, Vector3 world) cachedCursorPositions = default;
+    private (int frame, Vector3 norm, Vector3 world) cachedCursorPosition = default;
     
     private void Awake()
     {
         invertedColor = false; // rawImageComponent.material == invertedMaterial;
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
+
+        // use new RT for each display
+        if (GameplayCamera.targetTexture == DefaultRT)
+        {
+            SetRT(GetPooledRT());
+        }
     }
 
     private void LateUpdate()
@@ -62,31 +73,46 @@ public class RabbitHoleDisplay : MonoBehaviour
     }
 
     // assumes that there is a RabbitHoleDisplay instance
-    // which exists in the scene and can be copied 
-    public static RabbitHoleDisplay Create(Vector2 panelUIPos, Vector3 worldPos)
+    // which exists in the scene and can be copied
+    [Obsolete]
+    public RabbitHoleDisplay Create(Vector2 panelUIPos, Vector3 worldPos)
     {
-        var source = GM.GameplayScreen.GetComponentInChildren<RabbitHoleDisplay>();
+        var source = this;
         RenderTexture newRT = GetPooledRT();
         Transform gameplayGroupCopy = Instantiate(source.GameplayCamera.transform.parent, source.GameplayCamera.transform.parent.parent);
         gameplayGroupCopy.transform.localPosition = worldPos; // shift over
         Camera cameraCopy = gameplayGroupCopy.GetComponentInChildren<Camera>();
-        cameraCopy.targetTexture = newRT;
+        // cameraCopy.targetTexture = newRT; now covered below in "SetRT"
 
-        var copy = Instantiate(source,source.transform.parent);
-        copy.transform.localPosition = panelUIPos;
-        copy.ObstacleContext = gameplayGroupCopy.GetComponentInChildren<RabbitHole>();
-        copy.ObstacleContext.OwnerLink = copy;
-        copy.GameplayCamera = cameraCopy;
-        copy.GetComponent<RawImage>().texture = newRT;
-        return copy;
+        var displayCopy = Instantiate(source,source.transform.parent);
+        displayCopy.transform.localPosition = panelUIPos;
+        displayCopy.GameplayGroup = gameplayGroupCopy.GetComponentInChildren<RabbitHoleGroup>();
+        displayCopy.SetRT(newRT);
+        displayCopy.ObstacleContext.OwnerLink = displayCopy;
+        displayCopy.GetComponent<RawImage>().texture = newRT;
+        return displayCopy;
+    }
+
+    private void SetRT(RenderTexture renderTexture)
+    {
+        if (rawImageComponent.texture != null && rawImageComponent.texture != DefaultRT)
+        {
+            if (rtTracker.Contains(rawImageComponent.texture as RenderTexture) && !freeRTPool.Contains(rawImageComponent.texture as RenderTexture))
+            {
+                Debug.LogWarning(gameObject.name + "(RabbitHoleDisplay): the render texture released by this display has not been returned to the pool and may remain in memory unless released.");
+            }
+        }
+        GameplayCamera.targetTexture = renderTexture;
+        rawImageComponent.texture = renderTexture;
     }
 
     // render texture pool is global, shared across all instances
     private static List<RenderTexture> freeRTPool = new List<RenderTexture>();
-    private static RenderTexture GetPooledRT()
+    private static List<RenderTexture> rtTracker = new List<RenderTexture>(); // track all created RTs, avoid leaks
+    private RenderTexture GetPooledRT()
     {
-        const int RTW = 320;
-        const int RTH = 320;
+        int RTW = DefaultRT.width;
+        int RTH = DefaultRT.height;
         if (freeRTPool.Count > 0) {
             var ret = freeRTPool[0];
             freeRTPool.RemoveAt(0);
@@ -94,15 +120,18 @@ public class RabbitHoleDisplay : MonoBehaviour
         }
         else
         {
-            return new RenderTexture(new RenderTextureDescriptor(RTW,RTH,RenderTextureFormat.Default));
+            var ret = new RenderTexture(DefaultRT.descriptor);
+            ret.filterMode = DefaultRT.filterMode;
+            rtTracker.Add(ret);
+            return ret;
         }
     }
 
     public Vector2 GetNormalizedCursorPos(Camera finalCam = null)
     {
         // only compute this once per frame
-        if (Time.frameCount == cachedCursorPositions.frame)
-            return cachedCursorPositions.norm;
+        if (Time.frameCount == cachedCursorPosition.frame)
+            return cachedCursorPosition.norm;
 
         // fallback to default
         if (finalCam == null)
@@ -119,7 +148,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         // PerFrameVariableWatches.SetDebugQuantity("posInViewport", posInViewport.ToString());
 
         // cache
-        cachedCursorPositions = (Time.frameCount, posInViewport, GetCursorViewportWorldPos(posInViewport));
+        cachedCursorPosition = (Time.frameCount, posInViewport, GetCursorViewportWorldPos(posInViewport));
 
         // return
         return posInViewport;
@@ -128,8 +157,8 @@ public class RabbitHoleDisplay : MonoBehaviour
     public Vector3 GetCursorViewportWorldPos(Vector2 cursorViewportPos)
     {
         // only compute this once per frame
-        if (Time.frameCount == cachedCursorPositions.frame)
-            return cachedCursorPositions.world;
+        if (Time.frameCount == cachedCursorPosition.frame)
+            return cachedCursorPosition.world;
 
         // norm viewportCam pos to world* pos
         Vector3 gameplayPos = GameplayCamera.ViewportToWorldPoint(cursorViewportPos);
@@ -137,7 +166,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         gameplayPos.z = ObstacleContext.transform.position.z; // z pos
 
         // cache
-        cachedCursorPositions = (Time.frameCount, cachedCursorPositions.norm, gameplayPos);
+        cachedCursorPosition = (Time.frameCount, cachedCursorPosition.norm, gameplayPos);
 
         return gameplayPos;
     }
@@ -161,13 +190,14 @@ public class RabbitHoleDisplay : MonoBehaviour
         }
     }
 
-    public void InvertForTime(float time)
+    public void InvertColor(float duration)
     {
+        SetColorInverted(true);
         Tween.Start(
             (t) => {
-                SetColorInverted(true);
+                // unused
             },
-            time,
+            duration,
             () => {
                 SetColorInverted(false);
             });

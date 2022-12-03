@@ -202,16 +202,21 @@ public static class GM
                 FindSingle<GameplayScreenBehavior>().ShowGame();
                 break;
             case NavigationEvent.SplitAnimationMidPoint:
-                var rabbitHoles = GameObject.FindObjectsOfType<RabbitHole>();
-                FindSingle<Alice>().UnbecomeButton();
-                IsGameplayPaused = false;
-                foreach (var hole in rabbitHoles)
-                {
-                    hole.PlayIntroAnimationForCurrentLevel();
-                }
+                PlayGameInner();
                 break;
             default:
                 throw new Exception("Unhandled game event: " + gameEvent);
+        }
+    }
+
+    private static void PlayGameInner()
+    {
+        var rabbitHoles = GameObject.FindObjectsOfType<RabbitHole>();
+        FindSingle<Alice>().UnbecomeButton();
+        IsGameplayPaused = false;
+        foreach (var hole in rabbitHoles)
+        {
+            hole.PlayIntroAnimationForCurrentLevel();
         }
     }
 
@@ -235,14 +240,29 @@ public static class GM
     private static void AdvanceDialogueContext()
     {
         // get current dialogue context
-        var ctx = FindSingle<CharacterDialogueBehavior>(); // TODO
+        var ctx = CharacterDialogueBehavior.ActiveDialogue;
+
+        if (ctx == null)
+        {
+            Debug.LogError("Dialogue advanced, but no dialogue active");
+            return;
+        }
+
         // advance to next step
         bool last = ctx.PlayNextLine();
         // if this is the last step, start the next falling section
         if (last)
         {
-            FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
+            if (ctx is CaterpillarDialogueBehavior)
+                PlayCaterpillarDoneMoment();
+            else
+                PlayGameInner();
         }
+    }
+
+    private static void PlayCaterpillarDoneMoment()
+    {
+        FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
     }
 
     private static void DoFirstStart()
@@ -334,6 +354,19 @@ public static class GM
             gameplayComponentsCache[typeof(T)] = found;
 
         return found;
+    }
+
+    [Command]
+    public static void SkipCaterpillarDialogue()
+    {
+        PlayCaterpillarDoneMoment();
+    }
+
+    [Command]
+    public static void DebugNextLevel()
+    {
+        CurrentLevel++;
+        // TODO
     }
 
     // reminder that you can add debug commands

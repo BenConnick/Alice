@@ -277,4 +277,14 @@ public static class Util
         string colorString = ColorUtility.ToHtmlStringRGBA(color);
         return $"<color=#{colorString}>{content}</color>";
     }
-}
+
+    public static void SetGlobalY(this Transform t, float y)
+    {
+        t.position = new Vector3(t.position.x, y, t.position.z);
+    }
+
+    public static void SetLocalY(this Transform t, float y)
+    {
+        t.localPosition = new Vector3(t.localPosition.x, y, t.localPosition.z);
+    }
+}   
