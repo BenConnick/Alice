@@ -126,10 +126,14 @@ public class Alice : AliceCharacterMovement
 
         if (obstacle.HasTag(LevelCollider.Tag_DamageOnHit))
         {
+            // invert the collider
+            var inv = obstacle.gameObject.AddComponent<InvertSpriteTintBehavior>();
+            inv.Initialize();
+
             // flash the collider
-            var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
-            flashing.flashOffTime = 0.07f;
-            flashing.StartFlashing();
+            //var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
+            //flashing.flashOffTime = 0.07f;
+            //flashing.StartFlashing();
 
             // bump up the removal time (if applicable)
             var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();

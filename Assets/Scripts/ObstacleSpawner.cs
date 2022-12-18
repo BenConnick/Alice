@@ -115,8 +115,11 @@ public class ChunkSpawner
             // shuffle the queue
             Util.Shuffle(shuffledChunkQueue);
             // reshuffle if there's two of the same chunk next to each other
+            int breakCondition = 0;
             while (shuffledChunkQueue.Length > 1 && shuffledChunkQueue[0] == prevChunk)
             {
+                if (breakCondition > 10) break;
+                breakCondition++;
                 Util.Shuffle(shuffledChunkQueue);
             }
             shuffledChunkIndex = 0;

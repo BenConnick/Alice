@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class TimeDistortionController
 {
+    public static float BaselineSpeed { get; private set; } = 1f;
+
     public static Coroutine StartCoroutine(IEnumerator routine)
     {
         return GM.StartCoroutine(routine);
@@ -12,7 +13,7 @@ public static class TimeDistortionController
 
     public static void SlowResume()
     {
-        StartCoroutine(LerpTimescaleCoroutine(defaultResumeDuration, 0.01f, 1f));
+        StartCoroutine(LerpTimescaleCoroutine(defaultResumeDuration, 0.01f, BaselineSpeed));
     }
 
     public static void PlayImpactFrame(float duration = 0.2f)
@@ -22,7 +23,7 @@ public static class TimeDistortionController
 
     public static void PlaySlowmoAndResume()
     {
-        StartCoroutine(ArcLerpTimescaleCoroutine(defaultResumeDuration, 0.1f, 1f));
+        StartCoroutine(ArcLerpTimescaleCoroutine(defaultResumeDuration, 0.1f, BaselineSpeed));
     }
 
     public static void PlaySlowmoWithCallback(Action callback)
@@ -64,7 +65,7 @@ public static class TimeDistortionController
             //Debug.Log("timescale " + Time.timeScale);
             yield return null;
         }
-        Time.timeScale = 1;
+        Time.timeScale = BaselineSpeed;
         callback?.Invoke();
         //Debug.Log("timescale " + Time.timeScale);
     }
@@ -80,7 +81,7 @@ public static class TimeDistortionController
             //Debug.Log("timescale " + Time.timeScale);
             yield return null;
         }
-        Time.timeScale = 1;
+        Time.timeScale = BaselineSpeed;
         //Debug.Log("timescale " + Time.timeScale);
     }
 
@@ -93,7 +94,13 @@ public static class TimeDistortionController
             //Debug.Log("timescale " + Time.timeScale);
             yield return null;
         }
-        Time.timeScale = 1;
+        Time.timeScale = BaselineSpeed;
         //Debug.Log("timescale " + Time.timeScale);
+    }
+
+    public static void SetBaselineSpeed(float target)
+    {
+        BaselineSpeed = target;
+        Time.timeScale = BaselineSpeed;
     }
 }

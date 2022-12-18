@@ -162,7 +162,7 @@ public static class GM
             case LevelType.RabbitHole:
                 return 300f;
             case LevelType.Caterpillar:
-                return 30f;
+                break;
             case LevelType.CheshireCat:
                 break;
             case LevelType.MadHatter:
@@ -172,7 +172,7 @@ public static class GM
             default:
                 break;
         }
-        return 10f;
+        return 100f;
     }
 
     public static void OnGameEvent(NavigationEvent gameEvent)
@@ -211,13 +211,20 @@ public static class GM
 
     private static void PlayGameInner()
     {
-        var rabbitHoles = GameObject.FindObjectsOfType<RabbitHole>();
         FindSingle<Alice>().UnbecomeButton();
         IsGameplayPaused = false;
-        foreach (var hole in rabbitHoles)
+        TimeDistortionController.SetBaselineSpeed(GetLevelBaselineSpeed(CurrentLevel));
+        foreach (var disp in RabbitHoleDisplay.All)
         {
+            var hole = disp.ObstacleContext;
+            hole.Reset();
             hole.PlayIntroAnimationForCurrentLevel();
         }
+    }
+
+    private static float GetLevelBaselineSpeed(LevelType level)
+    {
+        return level == LevelType.Caterpillar ? .5f : 1f;
     }
 
     #region game event handlers
@@ -269,13 +276,9 @@ public static class GM
     {
         CurrentMode = GameMode.Gameplay;
         CurrentLevel = LevelType.RabbitHole;
-        foreach (var r in UnityEngine.Object.FindObjectsOfType<RabbitHole>())
-        {
-            r.Reset();
-        }
         ChangeActiveScreen(GameMode.Gameplay);
-        IsGameplayPaused = false;
-        FindSingle<RabbitHole>().PlayIntroAnimationForCurrentLevel();
+
+        PlayGameInner();
     }
 
     private static void DoGameOver()
@@ -363,17 +366,30 @@ public static class GM
     }
 
     [Command]
-    public static void DebugNextLevel()
+    public static void JumpToPOI()
     {
-        CurrentLevel++;
-        // TODO
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            UnityEditor.EditorApplication.EnterPlaymode();
+            return;
+        }
+#endif
+        // replace the contents of this function with the latest point of interest
+        JumpToCaterpillar();
+
     }
 
-    // reminder that you can add debug commands
-    // directly to this class and they will be added
-    [Command]
-    public static void Toot()
+    private static void JumpToCaterpillar()
     {
-        Debug.Log("toot");
+        CurrentLevel = LevelType.Caterpillar;
+        CurrentMode = GameMode.Gameplay;
+        foreach (var rabbithole in RabbitHoleDisplay.All)
+        {
+            rabbithole.GameplayGroup.ObstacleContext.SetBackgroundSpritesForLevel((int)CurrentLevel);
+            rabbithole.GameplayGroup.ObstacleContext.menuGraphics.ShowStageArt(CurrentLevel);
+            //rabbithole.GameplayGroup.UIOverlay.gameObject.SetActive(false);
+        }
+        PlayGameInner();
     }
 }

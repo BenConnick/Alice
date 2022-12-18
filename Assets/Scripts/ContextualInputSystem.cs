@@ -28,7 +28,7 @@ public static class ContextualInputSystem
         // compare the mouse position against every display
         // PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
         var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-        foreach (var viewport in UnityEngine.Object.FindObjectsOfType<RabbitHoleDisplay>())
+        foreach (var viewport in RabbitHoleDisplay.All)
         {
             Vector2 normalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
             if (Util.IsInBounds(normalizedCursorPos))

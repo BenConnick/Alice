@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class RabbitHoleDisplay : MonoBehaviour
 {
+    public static List<RabbitHoleDisplay> All = new List<RabbitHoleDisplay>();
+
     public RabbitHoleGroup GameplayGroup;
     public Camera GameplayCamera => GameplayGroup.GameplayCam;
     public RabbitHole ObstacleContext => GameplayGroup.ObstacleContext;
@@ -29,6 +31,8 @@ public class RabbitHoleDisplay : MonoBehaviour
     
     private void Awake()
     {
+        if (!All.Contains(this)) All.Add(this);
+
         invertedColor = false; // rawImageComponent.material == invertedMaterial;
         if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
 
@@ -62,6 +66,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         {
             freeRTPool.Add(AssociatedTexture);
         }
+        All.Remove(this);
     }
 
     public void SetColorInverted(bool inverted)

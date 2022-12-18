@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 532027968334900304}
   - component: {fileID: 6500352204851303991}
   - component: {fileID: 8863883208043556202}
-  - component: {fileID: 7673397774518488458}
   m_Layer: 0
   m_Name: ottoman
   m_TagString: Untagged
@@ -134,18 +133,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 6500352204851303991}
   Tags: 1
---- !u!114 &7673397774518488458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5877540341622763180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6103892552024716837
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +145,6 @@ GameObject:
   - component: {fileID: 3944213580762137974}
   - component: {fileID: 8045030446591411498}
   - component: {fileID: 7156481304995572434}
-  - component: {fileID: 1559992562790466800}
   m_Layer: 0
   m_Name: Dresser
   m_TagString: Untagged
@@ -270,18 +256,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0066667, y: 1.4}
   m_EdgeRadius: 0
---- !u!114 &1559992562790466800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6103892552024716837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9142bd10c7f8148f0871dfe2f24206dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4744915803060107995
 PrefabInstance:
   m_ObjectHideFlags: 0

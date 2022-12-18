@@ -281,7 +281,7 @@ public class RabbitHole : MonoBehaviour
         return transform.localPosition.y - (initialHeight + introAnimationDistance);
     }
 
-    private void SetBackgroundSpritesForLevel(int levelIndex)
+    public void SetBackgroundSpritesForLevel(int levelIndex)
     {
         if (perLevelBackgroundSprites.TryGet(levelIndex, out Sprite art)) {
             foreach (var backgroundTile in BackgroundTiles)

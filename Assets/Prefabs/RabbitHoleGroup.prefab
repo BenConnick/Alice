@@ -692,7 +692,8 @@ MonoBehaviour:
   - {fileID: 8465607651784711365, guid: 99c9344ce472242bc8bc5eb45e187b70, type: 3}
   - {fileID: 8465607651784711365, guid: ac1ac51779d8449e6b42b358bf957838, type: 3}
   caterpillarChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: c1415f9f124d5401b81ee3f8d8be2c30, type: 3}
+  - {fileID: 8465607651784711365, guid: 06060638ca8af4bf5ae9aca0c9b3ce8d, type: 3}
+  - {fileID: 8465607651784711365, guid: 06060638ca8af4bf5ae9aca0c9b3ce8d, type: 3}
   chessChunkPrefabs:
   - {fileID: 8465607651784711365, guid: 96a0e4e368a2c478e86962ad0954794f, type: 3}
   teaPartyChunkPrefabs:
