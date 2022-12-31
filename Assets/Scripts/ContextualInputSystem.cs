@@ -12,6 +12,16 @@ public static class ContextualInputSystem
 
     public static void Update()
     {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("Mouse up");
+            if (GM.CurrentMode == GM.GameMode.GameOver)
+            {
+                Debug.Log("Game over Mouse up");
+                GM.OnGameEvent(GM.NavigationEvent.GameOverGoNext);
+            }
+        }
+
         if (UICapturedInput)
         {
             ViewWorldCursorPos = Vector3.zero;
@@ -36,14 +46,6 @@ public static class ContextualInputSystem
                 Context = viewport;
                 ViewWorldCursorPos = viewport.GetCursorViewportWorldPos(normalizedCursorPos);
                 break;
-            }
-        }
-
-        if (GM.CurrentMode == GM.GameMode.GameOver)
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
             }
         }
     }

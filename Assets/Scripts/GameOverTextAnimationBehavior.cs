@@ -12,14 +12,9 @@ public class GameOverTextAnimationBehavior : MonoBehaviour
 
     private TextMeshProUGUI label;
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        label = GetComponent<TextMeshProUGUI>();
-    }
-
     private void OnEnable()
     {
+        label = GetComponent<TextMeshProUGUI>();
         if (PlayOnEnable) Play();
     }
 
@@ -30,12 +25,17 @@ public class GameOverTextAnimationBehavior : MonoBehaviour
 
     private IEnumerator AnimateTextContentOneShot()
     {
+        // set first
         label.text = Text1;
+
+        // wait seconds
         float startTime = Time.time;
         while (Time.time - startTime < SecondsUntilChange)
         {
             yield return null;
         }
+
+        // set second
         label.text = Text2;
     }
 }

@@ -30,7 +30,7 @@ public static partial class GM
 
     #region gamestate
     // Game State
-    public static bool IsGameplayPaused { get; private set; } = true;
+    public static bool IsGameplayPaused => CurrentMode != GameMode.Gameplay;
     public static bool InputFrozen => IsGameplayPaused;
     public static GameMode CurrentMode { get; private set; }
     public static int CurrentScore { get; set; }

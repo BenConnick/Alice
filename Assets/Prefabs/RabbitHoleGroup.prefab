@@ -2081,7 +2081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Text1: GAME OVER
   Text2: Play Me
-  SecondsUntilChange: 0.5
+  SecondsUntilChange: 1.5
   PlayOnEnable: 1
 --- !u!114 &6162443735395950819
 MonoBehaviour:
@@ -2290,7 +2290,7 @@ GameObject:
   - component: {fileID: 2692928321413564927}
   - component: {fileID: 5700739794133415777}
   m_Layer: 11
-  m_Name: GameOverOverlay
+  m_Name: Game Over Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -18,7 +18,6 @@ public static partial class GM
         PlatformerGameOver,
         PlatformerLevelEndTrigger,
         PlatformerLevelEndPostAnimation,
-        CheatCodeEntered,
         FallFromMonologue,
         SplitAnimationMidPoint,
         GameOverGoNext,
@@ -38,8 +37,8 @@ public static partial class GM
                 break;
             case NavigationEvent.PlatformerGameOver:
                 {
+                    CurrentMode = GameMode.GameOver;
                     DeathCount++;
-                    IsGameplayPaused = true;
                     //string storyKey = PassageStartPrefix + (DeathCount < 2 ? "" : " " + DeathCount);
                     //ShowStory(storyKey);
 
@@ -53,7 +52,17 @@ public static partial class GM
                 break;
             case NavigationEvent.PlatformerLevelEndTrigger:
                 {
-                    FindSingle<RabbitHole>().PlayOutroAnimation();
+                    // play outro
+                    AllDisplays(rhd => rhd.ObstacleContext.PlayOutroAnimation());
+                }
+                break;
+            case NavigationEvent.PlatformerLevelEndPostAnimation:
+                {
+                    // begin dialogue
+                    CurrentMode = GameMode.Dialogue;
+                    CurrentLevel++;
+                    FindSingle<Alice>().BecomeButton();
+                    AdvanceDialogueContext();
                 }
                 break;
             case NavigationEvent.FallFromMonologue:
@@ -63,8 +72,7 @@ public static partial class GM
                         var rh = rhd.ObstacleContext;
                         rh.Reset();
                         rh.PlayIntroAnimationForRestart();
-                    });                    
-                    IsGameplayPaused = false;
+                    });
                     FindSingle<GameplayScreenBehavior>().ShowGame();
                 }
                 break;
@@ -75,12 +83,16 @@ public static partial class GM
                 break;
             case NavigationEvent.GameOverGoNext:
                 {
+                    Debug.Log("GameOverGoNext");
+                    CurrentMode = GameMode.Gameplay;
                     AllDisplays(disp =>
                     {
                         GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
                         gameOverUI.SetActive(false);
+                        var rh = disp.ObstacleContext;
+                        rh.Reset();
+                        rh.PlayIntroAnimationForRestart();
                     });
-                    OnGameEvent(NavigationEvent.FallFromMonologue);
                 }
                 break;
             case NavigationEvent.DialogueGoNext:
@@ -106,19 +118,10 @@ public static partial class GM
         }
     }
 
-    private static void BeginDialogue()
-    {
-        CurrentMode = GameMode.Dialogue;
-        CurrentLevel++;
-        IsGameplayPaused = true;
-        FindSingle<Alice>().BecomeButton();
-        AdvanceDialogueContext();
-    }
-
     private static void PlayGameInner()
     {
+        CurrentMode = GameMode.Gameplay;
         FindSingle<Alice>().UnbecomeButton();
-        IsGameplayPaused = false;
         TimeDistortionController.SetBaselineSpeed(GetLevelTimeScale(CurrentLevel));
         foreach (var disp in RabbitHoleDisplay.All)
         {

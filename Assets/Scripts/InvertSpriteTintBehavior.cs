@@ -40,7 +40,7 @@ public class InvertSpriteTintBehavior : MonoBehaviour
 
     private void SetInverted(bool inverted)
     {
-        Debug.Log("Set inverted: " + gameObject.name + " " + inverted + " " + (inverted ? invertedColor : originalColor) + " sr:" + spriteRenderer);
+        //Debug.Log("Set inverted: " + gameObject.name + " " + inverted + " " + (inverted ? invertedColor : originalColor) + " sr:" + spriteRenderer);
         if (spriteRenderer == null) return;
         spriteRenderer.color = inverted ? invertedColor : originalColor;
     }
