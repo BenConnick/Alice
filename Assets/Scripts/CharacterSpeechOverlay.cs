@@ -1,6 +1,8 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
+[Obsolete]
 public class CharacterSpeechOverlay : MonoBehaviour
 {
     [SerializeField] private FadeUIBehavior fadeUIBehavior;

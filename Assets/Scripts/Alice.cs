@@ -92,7 +92,10 @@ public class Alice : AliceCharacterMovement
 
     public void OnStartLevelPressed()
     {
-        GM.OnGameEvent(GM.NavigationEvent.GoButton);
+        if (GM.CurrentMode == GM.GameMode.MainMenu)
+            GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+        else
+            GM.OnGameEvent(GM.NavigationEvent.DialogueGoNext);
     }
 
     public void UnbecomeButton()

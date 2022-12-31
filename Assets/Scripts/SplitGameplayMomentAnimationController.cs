@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable CS0414
+
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SplitGameplayMomentAnimationController : MonoBehaviour
@@ -7,10 +9,9 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     [SerializeField] private RectTransform RabbitHoleDisplay1;
     [SerializeField] private RectTransform RabbitHoleDisplay2;
     [SerializeField] private Transform playerCharacterTransform;
-    [SerializeField] private GameObject RabbitHoleGroup2;
-    [SerializeField] private RabbitHoleDisplay SecondRabbitHoleDisplay;
     [SerializeField] private RawImage display1Renderer;
     [SerializeField] private RawImage display2Renderer;
+    [SerializeField] private Animator animator;
 
     // inspector
     [Header("Animation Config")]
@@ -38,7 +39,6 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
         // hide 2nd rabbit hole
         RabbitHoleDisplay2.gameObject.SetActive(false);
-        RabbitHoleGroup2.SetActive(false);
     }
 
     // the 2nd gameplay frame activates and both gameplay viewports
@@ -70,14 +70,15 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     {
         // show the 2nd gameplay fame
         RabbitHoleDisplay2.gameObject.SetActive(true);
-        RabbitHoleGroup2.SetActive(true);
+        display2Renderer.texture = display1Renderer.texture;
         // color treatment
         // (additive colors combine to white, look trippy when separating)
         display1Renderer.color = new Color(0, 1, 1);
         display2Renderer.color = new Color(1, 1, 0);
 
         // next animation: shake
-        Tween.Start(ShakeInterpolate, shakeDuration, OnShakeFinish);
+        //Tween.Start(ShakeInterpolate, shakeDuration, OnShakeFinish);
+        OnShakeFinish();
     }
 
     private void ShakeInterpolate(float t)
@@ -94,8 +95,10 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
         GM.OnGameEvent(GM.NavigationEvent.SplitAnimationMidPoint);
 
         // shake finished, separate
-        Tween.Start(SeparateInterpolate,spreadDuration,OnSeparateComplete);
-        Tween.Start(FadeInterpolate, fadeColorDuration);
+        //Tween.Start(SeparateInterpolate,spreadDuration,OnSeparateComplete);
+        //Tween.Start(FadeInterpolate, fadeColorDuration);
+        animator.SetTrigger("Wobble");
+        OnSeparateComplete();
     }
 
     private void SeparateInterpolate(float t)
@@ -162,4 +165,9 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     //PlayerCharacterAnimDummy.localPosition = dummyCanvasStartPos;
     //// enable the mouse trigger areas
     //foreach (var g in MouseOverTriggers) g.SetActive(true);
+
+    private void Update()
+    {
+        
+    }
 }

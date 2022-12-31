@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Purpose: First MonoBehavior
+/// Initializes and Updates the global Game Manager
+/// Stores references to scene objects
+/// </summary>
 public class GMHelperObject : MonoBehaviour
 {
     //public PlatformerAvatar PlatformerAvatar;
@@ -12,6 +17,7 @@ public class GMHelperObject : MonoBehaviour
     public GameObject ScoreBoard;
     public GameObject EnterNameScreen;
     public Transform[] SearchRoots;
+    public float[] LevelLengths;
 
     [Header("MenuSprites")]
     public Sprite[] MenuSprites;

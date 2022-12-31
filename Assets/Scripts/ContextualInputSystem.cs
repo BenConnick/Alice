@@ -38,5 +38,13 @@ public static class ContextualInputSystem
                 break;
             }
         }
+
+        if (GM.CurrentMode == GM.GameMode.GameOver)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
+            }
+        }
     }
 }

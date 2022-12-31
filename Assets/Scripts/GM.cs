@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -9,54 +9,17 @@ public delegate void EventDelegate();
 
 // Game Manager
 // static class, top control of the game state
-public static class GM
+public static partial class GM
 {
     public enum GameMode
     {
         Default,
-        // LoadingScreen, // unused - placeholder
+        LoadingScreen, // placeholder
         MainMenu,
-        // PauseMenu, // unused - placeholder
+        PauseMenu, // placeholder
         Gameplay, // the main gameplay mode
         Dialogue, // gameplay sub-mode
-        //Scoreboard, // deprecated
-        //EnterName, // deprecated
-        //GameOver, // deprecated
-    }
-
-    // Like LevelType, but more detailed
-    // the main-menu changes as you play
-    // it has the following appearance options
-    //public enum MenuStage
-    //{
-    //    PreRabbitHole,
-    //    RabbitHole,
-    //    DrinkMe,
-    //    Caterpillar,
-    //    Chess,
-    //    TeaParty,
-    //    QueenStart,
-    //    QueenDungeon,
-    //    GameWinMenu,
-    //}
-
-    public enum NavigationEvent
-    {
-        Default,
-        GoButton,
-        PlatformerGameOver,
-        PlatformerLevelEndTrigger,
-        PlatformerLevelEndPostAnimation,
-        CheatCodeEntered,
-        FallFromMonologue,
-        SplitAnimationMidPoint,
-    }
-
-    public enum DebugEvent
-    {
-        Default,
-        ShowNameEntryScreen,
-        SetLevelCaterpillar,
+        GameOver, 
     }
 
     public const string PassageStartPrefix = "Down the Rabbit Hole";
@@ -89,13 +52,13 @@ public static class GM
     public static void Init(GMHelperObject helper)
     {
         helperObject = helper;
-        Application.targetFrameRate = 60;
         CurrentMode = GameMode.MainMenu;
-        ChangeActiveScreen(GameMode.MainMenu);
-#if UNITY_EDITOR
-        MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : 3;
-#endif
+        Application.targetFrameRate = 60;
         FindSingle<SplitGameplayMomentAnimationController>().SetToDefaultState();
+
+#if UNITY_EDITOR
+        MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : MAX_LIVES;
+#endif
     }
 
     public static void InitEditor()
@@ -114,282 +77,25 @@ public static class GM
 
     }
 
-    private static void ChangeActiveScreen(GameMode mode)
-    {
-        GameObject activeScreen = null;
-        switch (mode)
-        {
-            case GameMode.MainMenu:
-                activeScreen = GameplayScreen;
-                break;
-            case GameMode.Gameplay:
-                activeScreen = GameplayScreen;
-                break;
-            // deprecated
-            //case GameMode.Scoreboard:
-            //    IsGameplayPaused = true;
-            //    activeScreen = Scoreboard;
-            //    break;
-            //case GameMode.EnterName:
-            //    IsGameplayPaused = true;
-            //    activeScreen = EnterNameScreen;
-            //    break;
-            default:
-                throw new Exception("unhandled mode: " + mode);
-        }
-
-        // activate screens
-        void ShowHide(GameObject g)
-        {
-            g.SetActive(g == activeScreen);
-        }
-        ShowHide(MainMenu);
-        ShowHide(GameplayScreen);
-        // ShowHide(Scoreboard); deprecated
-        // ShowHide(EnterNameScreen); deprecated
-    }
-
     public static float GetLevelLength(LevelType level)
     {
 #if UNITY_EDITOR
         if (UnityEditor.EditorPrefs.GetBool("ShortLevels"))
             return 5f;
 #endif
-        switch (level)
+        int l = (int)level;
+
+        if (l >= helperObject.LevelLengths.Length)
         {
-            case LevelType.Default:
-                break;
-            case LevelType.RabbitHole:
-                return 300f;
-            case LevelType.Caterpillar:
-                break;
-            case LevelType.CheshireCat:
-                break;
-            case LevelType.MadHatter:
-                break;
-            case LevelType.QueenOfHearts:
-                break;
-            default:
-                break;
+            return 100f;
         }
-        return 100f;
+
+        return helperObject.LevelLengths[l];
     }
 
-    public static void OnGameEvent(NavigationEvent gameEvent)
-    {
-        switch (gameEvent)
-        {
-            case NavigationEvent.GoButton:
-                HandleGoButtonInGlobalContext();
-                break;
-            case NavigationEvent.PlatformerGameOver:
-                DoGameOver();
-                break;
-            case NavigationEvent.PlatformerLevelEndTrigger:
-                ShowLevelEndAnimation();
-                break;
-            case NavigationEvent.PlatformerLevelEndPostAnimation:
-                DoEnterDialogueArea();
-                break;
-            case NavigationEvent.CheatCodeEntered:
-                // deprecated
-                break;
-            case NavigationEvent.FallFromMonologue:
-                var rh = FindSingle<RabbitHole>();
-                rh.Reset();
-                rh.PlayIntroAnimationForRestart();
-                IsGameplayPaused = false;
-                FindSingle<GameplayScreenBehavior>().ShowGame();
-                break;
-            case NavigationEvent.SplitAnimationMidPoint:
-                PlayGameInner();
-                break;
-            default:
-                throw new Exception("Unhandled game event: " + gameEvent);
-        }
-    }
 
-    private static void PlayGameInner()
-    {
-        FindSingle<Alice>().UnbecomeButton();
-        IsGameplayPaused = false;
-        TimeDistortionController.SetBaselineSpeed(GetLevelBaselineSpeed(CurrentLevel));
-        foreach (var disp in RabbitHoleDisplay.All)
-        {
-            var hole = disp.ObstacleContext;
-            hole.Reset();
-            hole.PlayIntroAnimationForCurrentLevel();
-        }
-    }
-
-    private static float GetLevelBaselineSpeed(LevelType level)
+    private static float GetLevelTimeScale(LevelType level)
     {
         return level == LevelType.Caterpillar ? .5f : 1f;
-    }
-
-    #region game event handlers
-    private static void HandleGoButtonInGlobalContext()
-    {
-        switch (CurrentMode)
-        {
-            case GameMode.Dialogue:
-                AdvanceDialogueContext();
-                break;
-            case GameMode.MainMenu:
-                DoFirstStart();
-                FindSingle<Alice>().UnbecomeButton();
-                break;
-            case GameMode.Gameplay:
-                break;
-        }
-    }
-
-    private static void AdvanceDialogueContext()
-    {
-        // get current dialogue context
-        var ctx = CharacterDialogueBehavior.ActiveDialogue;
-
-        if (ctx == null)
-        {
-            Debug.LogError("Dialogue advanced, but no dialogue active");
-            return;
-        }
-
-        // advance to next step
-        bool last = ctx.PlayNextLine();
-        // if this is the last step, start the next falling section
-        if (last)
-        {
-            if (ctx is CaterpillarDialogueBehavior)
-                PlayCaterpillarDoneMoment();
-            else
-                PlayGameInner();
-        }
-    }
-
-    private static void PlayCaterpillarDoneMoment()
-    {
-        FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
-    }
-
-    private static void DoFirstStart()
-    {
-        CurrentMode = GameMode.Gameplay;
-        CurrentLevel = LevelType.RabbitHole;
-        ChangeActiveScreen(GameMode.Gameplay);
-
-        PlayGameInner();
-    }
-
-    private static void DoGameOver()
-    {
-        DeathCount++;
-        IsGameplayPaused = true;
-        string storyKey = PassageStartPrefix + (DeathCount < 2 ? "" : " " + DeathCount);
-        ShowStory(storyKey);
-    }
-
-    private static void ShowLevelEndAnimation()
-    {
-        FindSingle<RabbitHole>().PlayOutroAnimation();
-    }
-
-    private static void DoEnterDialogueArea()
-    {
-        CurrentMode = GameMode.Dialogue;
-        CurrentLevel++;
-        IsGameplayPaused = true;
-        FindSingle<Alice>().BecomeButton();
-        AdvanceDialogueContext();
-    }
-    #endregion
-
-    private static void ShowStory(string storyKey)
-    {
-        FindSingle<GameplayScreenBehavior>().ShowStory(storyKey);
-        CurrentMode = GameMode.Dialogue;
-    }
-
-    public static void OnDebugEvent(DebugEvent debugEvent)
-    {
-        Debug.Log("Debug Event: " + debugEvent);
-        switch (debugEvent)
-        {
-            case DebugEvent.ShowNameEntryScreen:
-                Debug.Log("Deprecated");
-                //CurrentLevel = LevelType.RabbitHole;
-                //CurrentScore = 110;
-                //ChangeMode(GameMode.EnterName);
-                break;
-            case DebugEvent.SetLevelCaterpillar:
-                CurrentLevel = LevelType.Caterpillar;
-                break;
-            default:
-                break;
-        }
-    }
-
-    public static Coroutine StartCoroutine(IEnumerator routine)
-    {
-        return helperObject.StartCoroutine(routine);
-    }
-
-    // cached singletons for ease of reference
-    private static readonly Dictionary<System.Type, MonoBehaviour> gameplayComponentsCache = new Dictionary<System.Type, MonoBehaviour>();
-    // finds a single object in the scene with the requested component and caches it
-    // for easily obtaining a reference to a singleton behavior across scripts without serializing
-    public static T FindSingle<T>() where T : MonoBehaviour
-    {
-        // cached
-        if (gameplayComponentsCache.ContainsKey(typeof(T)))
-            return (T)gameplayComponentsCache[typeof(T)];
-
-        // slow search
-        T found = null;
-        for (int i = 0; found == null && i < helperObject.SearchRoots.Length; i++)
-        {
-            var all = helperObject.SearchRoots[i].GetComponentsInChildren<T>(true);
-            if (all.Length > 0) found = all[0];
-        }
-
-        // cache
-        if (found != null)
-            gameplayComponentsCache[typeof(T)] = found;
-
-        return found;
-    }
-
-    [Command]
-    public static void SkipCaterpillarDialogue()
-    {
-        PlayCaterpillarDoneMoment();
-    }
-
-    [Command]
-    public static void JumpToPOI()
-    {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-        {
-            UnityEditor.EditorApplication.EnterPlaymode();
-            return;
-        }
-#endif
-        // replace the contents of this function with the latest point of interest
-        JumpToCaterpillar();
-
-    }
-
-    private static void JumpToCaterpillar()
-    {
-        CurrentLevel = LevelType.Caterpillar;
-        CurrentMode = GameMode.Gameplay;
-        foreach (var rabbithole in RabbitHoleDisplay.All)
-        {
-            rabbithole.GameplayGroup.ObstacleContext.SetBackgroundSpritesForLevel((int)CurrentLevel);
-            rabbithole.GameplayGroup.ObstacleContext.menuGraphics.ShowStageArt(CurrentLevel);
-            //rabbithole.GameplayGroup.UIOverlay.gameObject.SetActive(false);
-        }
-        PlayGameInner();
     }
 }
