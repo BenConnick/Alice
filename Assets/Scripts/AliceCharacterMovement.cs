@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AliceCharacterMovement : LaneEntity
 {
+    public bool IsHijacked;
     public RabbitHoleDisplay movementContext => ContextualInputSystem.Context;
     private RabbitHoleDisplay prevMovementContext;
 
@@ -33,21 +34,23 @@ public class AliceCharacterMovement : LaneEntity
         // same viewport
         else
         {
-            // animate lane change
-            // position in lane
-            const float MaxInstantMovePerSecond = 15f;
-            float maxInstantMove = MaxInstantMovePerSecond * Time.deltaTime;
-            Vector3 prevPos = transform.position;
-            Vector3 toVec = ContextualInputSystem.ViewWorldCursorPos - prevPos;
-            if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
+            // position
+            if (!IsHijacked)
             {
-                // instant move to position (micro movements)
-                transform.position = ContextualInputSystem.ViewWorldCursorPos;
-            }
-            else
-            {
-                // cap per-frame movement (macro movements)
-                transform.position = prevPos + toVec.normalized * maxInstantMove;
+                const float MaxInstantMovePerSecond = 15f;
+                float maxInstantMove = MaxInstantMovePerSecond * Time.deltaTime;
+                Vector3 prevPos = transform.position;
+                Vector3 toVec = ContextualInputSystem.ViewWorldCursorPos - prevPos;
+                if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
+                {
+                    // instant move to position (micro movements)
+                    transform.position = ContextualInputSystem.ViewWorldCursorPos;
+                }
+                else
+                {
+                    // cap per-frame movement (macro movements)
+                    transform.position = prevPos + toVec.normalized * maxInstantMove;
+                }
             }
         }
 

@@ -23,22 +23,6 @@ public class CaterpillarDialogueBehavior : CharacterDialogueBehavior
                 RequireClickCharacter(CaterpillarButton);
                 break;
             case 1:
-            case 2:
-                RequireClickCharacter(AliceButton);
-                break;
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                RequireClickCharacter(CaterpillarButton);
-                break;
-            case 7:
-                RequireClickCharacter(AliceButton);
-                break;
-            case 8:
-                RequireClickCharacter(CaterpillarButton);
-                break;
-            case 9:
                 PlayCaterpillarDisappear();
                 RequireClickCharacter(MushroomButton);
                 break;

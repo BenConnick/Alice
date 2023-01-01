@@ -172,10 +172,14 @@ public class RabbitHole : MonoBehaviour
         transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
 
         // alice lerp to resting pos
+        var player = GM.FindSingle<Alice>();
+        bool hasFocus = player.movementContext?.ObstacleContext == this;
+        if (hasFocus)
         {
+            GM.FindSingle<Alice>().IsHijacked = true;
             float t = (transform.localPosition.y - outroStartHeight) / OutroAnimationDistance;
-            Vector3 characterTargetRestingPos = new Vector3(0, -2, 0);
-            Transform aliceTransform = GM.FindSingle<Alice>().transform;
+            Vector3 characterTargetRestingPos = new Vector3(transform.position.x, -2, 0);
+            Transform aliceTransform = player.transform;
             aliceTransform.position = Vector3.Lerp(aliceTransform.position, characterTargetRestingPos, t);
         }
 
@@ -234,6 +238,8 @@ public class RabbitHole : MonoBehaviour
 
     private void OnOutroComplete()
     {
+        GM.FindSingle<Alice>().IsHijacked = false;
+
         OwnerLink.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
 
