@@ -109,6 +109,8 @@ Shader "UI/SeeThroughShader"
                 clip (color.a - 0.001);
                 #endif
 
+                color.rgb *= color.a; // factor alpha into additive blend
+
                 return color;
             }
         ENDCG

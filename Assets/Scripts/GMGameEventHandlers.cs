@@ -22,6 +22,7 @@ public static partial class GM
         SplitAnimationMidPoint,
         GameOverGoNext,
         DialogueGoNext,
+        BedInteraction,
     }
     
     public static void OnGameEvent(NavigationEvent gameEvent)
@@ -98,6 +99,20 @@ public static partial class GM
             case NavigationEvent.DialogueGoNext:
                 {
                     AdvanceDialogueContext();
+                }
+                break;
+            case NavigationEvent.BedInteraction:
+                {
+                    Debug.Log("BedInteraction");
+                    CurrentMode = GameMode.Gameplay;
+                    AllDisplays(disp =>
+                    {
+                        GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
+                        gameOverUI.SetActive(false);
+                        var rh = disp.ObstacleContext;
+                        rh.Reset();
+                        rh.PlayIntroAnimationForRestart();
+                    });
                 }
                 break;
         }
