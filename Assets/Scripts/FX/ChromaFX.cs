@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Unity.Collections;
 using UnityEngine.UI;
 
 public class ChromaFX : MonoBehaviour
@@ -17,7 +15,7 @@ public class ChromaFX : MonoBehaviour
     [ReadOnlyField]
     public Material MaterialInstance;
 
-    [SerializeField] private RawImage renderer;
+    [SerializeField] private new RawImage renderer;
 
     // Use this for initialization
     void Start()
