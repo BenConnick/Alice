@@ -7,10 +7,8 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 {
     [Header("Serialized References")]
     [SerializeField] private RectTransform RabbitHoleDisplay1;
-    [SerializeField] private RectTransform RabbitHoleDisplay2;
     [SerializeField] private Transform playerCharacterTransform;
     [SerializeField] private RawImage display1Renderer;
-    [SerializeField] private RawImage display2Renderer;
     [SerializeField] private Animator animator;
 
     // inspector
@@ -23,7 +21,6 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     [SerializeField] private float displaySeparation;
     [SerializeField] private float playerEndWalkX;
     [SerializeField] private float walkDuration = 1;
-    [SerializeField] private float shakeDuration = 1;
     [SerializeField] private float spreadDuration = 1;
     [SerializeField] private float postWalkPauseDuration = 1;
     [SerializeField] private float fadeColorDuration = 1;
@@ -35,10 +32,6 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     {
         // initialPositions
         RabbitHoleDisplay1.localPosition = display1StartPos;
-        RabbitHoleDisplay2.localPosition = display2StartPos;
-
-        // hide 2nd rabbit hole
-        RabbitHoleDisplay2.gameObject.SetActive(false);
     }
 
     // the 2nd gameplay frame activates and both gameplay viewports
@@ -68,14 +61,6 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     public void OnPostWalkPauseComplete()
     {
-        // show the 2nd gameplay fame
-        RabbitHoleDisplay2.gameObject.SetActive(true);
-        display2Renderer.texture = display1Renderer.texture;
-        // color treatment
-        // (additive colors combine to white, look trippy when separating)
-        display1Renderer.color = new Color(0, 1, 1);
-        display2Renderer.color = new Color(1, 1, 0);
-
         // next animation: shake
         //Tween.Start(ShakeInterpolate, shakeDuration, OnShakeFinish);
         OnShakeFinish();
@@ -83,10 +68,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     private void ShakeInterpolate(float t)
     {
-        // shake
-        float shakeX = Mathf.Sin(t * shakeFrequency) * shakeDistance;
-        RabbitHoleDisplay1.transform.localPosition = new Vector3(shakeX, 0, 0);
-        RabbitHoleDisplay2.transform.localPosition = new Vector3(-shakeX, 0, 0);
+        // shake replaced with Animator
     }
 
     private void OnShakeFinish()
@@ -103,13 +85,15 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     private void SeparateInterpolate(float t)
     {
-        // interpolate (separate)
-        float a = t*t; // easing
-        float w = displaySeparation;
-        RabbitHoleDisplay1.transform.localPosition = new Vector3(-w * a, 0, 0);
-        RabbitHoleDisplay2.transform.localPosition = new Vector3(w * a, 0, 0);
+        // [Deprecated]
 
-        // [Deprecated]]
+        // interpolate (separate)
+        //float a = t*t; // easing
+        //float w = displaySeparation;
+        //RabbitHoleDisplay1.transform.localPosition = new Vector3(-w * a, 0, 0);
+        //RabbitHoleDisplay2.transform.localPosition = new Vector3(w * a, 0, 0);
+
+        
         // force the cursor to the center of the screen
         // this will cause it to align with the dummy character
         // which is key for the next part, where the player moves it
@@ -123,8 +107,8 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     private void FadeInterpolate(float t)
     {
-        display1Renderer.color = new Color(t, 1, 1);
-        display2Renderer.color = new Color(1, 1, t);
+        //display1Renderer.color = new Color(t, 1, 1);
+        //display2Renderer.color = new Color(1, 1, t);
     }
 
     //public void PlayBigMomentAnimPart2()

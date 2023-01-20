@@ -2,22 +2,34 @@
 
 public class MenuGraphics : MonoBehaviour
 {
+    [Header("Prefabs")]
     public GameObject[] PerStageArt;
+
+    public GameObject ShowingArt;
+    private int showingIndex = -1;
 
     public void ShowStageArt(LevelType lvl)
     {
+        if (ShowingArt != null)
+        {
+            HideAllStageArt();
+        }
+
         int stageIndex = (int)lvl;
         for (int i = 0; i < PerStageArt.Length; i++)
         {
-            PerStageArt[i].SetActive(i == stageIndex);
+            if (i == stageIndex && i != showingIndex)
+                ShowingArt = Instantiate(PerStageArt[i], transform);
         }
     }
 
     public void HideAllStageArt()
     {
-        for (int i = 0; i < PerStageArt.Length; i++)
+        if (ShowingArt != null)
         {
-            PerStageArt[i].SetActive(false);
+            Destroy(ShowingArt);
+            ShowingArt = null;
+            showingIndex = -1;
         }
     }
 }
