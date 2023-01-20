@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8842216175013206637}
   - component: {fileID: 8842216175013206636}
   - component: {fileID: 8842216175013206639}
+  - component: {fileID: 2805827630409391950}
   - component: {fileID: 8842216175013206634}
   m_Layer: 5
   m_Name: Rabbit Hole Display
@@ -89,8 +90,24 @@ MonoBehaviour:
   GameplayGroup: {fileID: 0}
   DefaultRT: {fileID: 8400000, guid: 923084ec9d1834125a7b41825b902c1e, type: 2}
   rawImageComponent: {fileID: 8842216175013206636}
-  defaultMaterial: {fileID: 0}
-  invertedMaterial: {fileID: 2100000, guid: c8f0be04742c1402f816073632afe3f9, type: 2}
+--- !u!114 &2805827630409391950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8842216175013206609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be3a736b98734cd19d7c1d73b703ef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SourceMaterial: {fileID: 2100000, guid: c8f0be04742c1402f816073632afe3f9, type: 2}
+  ShiftPropertyName: _Shift
+  Shift: 0
+  ShiftScale: 2
+  MaterialInstance: {fileID: 0}
+  renderer: {fileID: 8842216175013206636}
 --- !u!225 &8842216175013206634
 CanvasGroup:
   m_ObjectHideFlags: 0

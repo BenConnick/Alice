@@ -6,6 +6,8 @@ Shader "UI/SeeThroughShader"
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
+        _Color2 ("ShiftColor", Color) = (1,1,1,1)
+        _Shift ("Shift", Float) = 0
 
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
@@ -78,9 +80,11 @@ Shader "UI/SeeThroughShader"
 
             sampler2D _MainTex;
             fixed4 _Color;
+            fixed4 _Color2;
             fixed4 _TextureSampleAdd;
             float4 _ClipRect;
             float4 _MainTex_ST;
+            float _Shift;
 
             v2f vert(appdata_t v)
             {
@@ -92,14 +96,17 @@ Shader "UI/SeeThroughShader"
 
                 OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
 
-                OUT.color = v.color * _Color;
+                OUT.color = v.color;
                 return OUT;
             }
 
             fixed4 frag(v2f IN) : SV_Target
             {
-                half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
+                half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color * _Color;
+                half4 color2 = (tex2D(_MainTex, IN.texcoord + float2(_Shift,0)) + _TextureSampleAdd) * IN.color * _Color2;
                 //color.rgb = 1 - color.rgb;
+
+                color += color2;
 
                 #ifdef UNITY_UI_CLIP_RECT
                 color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
