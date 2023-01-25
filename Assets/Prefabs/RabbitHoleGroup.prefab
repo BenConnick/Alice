@@ -673,10 +673,45 @@ MonoBehaviour:
   - {fileID: 8051142676747974015}
   - {fileID: 534837934596057670}
   - {fileID: 883553792915381672}
+  titleAnimationDistance: 10
+  titleAnimationDuration: 12
   introAnimationDistance: 12
   outroAnimationDistance: 30
   introAnimationSpeed: 1.5
   menuGraphics: {fileID: 0}
+  titleAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3
+      value: 0
+      inSlope: 0
+      outSlope: 1.4285715
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.4285715
+      outSlope: 1.6884383
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.99583787
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   obstaclePrefabs:
   - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
   - {fileID: 7750014687331218534, guid: 8a3857c9f237844bdbf4e2d92605b593, type: 3}

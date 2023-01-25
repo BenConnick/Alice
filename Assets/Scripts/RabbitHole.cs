@@ -11,10 +11,13 @@ public class RabbitHole : MonoBehaviour
     public SpriteRenderer[] BackgroundTiles;
 
     [Header("Animation")]
+    public float titleAnimationDistance;
+    public float titleAnimationDuration;
     public float introAnimationDistance;
     public float outroAnimationDistance;
     public float introAnimationSpeed;
     public MenuGraphics menuGraphics;
+    public AnimationCurve titleAnimationCurve;
 
     public float OutroAnimationDistance => outroAnimationDistance; // now redundant
 
@@ -39,13 +42,16 @@ public class RabbitHole : MonoBehaviour
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
     private AnimationMode mode;
+    private float multipurposeTimer;
 
     public enum AnimationMode
     {
         Default,
         Interactive,
+        // no player control
         Intro,
-        Outro // no player control
+        Outro, 
+        Title
     }
 
     private LevelChunk[] chunkPrefabs
@@ -82,12 +88,15 @@ public class RabbitHole : MonoBehaviour
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
         initialHeight = transform.localPosition.y;
         Time.timeScale = 1f;
+        mode = AnimationMode.Title;
+        multipurposeTimer = titleAnimationDuration;
     }
 
     // runs every tick
     private void Update()
     {
-        if (mode == AnimationMode.Intro) UpdateIntroAnim();
+        if (mode == AnimationMode.Title) UpdateTitleAnim();
+        else if (mode == AnimationMode.Intro) UpdateIntroAnim();
         else if (mode == AnimationMode.Outro) UpdateOutroAnim();
         else if (mode == AnimationMode.Interactive && !GM.IsGameplayPaused)
         {
@@ -154,6 +163,19 @@ public class RabbitHole : MonoBehaviour
 
             // debug
             UpdateDebug();
+        }
+    }
+
+    private void UpdateTitleAnim()
+    {
+        multipurposeTimer -= Time.deltaTime;
+        Vector3 camRootPos = Vector3.zero;
+        float t = (titleAnimationDuration - multipurposeTimer) / titleAnimationDuration;
+        float newY = Mathf.Lerp(camRootPos.y + titleAnimationDistance, camRootPos.y, titleAnimationCurve.Evaluate(t));
+        OwnerLink.GameplayCamera.transform.localPosition = new Vector3(camRootPos.x, newY, camRootPos.z);
+        if (multipurposeTimer <= 0)
+        {
+            mode = AnimationMode.Default;
         }
     }
 
