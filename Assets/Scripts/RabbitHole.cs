@@ -175,8 +175,15 @@ public class RabbitHole : MonoBehaviour
         OwnerLink.GameplayCamera.transform.localPosition = new Vector3(camRootPos.x, newY, camRootPos.z);
         if (multipurposeTimer <= 0)
         {
-            mode = AnimationMode.Default;
+            OnTitleAnimComplete();
         }
+    }
+
+    private void OnTitleAnimComplete()
+    {
+        OwnerLink.GameplayCamera.transform.localPosition = Vector3.zero;
+        mode = AnimationMode.Default;
+        GM.OnGameEvent(GM.NavigationEvent.MenuAnimationFinished);
     }
 
     private void UpdateIntroAnim()
@@ -321,5 +328,15 @@ public class RabbitHole : MonoBehaviour
         {
             Debug.Log(gameObject.name + "failed to find background for level " + levelIndex);
         }
+    }
+
+    public void SkipTitleIntro()
+    {
+        OnTitleAnimComplete();
+    }
+
+    public void PlayTitleIntro()
+    {
+        mode = AnimationMode.Title;
     }
 }

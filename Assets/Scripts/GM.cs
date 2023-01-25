@@ -19,7 +19,8 @@ public static partial class GM
         PauseMenu, // placeholder
         Gameplay, // the main gameplay mode
         Dialogue, // gameplay sub-mode
-        GameOver, 
+        GameOver,
+        PreMainMenu, // animating in
     }
 
     public const string PassageStartPrefix = "Down the Rabbit Hole";
@@ -52,9 +53,8 @@ public static partial class GM
     public static void Init(GMHelperObject helper)
     {
         helperObject = helper;
-        CurrentMode = GameMode.MainMenu;
+        CurrentMode = GameMode.PreMainMenu;
         Application.targetFrameRate = 60;
-        FindSingle<SplitGameplayMomentAnimationController>().SetToDefaultState();
 
 #if UNITY_EDITOR
         MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : MAX_LIVES;

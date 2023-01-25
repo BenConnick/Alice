@@ -15,7 +15,17 @@ public static class ContextualInputSystem
         if (Input.GetMouseButtonUp(0))
         {
             Debug.Log("Mouse up");
-            if (GM.CurrentMode == GM.GameMode.GameOver)
+            if (GM.CurrentMode == GM.GameMode.PreMainMenu)
+            {
+                var rh = GM.FindSingle<RabbitHoleDisplay>();
+                rh.GameplayGroup.ObstacleContext.SkipTitleIntro();
+            }
+            else if (GM.CurrentMode == GM.GameMode.MainMenu)
+            {
+                Debug.Log("Title Mouse up");
+                GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+            }
+            else if (GM.CurrentMode == GM.GameMode.GameOver)
             {
                 Debug.Log("Game over Mouse up");
                 GM.OnGameEvent(GM.NavigationEvent.GameOverGoNext);

@@ -23,6 +23,7 @@ public static partial class GM
         GameOverGoNext,
         DialogueGoNext,
         BedInteraction,
+        MenuAnimationFinished
     }
     
     public static void OnGameEvent(NavigationEvent gameEvent)
@@ -86,14 +87,30 @@ public static partial class GM
                 {
                     Debug.Log("GameOverGoNext");
                     CurrentMode = GameMode.Gameplay;
+
+                    // reset all displays
                     AllDisplays(disp =>
                     {
                         GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
                         gameOverUI.SetActive(false);
                         var rh = disp.ObstacleContext;
                         rh.Reset();
-                        rh.PlayIntroAnimationForRestart();
+                        rh.menuGraphics.ShowStageArt(CurrentLevel);
+                        rh.PlayTitleIntro();
                     });
+
+                    // set mode to main menu
+                    CurrentMode = GameMode.PreMainMenu;
+
+                    // set alice position
+                    var alice = FindSingle<Alice>();
+                    var ctx = alice.movementContext;
+                    if (ctx != null)
+                    {
+                        Vector3 center = ctx.GetCursorViewportWorldPos(new Vector2(.5f, .5f));
+                        alice.transform.position = center + new Vector3(2.5f,-2.5f,0);
+                        alice.BecomeButton();
+                    }
                 }
                 break;
             case NavigationEvent.DialogueGoNext:
@@ -113,6 +130,12 @@ public static partial class GM
                         rh.Reset();
                         rh.PlayIntroAnimationForRestart();
                     });
+                }
+                break;
+            case NavigationEvent.MenuAnimationFinished:
+                {
+                    Debug.Log("MenuAnimationFinished");
+                    CurrentMode = GameMode.MainMenu;
                 }
                 break;
         }

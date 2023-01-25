@@ -144,7 +144,7 @@ public class Alice : AliceCharacterMovement
 
             // shake, flash, subtract lives
             movementContext.InvertColor(0.01f);
-            TimeDistortionController.PlayImpactFrame();
+            TimeDistortionController.PlayImpactFrame(.9f);
             movementContext.GameplayCamera.GetComponent<GameplayInnerDisplayCamera>().Shake(); // DISABLED FOR EDITING
             player.StartFlashing();
             SubtractLife();

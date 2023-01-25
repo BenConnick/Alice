@@ -834,6 +834,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 543642783}
     m_Modifications:
+    - target: {fileID: 428406756685442452, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428406756685442452, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428406756685442452, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428406756685442452, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 428406756685442452, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1549913006644494286, guid: 5641dad60eeea434cb1d4764ecafa855,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -893,6 +918,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level 1 - Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752118206928196025, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328964944935398958, guid: 5641dad60eeea434cb1d4764ecafa855,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5641dad60eeea434cb1d4764ecafa855, type: 3}
@@ -1334,7 +1369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534927712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: -2.81, z: 3}
+  m_LocalPosition: {x: 2.5, y: -2.5, z: 3}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 169287864}
@@ -1671,6 +1706,11 @@ PrefabInstance:
       propertyPath: menuGraphics
       value: 
       objectReference: {fileID: 543642784}
+    - target: {fileID: 1104830552420216440, guid: 8f988c313ba1d4fb6a1ac3c7d67ce631,
+        type: 3}
+      propertyPath: titleAnimationDuration
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1104830552502438312, guid: 8f988c313ba1d4fb6a1ac3c7d67ce631,
         type: 3}
       propertyPath: m_Mesh
