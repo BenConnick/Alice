@@ -524,6 +524,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Click Me Text
       objectReference: {fileID: 0}
+    - target: {fileID: 6559519577333774777, guid: 8dfee94415aa645beb4cafac525f7283,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7463843284640947705, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
       propertyPath: m_LocalPosition.x

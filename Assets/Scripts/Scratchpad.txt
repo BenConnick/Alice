@@ -1,4 +1,13 @@
 Scratchpad
 -----------
 
+Next time:
 
+Try to implement the whole game as an animation / movie.
+If that doesn't seem easy, figure out what will work better.
+
+Find some placeholder music for each section.
+
+Save the level in the playerprefs.
+
+Spawn the right stat-menu art based on the level.

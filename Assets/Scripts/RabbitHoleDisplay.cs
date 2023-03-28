@@ -189,7 +189,9 @@ public class RabbitHoleDisplay : MonoBehaviour
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
-            heartIcons[i].SetActive(i < ObstacleContext.VpLives);
+            bool normalActive = i < ObstacleContext.VpLives;
+            bool flashing = invertedColor && i == ObstacleContext.VpLives && Time.unscaledTime % .25f > .15f;
+            heartIcons[i].SetActive(normalActive || flashing);
         }
     }
 

@@ -8,6 +8,8 @@ public static class ContextualInputSystem
     // shown in the (raycast-hit) viewport
     public static Vector3 ViewWorldCursorPos { get; private set; }
 
+    public static Vector3 ViewNormalizedCursorPos { get; private set; }
+
     public static bool UICapturedInput { get; set; }
 
     public static void Update()
@@ -50,11 +52,11 @@ public static class ContextualInputSystem
         var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var viewport in RabbitHoleDisplay.All)
         {
-            Vector2 normalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
-            if (Util.IsInBounds(normalizedCursorPos))
+            ViewNormalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
+            if (Util.IsInBounds(ViewNormalizedCursorPos))
             {
                 Context = viewport;
-                ViewWorldCursorPos = viewport.GetCursorViewportWorldPos(normalizedCursorPos);
+                ViewWorldCursorPos = viewport.GetCursorViewportWorldPos(ViewNormalizedCursorPos);
                 break;
             }
         }
