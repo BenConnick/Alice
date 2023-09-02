@@ -18,6 +18,7 @@ public class RabbitHole : MonoBehaviour
     public float introAnimationSpeed;
     public MenuGraphics menuGraphics;
     public AnimationCurve titleAnimationCurve;
+    public AnimationCurve introAnimationCurve;
 
     public float OutroAnimationDistance => outroAnimationDistance; // now redundant
 
@@ -43,6 +44,7 @@ public class RabbitHole : MonoBehaviour
     private float chunkCursor;
     private AnimationMode mode;
     private float multipurposeTimer;
+    private float titleAnimationSpeed = 1f;
 
     public enum AnimationMode
     {
@@ -101,7 +103,7 @@ public class RabbitHole : MonoBehaviour
         else if (mode == AnimationMode.Interactive && !GM.IsGameplayPaused)
         {
             transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            totalFallDistance = transform.localPosition.y - (initialHeight + introAnimationDistance);
+            totalFallDistance = transform.localPosition.y - initialHeight;
         }
 
         if (!GM.IsGameplayPaused)
@@ -168,11 +170,12 @@ public class RabbitHole : MonoBehaviour
 
     private void UpdateTitleAnim()
     {
-        multipurposeTimer -= Time.deltaTime;
+        multipurposeTimer -= Time.deltaTime * titleAnimationSpeed;
         Vector3 camRootPos = Vector3.zero;
         float t = (titleAnimationDuration - multipurposeTimer) / titleAnimationDuration;
         float newY = Mathf.Lerp(camRootPos.y + titleAnimationDistance, camRootPos.y, titleAnimationCurve.Evaluate(t));
-        OwnerLink.GameplayCamera.transform.localPosition = new Vector3(camRootPos.x, newY, camRootPos.z);
+        Transform cameraTransform = OwnerLink.GameplayCamera.transform;
+        cameraTransform.localPosition = new Vector3(camRootPos.x, newY, camRootPos.z);
         if (multipurposeTimer <= 0)
         {
             OnTitleAnimComplete();
@@ -181,6 +184,7 @@ public class RabbitHole : MonoBehaviour
 
     private void OnTitleAnimComplete()
     {
+        titleAnimationSpeed = 1f;
         OwnerLink.GameplayCamera.transform.localPosition = Vector3.zero;
         mode = AnimationMode.Default;
         GM.OnGameEvent(GM.NavigationEvent.MenuAnimationFinished);
@@ -188,8 +192,7 @@ public class RabbitHole : MonoBehaviour
 
     private void UpdateIntroAnim()
     {
-        float normalizedIntroDistance = Mathf.Clamp01(transform.localPosition.y - initialHeight) / (introAnimationDistance * 0.01f);
-        transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed * Mathf.Lerp(0.05f, 1, normalizedIntroDistance));
+        transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
         if (transform.localPosition.y > initialHeight + introAnimationDistance)
         {
             OnIntroComplete();
@@ -289,7 +292,7 @@ public class RabbitHole : MonoBehaviour
 
         VpLives = GM.MAX_LIVES;
 
-        chunkCursor = -LevelChunk.height - introAnimationDistance;
+        chunkCursor = -LevelChunk.height;
 
         // reset level height
         transform.localPosition = new Vector3(transform.localPosition.x, initialHeight, transform.localPosition.z);
@@ -330,9 +333,9 @@ public class RabbitHole : MonoBehaviour
         }
     }
 
-    public void SkipTitleIntro()
+    public void FastForwardTitleIntro()
     {
-        OnTitleAnimComplete();
+        titleAnimationSpeed = 20f;
     }
 
     public void PlayTitleIntro()

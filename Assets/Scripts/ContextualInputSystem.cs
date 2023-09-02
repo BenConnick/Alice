@@ -20,7 +20,7 @@ public static class ContextualInputSystem
             if (GM.CurrentMode == GM.GameMode.PreMainMenu)
             {
                 var rh = GM.FindSingle<RabbitHoleDisplay>();
-                rh.GameplayGroup.ObstacleContext.SkipTitleIntro();
+                rh.GameplayGroup.ObstacleContext.FastForwardTitleIntro();
             }
             else if (GM.CurrentMode == GM.GameMode.MainMenu)
             {

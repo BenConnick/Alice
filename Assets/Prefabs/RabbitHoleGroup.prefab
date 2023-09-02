@@ -673,8 +673,8 @@ MonoBehaviour:
   - {fileID: 8051142676747974015}
   - {fileID: 534837934596057670}
   - {fileID: 883553792915381672}
-  titleAnimationDistance: 10
-  titleAnimationDuration: 12
+  titleAnimationDistance: 22
+  titleAnimationDuration: 4
   introAnimationDistance: 12
   outroAnimationDistance: 30
   introAnimationSpeed: 1.5
