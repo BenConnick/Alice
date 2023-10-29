@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 public class LevelCollider : MonoBehaviour
 {
     public Collider2D Collider;

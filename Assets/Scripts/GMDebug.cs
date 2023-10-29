@@ -32,6 +32,18 @@ public static partial class GM
     #region Commands
 
     [Command]
+    public static void SetLevelCaterpillar()
+    {
+        OnDebugEvent(DebugEvent.SetLevelCaterpillar);
+    }
+
+    [Command]
+    public static void InfiniteHearts()
+    {
+        ContextualInputSystem.Context.ObstacleContext.VpLives = 999;
+    }
+
+    [Command]
     public static void SkipCaterpillarDialogue()
     {
         PlayCaterpillarDoneMoment();

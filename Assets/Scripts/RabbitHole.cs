@@ -4,8 +4,9 @@ using UnityEngine;
 public class RabbitHole : MonoBehaviour
 {
     [Header("Config")]
-    public float fallSpeed;
     public ObstacleSpawnersConfig SpawnersConfig;
+
+    public float fallSpeed => GM.GetFallSpeed();
 
     [Header("Children")]
     public SpriteRenderer[] BackgroundTiles;
@@ -100,11 +101,7 @@ public class RabbitHole : MonoBehaviour
         if (mode == AnimationMode.Title) UpdateTitleAnim();
         else if (mode == AnimationMode.Intro) UpdateIntroAnim();
         else if (mode == AnimationMode.Outro) UpdateOutroAnim();
-        else if (mode == AnimationMode.Interactive && !GM.IsGameplayPaused)
-        {
-            transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            totalFallDistance = transform.localPosition.y - initialHeight;
-        }
+        else if (mode == AnimationMode.Interactive) UpdateInteractive();
 
         if (!GM.IsGameplayPaused)
         {
@@ -221,6 +218,15 @@ public class RabbitHole : MonoBehaviour
         }
     }
 
+    private void UpdateInteractive()
+    {
+        if (!GM.IsGameplayPaused)
+        {
+            transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
+            totalFallDistance = transform.localPosition.y - initialHeight;
+        }
+    }
+
     private void UpdateDebug()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -258,7 +264,7 @@ public class RabbitHole : MonoBehaviour
         OwnerLink.Overlay?.SetActive(true);
         mode = AnimationMode.Interactive;
     }
-
+    
     public void PlayOutroAnimation()
     {
         outroStartHeight = transform.localPosition.y;

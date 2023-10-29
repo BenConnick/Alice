@@ -179,9 +179,14 @@ public class RabbitHoleDisplay : MonoBehaviour
         return GetCursorViewportWorldPos(GetNormalizedCursorPos());
     }
 
+    public float GetProgressTotal()
+    {
+        return ObstacleContext.transform.localPosition.y - ObstacleContext.InitialHeight;
+    }
+
     private void UpdateGameplayUI()
     {
-        float progressTotal = ObstacleContext.transform.localPosition.y - ObstacleContext.InitialHeight;
+        float progressTotal = GetProgressTotal();
         
         // score
         ObstacleContext.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...

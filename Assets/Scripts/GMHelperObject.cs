@@ -18,6 +18,9 @@ public class GMHelperObject : MonoBehaviour
     public GameObject EnterNameScreen;
     public Transform[] SearchRoots;
     public float[] LevelLengths;
+    public float DefaultFallSpeed = 6;
+    public float FallAcceleration;
+    public AnimationCurve FallSpeedVariation;
 
     [Header("MenuSprites")]
     public Sprite[] MenuSprites;

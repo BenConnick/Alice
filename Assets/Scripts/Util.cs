@@ -287,4 +287,29 @@ public static class Util
     {
         t.localPosition = new Vector3(t.localPosition.x, y, t.localPosition.z);
     }
+
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Tools/Refresh Collider")]
+    public static void RefreshCollider()
+    {
+        foreach (var selection in UnityEditor.Selection.gameObjects)
+        {
+            if (selection == null)
+            {
+                continue;
+            }
+            var collider = selection.GetComponent<PolygonCollider2D>();
+            if (collider != null)
+            {
+                GameObject.DestroyImmediate(collider);
+            }
+            PolygonCollider2D col = selection.AddComponent<PolygonCollider2D>();
+            var levelComponent = selection.GetComponent<LevelCollider>();
+            if (levelComponent != null)
+            {
+                levelComponent.Collider = col;  
+            }
+        }
+    }
+#endif
 }   
