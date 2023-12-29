@@ -5,6 +5,14 @@
 [Bb]uilds/
 [Ll]ogs/
 
+# Mac
+*.DS_Store
+
+# Rider
+*/.idea/
+.idea
+*.DotSettings
+
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
 

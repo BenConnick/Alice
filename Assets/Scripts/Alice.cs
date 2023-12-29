@@ -93,9 +93,9 @@ public class Alice : AliceCharacterMovement
     public void OnStartLevelPressed()
     {
         if (GM.CurrentMode == GM.GameMode.MainMenu)
-            GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+            GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
         else
-            GM.OnGameEvent(GM.NavigationEvent.DialogueGoNext);
+            GM.OnGameEvent(NavigationEvent.DialogueGoNext);
     }
 
     public void UnbecomeButton()
@@ -177,7 +177,7 @@ public class Alice : AliceCharacterMovement
         movementContext.ObstacleContext.VpLives--;
         if (movementContext.ObstacleContext.VpLives <= 0)
         {
-            GM.OnGameEvent(GM.NavigationEvent.PlatformerGameOver);
+            GM.OnGameEvent(NavigationEvent.PlatformerGameOver);
         }
     }
 

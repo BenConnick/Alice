@@ -157,7 +157,7 @@ public class RabbitHole : MonoBehaviour
             // check game over condition
             if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
             {
-                GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelEndTrigger);
+                GM.OnGameEvent(NavigationEvent.PlatformerLevelEndTrigger);
             }
 
             // debug
@@ -184,7 +184,7 @@ public class RabbitHole : MonoBehaviour
         titleAnimationSpeed = 1f;
         OwnerLink.GameplayCamera.transform.localPosition = Vector3.zero;
         mode = AnimationMode.Default;
-        GM.OnGameEvent(GM.NavigationEvent.MenuAnimationFinished);
+        GM.OnGameEvent(NavigationEvent.MenuAnimationFinished);
     }
 
     private void UpdateIntroAnim()
@@ -289,7 +289,7 @@ public class RabbitHole : MonoBehaviour
         Reset();
 
 
-        GM.OnGameEvent(GM.NavigationEvent.PlatformerLevelEndPostAnimation);
+        GM.OnGameEvent(NavigationEvent.PlatformerLevelEndPostAnimation);
     }
 
     public void Reset()

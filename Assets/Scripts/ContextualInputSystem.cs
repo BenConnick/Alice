@@ -25,12 +25,12 @@ public static class ContextualInputSystem
             else if (GM.CurrentMode == GM.GameMode.MainMenu)
             {
                 Debug.Log("Title Mouse up");
-                GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+                GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
             }
             else if (GM.CurrentMode == GM.GameMode.GameOver)
             {
                 Debug.Log("Game over Mouse up");
-                GM.OnGameEvent(GM.NavigationEvent.GameOverGoNext);
+                GM.OnGameEvent(NavigationEvent.GameOverGoNext);
             }
         }
 

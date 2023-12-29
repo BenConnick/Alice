@@ -46,7 +46,7 @@ public static partial class GM
     [Command]
     public static void SkipCaterpillarDialogue()
     {
-        PlayCaterpillarDoneMoment();
+        GameEventHandler.PlayCaterpillarDoneMoment();
     }
 
     [Command]
@@ -75,7 +75,7 @@ public static partial class GM
         //    //rabbithole.GameplayGroup.UIOverlay.gameObject.SetActive(false);
         //}
         //PlayGameInner();
-        PlayCaterpillarDoneMoment();
+        GameEventHandler.PlayCaterpillarDoneMoment();
     }
     #endregion
 }

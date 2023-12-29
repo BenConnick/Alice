@@ -110,7 +110,7 @@ public class EnterNameScreen : MonoBehaviour
         // not a cheat code
         GM.PlayerHighScoreNames.Add(enteredName);
         GM.PlayerHighScores.Add(GM.CurrentScore);
-        //GM.OnGameEvent(GM.NavigationEvent.CloseNamePicker);
+        //GM.OnGameEvent(NavigationEvent.CloseNamePicker);
     }
 
     public void UpdateDataDrivenUIInstant()

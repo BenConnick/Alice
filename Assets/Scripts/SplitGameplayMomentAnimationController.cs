@@ -74,7 +74,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     private void OnShakeFinish()
     {
         // begin the fall
-        GM.OnGameEvent(GM.NavigationEvent.SplitAnimationMidPoint);
+        GM.OnGameEvent(NavigationEvent.SplitAnimationMidPoint);
 
         // shake finished, separate
         //Tween.Start(SeparateInterpolate,spreadDuration,OnSeparateComplete);

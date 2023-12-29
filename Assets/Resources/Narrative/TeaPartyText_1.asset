@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948cbb3ae09b4ac5b95d7fc92517182c, type: 3}
+  m_Name: TeaPartyText_1
+  m_EditorClassIdentifier: 
+  Data:
+    Name: Tea Party
+    LevelStartText:
+      Lines:
+      - 'Through the clouds, Alice made out a familiar shape. '
+      - 'It was a teapot. '
+      - 'Then, she spotted a saucer, and later a teacup. '
+      - "\u201CI could have my very own tea party!\u201D she exclaimed. "
+      - 'No sooner had she said this, than a storm of tea sets came rushing past
+        her. '
+      - "Amid the rattling of porcelain came the sound of discordant voices\u2026 "
+    LevelBackgroundText:
+      Lines: []
+    LevelWinText:
+      Lines: []
+    LevelLoseText:
+      Lines: []

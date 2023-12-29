@@ -23,6 +23,6 @@ public class StartButtonBehavior : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPressed()
     {
-        GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+        GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
     }
 }

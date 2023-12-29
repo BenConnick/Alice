@@ -21,6 +21,7 @@ public class GMHelperObject : MonoBehaviour
     public float DefaultFallSpeed = 6;
     public float FallAcceleration;
     public AnimationCurve FallSpeedVariation;
+    public LevelConfigsAsset LevelConfigsAsset;
 
     [Header("MenuSprites")]
     public Sprite[] MenuSprites;

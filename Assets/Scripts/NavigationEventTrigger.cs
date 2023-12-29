@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NavigationEventTrigger : MonoBehaviour
 {
-    public GM.NavigationEvent NavigationEvent;
+    public NavigationEvent NavigationEvent;
 
     public void FireEvent()
     {

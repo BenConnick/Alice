@@ -44,6 +44,6 @@ public class MainMenuScreen : MonoBehaviour
 
     public void OnStartPressed()
     {
-        GM.OnGameEvent(GM.NavigationEvent.MainMenuGoNext);
+        GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
     }
 }
