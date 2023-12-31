@@ -2,7 +2,7 @@
 using UnityEngine;
 public static class ContextualInputSystem
 {
-    public static RabbitHoleDisplay Context;
+    public static RabbitHoleDisplay GameplayContext;
 
     // where the cursor would be if it were in the world 
     // shown in the (raycast-hit) viewport
@@ -17,20 +17,20 @@ public static class ContextualInputSystem
         if (Input.GetMouseButtonUp(0))
         {
             Debug.Log("Mouse up");
-            if (GM.CurrentMode == GM.GameMode.PreMainMenu)
+            if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.PreMainMenu)
             {
-                var rh = GM.FindSingle<RabbitHoleDisplay>();
+                var rh = GlobalObjects.FindSingle<RabbitHoleDisplay>();
                 rh.GameplayGroup.ObstacleContext.FastForwardTitleIntro();
             }
-            else if (GM.CurrentMode == GM.GameMode.MainMenu)
+            else if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.MainMenu)
             {
                 Debug.Log("Title Mouse up");
-                GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
+                GameEventHandler.OnGameEvent(NavigationEvent.MainMenuGoNext);
             }
-            else if (GM.CurrentMode == GM.GameMode.GameOver)
+            else if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.GameOver)
             {
                 Debug.Log("Game over Mouse up");
-                GM.OnGameEvent(NavigationEvent.GameOverGoNext);
+                GameEventHandler.OnGameEvent(NavigationEvent.GameOverGoNext);
             }
         }
 
@@ -49,13 +49,13 @@ public static class ContextualInputSystem
     {
         // compare the mouse position against every display
         // PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
-        var cam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+        var cam = GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var viewport in RabbitHoleDisplay.All)
         {
             ViewNormalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
             if (Util.IsInBounds(ViewNormalizedCursorPos))
             {
-                Context = viewport;
+                GameplayContext = viewport;
                 ViewWorldCursorPos = viewport.GetCursorViewportWorldPos(ViewNormalizedCursorPos);
                 break;
             }

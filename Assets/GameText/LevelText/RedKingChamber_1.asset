@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948cbb3ae09b4ac5b95d7fc92517182c, type: 3}
+  m_Name: RedKingChamber_1
+  m_EditorClassIdentifier: 
+  Data:
+    Name: The Red King's Chamber
+    LevelStartText:
+      Lines:
+      - Two familiar giants leered down at Alice.
+      - "\u201CThe King is in bed, asleep!\u201D boomed Tweedledum."
+      - "\u201CAnd he\u2019s dreaming about you!\u201D Tweedledee exclaimed."
+      - '"Well wake him up then!" Alice shouted bravely.'
+      - '"Ha! Don''t you see? You''re only one of the things in his dream!" said
+        Tweedledum'
+      - "\"It is so,\" continued Tweedledee \"and if you did wake him up, you\u2019d
+        go out -"
+      - '"bang!"'
+      - '"-just like a candle!"'
+    LevelBackgroundText:
+      Lines:
+      - the Game is in the Player is in
+    LevelWinText:
+      Lines: []
+    LevelLoseText:
+      Lines: []

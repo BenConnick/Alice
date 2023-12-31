@@ -63,13 +63,13 @@ public class CharacterDialogueSource : MonoBehaviour
                 return "Default";
             case LevelType.RabbitHole:
                 return "Mouse";
-            case LevelType.Caterpillar:
+            case LevelType.GardenOfChange:
                 return "Bug";
-            case LevelType.CheshireCat:
+            case LevelType.CheshireDoors:
                 return "Cat";
-            case LevelType.MadHatter:
+            case LevelType.GardenOfSmoke:
                 return "Hatta";
-            case LevelType.QueenOfHearts:
+            case LevelType.MadTeaParty:
                 return "Queen of Blood";
             default:
                 return "Error";

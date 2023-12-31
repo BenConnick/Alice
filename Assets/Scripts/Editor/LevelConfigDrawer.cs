@@ -2,45 +2,43 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-// [CustomPropertyDrawer(typeof(LevelConfig))]
+[CustomPropertyDrawer(typeof(LevelConfig))]
 [Obsolete]
 public class LevelConfigDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
-            
-        EditorGUI.PropertyField(position, property, label);
-            
-        const float igtButtonSize = 20;
-        Rect buttonRect = new Rect(position.x + position.width - igtButtonSize, position.y, 
-            igtButtonSize, igtButtonSize);
-            
-        var containingArray = property.serializedObject.GetIterator();
-        if (containingArray != null && GUI.Button(buttonRect, "IGT"))
-        {
-            bool success = false;
-            var levels = Resources.Load<IGT>(IGT.EditorResourceName).Levels;
-            int size = containingArray.arraySize;
-            for (int i = 0; i < size; i++)
-            {
-                if (containingArray.GetArrayElementAtIndex(i) == property)
-                {
-                    if (i < levels.Length)
-                    {
-                        Selection.activeObject = levels[i];
-                        success = true;
-                    }
-                    break;
-                } 
-            }
 
-            if (success == false)
-            {
-                Debug.LogWarning("Failed to find matching asset");
-            }
+        int levelEnumRaw = property.FindPropertyRelative("LevelType").enumValueIndex;
+        label.text = "" + levelEnumRaw + ": " + Enum.GetName(typeof(LevelType), (LevelType)levelEnumRaw);
+
+        if (property.isExpanded)
+        {
+            EditorGUI.PropertyField(position, property, label, true); // TODO figure out how to draw this correctly
         }
-            
+        else
+        {
+            EditorGUI.PropertyField(position, property, label);
+        }
+
         EditorGUI.EndProperty();
+
+        // todo better rect
+        if (GUI.Button(new Rect(position.x + position.width - 10, position.y, 12, 12), "+"))
+        {
+            Debug.Log("a button was pressed");
+        }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent content)
+    {
+        const float labelHeight = 18;
+        if (property.isExpanded)
+        {
+            return labelHeight * (1+property.CountInProperty());
+        }
+
+        return labelHeight;
     }
 }

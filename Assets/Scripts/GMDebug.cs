@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-public static partial class GM
+public static partial class ApplicationLifetime
 {
     public enum DebugEvent
     {
@@ -22,7 +22,7 @@ public static partial class GM
                 //ChangeMode(GameMode.EnterName);
                 break;
             case DebugEvent.SetLevelCaterpillar:
-                GM.CurrentLevel = LevelType.Caterpillar;
+                GetPlayerData().LastUnlockedLevel.Set(LevelType.GardenOfChange);
                 break;
             default:
                 break;
@@ -40,7 +40,7 @@ public static partial class GM
     [Command]
     public static void InfiniteHearts()
     {
-        ContextualInputSystem.Context.ObstacleContext.VpLives = 999;
+        ContextualInputSystem.GameplayContext.ObstacleContext.VpLives = 999;
     }
 
     [Command]
@@ -66,7 +66,7 @@ public static partial class GM
 
     private static void JumpToCaterpillar()
     {
-        CurrentLevel = LevelType.Caterpillar;
+        GetPlayerData().LastUnlockedLevel.Set(LevelType.GardenOfChange);
         CurrentMode = GameMode.Gameplay;
         //foreach (var rabbithole in RabbitHoleDisplay.All)
         //{
@@ -77,5 +77,7 @@ public static partial class GM
         //PlayGameInner();
         GameEventHandler.PlayCaterpillarDoneMoment();
     }
+    
+    
     #endregion
 }

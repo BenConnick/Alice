@@ -24,7 +24,7 @@ public class TunnelBottomEdgeCamera : MonoBehaviour
     {
         switch (level)
         {
-            case LevelType.Caterpillar:
+            case LevelType.GardenOfChange:
                 cam.transform.localPosition = new Vector3(0, EdgeSize * NormalHeight - EdgeSize, z);
                 cam.orthographicSize = NormalHeight * EdgeSize;
                 cam.rect = new Rect(0, 0, 1, EdgeSize);

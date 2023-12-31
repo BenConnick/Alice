@@ -29,11 +29,11 @@ public class MainMenuScreen : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Alpha3)) SetSprite(3);
         if (Input.GetKeyUp(KeyCode.Alpha4))
         {
-            GM.OnDebugEvent(GM.DebugEvent.ShowNameEntryScreen);
+            ApplicationLifetime.OnDebugEvent(ApplicationLifetime.DebugEvent.ShowNameEntryScreen);
         }
         if (Input.GetKeyUp(KeyCode.Alpha5))
         {
-            GM.OnDebugEvent(GM.DebugEvent.SetLevelCaterpillar);
+            ApplicationLifetime.OnDebugEvent(ApplicationLifetime.DebugEvent.SetLevelCaterpillar);
         }
     }
 
@@ -44,6 +44,6 @@ public class MainMenuScreen : MonoBehaviour
 
     public void OnStartPressed()
     {
-        GM.OnGameEvent(NavigationEvent.MainMenuGoNext);
+        GameEventHandler.OnGameEvent(NavigationEvent.MainMenuGoNext);
     }
 }

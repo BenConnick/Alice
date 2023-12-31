@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948cbb3ae09b4ac5b95d7fc92517182c, type: 3}
+  m_Name: ChessGameText_1
+  m_EditorClassIdentifier: 
+  Data:
+    Name: Chess
+    LevelStartText:
+      Lines:
+      - Frustrated with the mad tea party, Alice tried closing her eyes.
+      - 'The sounds of the tea party became far away. '
+      - "\u201CIt\u2019s like a game\u201D, thought Alice, \u201Cnow I know the rules,
+        I can win\u201D. "
+    LevelBackgroundText:
+      Lines:
+      - The books are warnings.
+      - In the first book, the game is cards.
+      - Survival is a matter of luck.
+      - But through the looking glass, the game is chess.
+      - 'Survival is a matter of skill. '
+    LevelWinText:
+      Lines:
+      - 'Alice recalled what she knew about the game of chess. '
+      - "\u201CThe king, where is the king?\u201D She thought aloud. "
+      - "Unexpectedly, a booming voice replied: \u201C\u2588\u2588\u2588\u2588\u2588\u2588\u2588\""
+    LevelLoseText:
+      Lines:
+      - 'Alice opened her eyes, hoping to at last catch a glimpse of the white rabbit. '
+      - 'But instead, she saw a white pawn, tumbling through the air. '
+      - 'Alice tried to blink, to win the game, but to no avail.  '
+      - 'The more she thought about winning, the more puzzling the pieces became. '

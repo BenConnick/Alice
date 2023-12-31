@@ -138,7 +138,7 @@ public class RabbitHoleDisplay : MonoBehaviour
 
         // fallback to default
         if (finalCam == null)
-            finalCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+            finalCam = GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
 
         // mouse pos
         // PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());
@@ -190,7 +190,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         
         // score
         ObstacleContext.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = string.Format($"{GM.Money:000000}"); // + Util.CurrencyChar;
+        scoreLabel.text = string.Format($"{ApplicationLifetime.GetPlayerData().Money.Value:000000}"); // + Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {

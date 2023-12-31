@@ -13,7 +13,7 @@ public class DestroyAfterTimeBehavior : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        if (IgnorePausedGameplay || !GM.IsGameplayPaused)
+        if (IgnorePausedGameplay || !ApplicationLifetime.IsGameplayPaused)
             SecondsUntilDestruction -= Time.deltaTime;
     }
 }

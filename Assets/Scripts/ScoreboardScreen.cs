@@ -25,7 +25,7 @@ public class ScoreboardScreen : MonoBehaviour
     private void GetScores(out int[] scoresToUse, out string[] namesToUse)
     {
         // default arguments
-        MixScores(defaultScores, GM.PlayerHighScores, defaultScoreNames, GM.PlayerHighScoreNames,
+        MixScores(defaultScores, ApplicationLifetime.PlayerHighScores, defaultScoreNames, ApplicationLifetime.PlayerHighScoreNames,
             out scoresToUse, out namesToUse);
     }
 
@@ -46,7 +46,7 @@ public class ScoreboardScreen : MonoBehaviour
         }
 
         // current
-        CurrentScoreLabel.text = "Your score: " + GM.CurrentScore;
+        CurrentScoreLabel.text = "Your score: " + ApplicationLifetime.CurrentScore;
         // high scores
         ScoresLabel.text = scoresString;
         ScoreNamesLabel.text = scoreNamesString;
@@ -80,7 +80,7 @@ public class ScoreboardScreen : MonoBehaviour
         GetScores(out int[] scoresToUse, out string[] namesToUse);
         for (int i = 0; i < scoresToUse.Length; i++)
         {
-            if (!GM.PlayerHighScores.Contains(GM.CurrentScore) && GM.CurrentScore > scoresToUse[i])
+            if (!ApplicationLifetime.PlayerHighScores.Contains(ApplicationLifetime.CurrentScore) && ApplicationLifetime.CurrentScore > scoresToUse[i])
             {
                 //GM.OnGameEvent(NavigationEvent.OpenNamePicker);
                 return;

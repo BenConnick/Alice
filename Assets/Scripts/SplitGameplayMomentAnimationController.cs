@@ -43,7 +43,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     public void RevealSecondView()
     {
         // play animation: walk to shroom
-        GM.FindSingle<Alice>().GetComponent<SpriteAnimator>().SetAnimation("walking"); // walk
+        GlobalObjects.FindSingle<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("walking"); // walk
         Tween.Start(WalkToShroomInterpolate, walkDuration, OnWalkToShroomComplete);
     }
 
@@ -55,7 +55,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     private void OnWalkToShroomComplete()
     {
-        GM.FindSingle<Alice>().GetComponent<SpriteAnimator>().SetAnimation("standing"); // walk
+        GlobalObjects.FindSingle<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("standing"); // walk
         Tween.StartDelayedAction(postWalkPauseDuration, OnPostWalkPauseComplete);
     }
 
@@ -74,7 +74,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     private void OnShakeFinish()
     {
         // begin the fall
-        GM.OnGameEvent(NavigationEvent.SplitAnimationMidPoint);
+        GameEventHandler.OnGameEvent(NavigationEvent.SplitAnimationMidPoint);
 
         // shake finished, separate
         //Tween.Start(SeparateInterpolate,spreadDuration,OnSeparateComplete);

@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        if (GM.IsGameplayPaused) return;
+        if (ApplicationLifetime.IsGameplayPaused) return;
 
         // process input
         inputVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));

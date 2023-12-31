@@ -73,7 +73,7 @@ public class EnterNameScreen : MonoBehaviour
         for (int i = 0; i < letterRabbits.Length; i++)
         {
             GameObject rabbit = letterRabbits[i];
-            Vector3 rabbitScreen = RectTransformUtility.WorldToScreenPoint(GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>(), rabbit.transform.position);
+            Vector3 rabbitScreen = RectTransformUtility.WorldToScreenPoint(GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>(), rabbit.transform.position);
             if ((rabbitScreen - raw).sqrMagnitude < closestDistance)
             {
                 closestDistance = (rabbitScreen - raw).sqrMagnitude;
@@ -100,16 +100,16 @@ public class EnterNameScreen : MonoBehaviour
         {
             if (enteredName == code.Value)
             {
-                GM.PlayerHighScoreNames.Add(enteredName);
-                GM.PlayerHighScores.Add(GM.CurrentScore);
+                ApplicationLifetime.PlayerHighScoreNames.Add(enteredName);
+                ApplicationLifetime.PlayerHighScores.Add(ApplicationLifetime.CurrentScore);
                 CheatCodes.OnCheatCode(code.Key);
                 return;
             }
         }
 
         // not a cheat code
-        GM.PlayerHighScoreNames.Add(enteredName);
-        GM.PlayerHighScores.Add(GM.CurrentScore);
+        ApplicationLifetime.PlayerHighScoreNames.Add(enteredName);
+        ApplicationLifetime.PlayerHighScores.Add(ApplicationLifetime.CurrentScore);
         //GM.OnGameEvent(NavigationEvent.CloseNamePicker);
     }
 
@@ -168,7 +168,7 @@ public class EnterNameScreen : MonoBehaviour
         // cheat-code UI
         // highlight the next letter in the "cheat" code
         int cheatHintIndex = -2;
-        if (CheatCodes.All.TryGetValue(1+GM.CurrentLevel, out string cheatCode))
+        if (CheatCodes.All.TryGetValue(1+ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value, out string cheatCode))
         {
             // if the code can still be entered
             if (enteredName.Length == 0 || cheatCode.Contains(enteredName))

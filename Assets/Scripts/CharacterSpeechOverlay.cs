@@ -13,7 +13,7 @@ public class CharacterSpeechOverlay : MonoBehaviour
 
     public static void Show(CharacterDialogueSource source)
     {
-        var self = GM.FindSingle<CharacterSpeechOverlay>();
+        var self = GlobalObjects.FindSingle<CharacterSpeechOverlay>();
         self.source = source;
         self.fadeUIBehavior.FadeInWithCallback(0.4f, () =>
         {

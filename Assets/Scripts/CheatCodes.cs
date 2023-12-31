@@ -6,47 +6,47 @@ public static class CheatCodes
     // so-called "cheat codes"
     public static readonly IReadOnlyDictionary<LevelType, string> All = new Dictionary<LevelType, string>()
     {
-        { LevelType.Caterpillar, "DRINK" },
-        { LevelType.CheshireCat, "GROWN" },
-        { LevelType.MadHatter, "GRINS" },
-        { LevelType.QueenOfHearts, "TWINS" },
+        { LevelType.GardenOfChange, "DRINK" },
+        { LevelType.CheshireDoors, "GROWN" },
+        { LevelType.GardenOfSmoke, "GRINS" },
+        { LevelType.MadTeaParty, "TWINS" },
     };
 
     public static void OnCheatCode(LevelType unlockCode)
     {
-        LevelType newLevel = GM.CurrentLevel;
-        switch (GM.CurrentLevel)
+        LevelType newLevel = ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
+        switch (ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value)
         {
             case LevelType.RabbitHole:
-                if (unlockCode == LevelType.Caterpillar)
+                if (unlockCode == LevelType.GardenOfChange)
                 {
                     newLevel = unlockCode;
                 }
                 break;
-            case LevelType.Caterpillar:
-                if (unlockCode == LevelType.CheshireCat)
+            case LevelType.GardenOfChange:
+                if (unlockCode == LevelType.CheshireDoors)
                 {
                     newLevel = unlockCode;
                 }
                 break;
-            case LevelType.CheshireCat:
-                if (unlockCode == LevelType.MadHatter)
+            case LevelType.CheshireDoors:
+                if (unlockCode == LevelType.GardenOfSmoke)
                 {
                     newLevel = unlockCode;
                 }
                 break;
-            case LevelType.MadHatter:
-                if (unlockCode == LevelType.QueenOfHearts)
+            case LevelType.GardenOfSmoke:
+                if (unlockCode == LevelType.MadTeaParty)
                 {
                     newLevel = unlockCode;
                 }
                 break;
-            case LevelType.QueenOfHearts:
+            case LevelType.MadTeaParty:
                 // TBD
                 break;
             default:
                 break;
         }
-        GM.CurrentLevel = newLevel;
+        ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(newLevel);
     }
 }

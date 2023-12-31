@@ -1,8 +1,14 @@
 using System;
 
 [Serializable]
-public struct LevelConfig
+public class LevelConfig
 {
-    public int LevelIndex;
-    public float BaseTimeScale;
+    public string name => LevelType.ToString(); // for inspector
+    public LevelType LevelType;
+    public float FallLength;
+    public float TimeScaleMultiplier;
+    public float FallSpeedMultiplier;
+    public float FallAccelerationMultiplier;
+    public ChunkSetAsset ChunkSet;
+    public LevelTextAsset LevelText;
 }

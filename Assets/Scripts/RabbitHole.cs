@@ -6,7 +6,21 @@ public class RabbitHole : MonoBehaviour
     [Header("Config")]
     public ObstacleSpawnersConfig SpawnersConfig;
 
-    public float fallSpeed => GM.GetFallSpeed();
+    public static RabbitHole Current => ContextualInputSystem.GameplayContext.GameplayGroup.ObstacleContext;
+
+    public LevelConfig Config => levelConfig;
+
+    public float fallSpeed
+    {
+        get
+        {
+            float baseline = MasterConfig.Values.BaseFallSpeed * levelConfig.FallSpeedMultiplier;
+
+            // increase fall speed the farther down you are
+            float depth = OwnerLink.GetProgressTotal();
+            return baseline + MasterConfig.Values.BaseFallAcceleration * levelConfig.FallAccelerationMultiplier * depth;
+        }
+    }
 
     [Header("Children")]
     public SpriteRenderer[] BackgroundTiles;
@@ -24,12 +38,6 @@ public class RabbitHole : MonoBehaviour
     public float OutroAnimationDistance => outroAnimationDistance; // now redundant
 
     [Header("Assets")]
-    [SerializeField] private GameObject[] obstaclePrefabs;
-    [SerializeField] private LevelChunk[] rabbitChunkPrefabs;
-    [SerializeField] private LevelChunk[] caterpillarChunkPrefabs;
-    [SerializeField] private LevelChunk[] chessChunkPrefabs;
-    [SerializeField] private LevelChunk[] teaPartyChunkPrefabs;
-    [SerializeField] private LevelChunk[] queenChunkPrefabs;
     [SerializeField] private Sprite[] perLevelBackgroundSprites;
 
     // fields
@@ -46,6 +54,8 @@ public class RabbitHole : MonoBehaviour
     private AnimationMode mode;
     private float multipurposeTimer;
     private float titleAnimationSpeed = 1f;
+    private LevelConfig levelConfig;
+    // private Transform transform;
 
     public enum AnimationMode
     {
@@ -57,30 +67,7 @@ public class RabbitHole : MonoBehaviour
         Title
     }
 
-    private LevelChunk[] chunkPrefabs
-    {
-        get
-        {
-            switch (GM.CurrentLevel)
-            {
-                case LevelType.Default:
-                    break;
-                case LevelType.RabbitHole:
-                    return rabbitChunkPrefabs;
-                case LevelType.Caterpillar:
-                    return caterpillarChunkPrefabs;
-                case LevelType.CheshireCat:
-                    return chessChunkPrefabs;
-                case LevelType.MadHatter:
-                    return teaPartyChunkPrefabs;
-                case LevelType.QueenOfHearts:
-                    return queenChunkPrefabs;
-                default:
-                    break;
-            }
-            return rabbitChunkPrefabs;
-        }
-    }
+    private LevelChunk[] chunkPrefabs => levelConfig.ChunkSet.Chunks;
 
     // per viewport values
     public int VpLives { get; set; }
@@ -88,6 +75,10 @@ public class RabbitHole : MonoBehaviour
 
     private void Awake()
     {
+        if (levelConfig == default)
+        {
+            levelConfig = MasterConfig.Values.LevelConfigs[0]; // initial level
+        }
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
         initialHeight = transform.localPosition.y;
         Time.timeScale = 1f;
@@ -103,9 +94,9 @@ public class RabbitHole : MonoBehaviour
         else if (mode == AnimationMode.Outro) UpdateOutroAnim();
         else if (mode == AnimationMode.Interactive) UpdateInteractive();
 
-        if (!GM.IsGameplayPaused)
+        if (!ApplicationLifetime.IsGameplayPaused)
         {
-            var player = GM.FindSingle<Alice>();
+            var player = GlobalObjects.FindSingle<AliceCharacter>();
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -136,10 +127,10 @@ public class RabbitHole : MonoBehaviour
             // PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
             if (initialHeight - transform.localPosition.y < chunkCursor + 6
                 // stop spawning chunks before the level end
-                && totalFallDistance < GM.GetLevelLength(GM.CurrentLevel) - LevelChunk.height * 2)
+                && totalFallDistance < levelConfig.FallLength - LevelChunk.height * 2)
             {
                 var newChunkPrefab = chunkSpawner.Force();
-                LevelChunk newChunk = Instantiate(newChunkPrefab, transform);
+                LevelChunk newChunk = Object.Instantiate(newChunkPrefab, transform);
                 chunkCursor -= Mathf.Sign(fallSpeed) * LevelChunk.height;
                 newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
                 activeChunks.Add(newChunk);
@@ -150,14 +141,14 @@ public class RabbitHole : MonoBehaviour
                 {
                     var oldest = activeChunks[0];
                     activeChunks.RemoveAt(0);
-                    Destroy(oldest.gameObject);
+                    Object.Destroy(oldest.gameObject);
                 }
             }
 
             // check game over condition
-            if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > GM.GetLevelLength(GM.CurrentLevel))
+            if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
             {
-                GM.OnGameEvent(NavigationEvent.PlatformerLevelEndTrigger);
+                GameEventHandler.OnGameEvent(NavigationEvent.PlatformerLevelEndTrigger);
             }
 
             // debug
@@ -184,7 +175,7 @@ public class RabbitHole : MonoBehaviour
         titleAnimationSpeed = 1f;
         OwnerLink.GameplayCamera.transform.localPosition = Vector3.zero;
         mode = AnimationMode.Default;
-        GM.OnGameEvent(NavigationEvent.MenuAnimationFinished);
+        GameEventHandler.OnGameEvent(NavigationEvent.MenuAnimationFinished);
     }
 
     private void UpdateIntroAnim()
@@ -201,11 +192,11 @@ public class RabbitHole : MonoBehaviour
         transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
 
         // alice lerp to resting pos
-        var player = GM.FindSingle<Alice>();
+        var player = GlobalObjects.FindSingle<AliceCharacter>();
         bool hasFocus = player.movementContext?.ObstacleContext == this;
         if (hasFocus)
         {
-            GM.FindSingle<Alice>().IsHijacked = true;
+            GlobalObjects.FindSingle<AliceCharacter>().IsHijacked = true;
             float t = (transform.localPosition.y - outroStartHeight) / OutroAnimationDistance;
             Vector3 characterTargetRestingPos = new Vector3(transform.position.x, -2, 0);
             Transform aliceTransform = player.transform;
@@ -220,7 +211,7 @@ public class RabbitHole : MonoBehaviour
 
     private void UpdateInteractive()
     {
-        if (!GM.IsGameplayPaused)
+        if (!ApplicationLifetime.IsGameplayPaused)
         {
             transform.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
             totalFallDistance = transform.localPosition.y - initialHeight;
@@ -232,12 +223,12 @@ public class RabbitHole : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // shrink
-            GM.FindSingle<Alice>().OnShrink();
+            GlobalObjects.FindSingle<AliceCharacter>().OnShrink();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // grow
-            GM.FindSingle<Alice>().OnGrow();
+            GlobalObjects.FindSingle<AliceCharacter>().OnGrow();
         }
     }
 
@@ -249,14 +240,14 @@ public class RabbitHole : MonoBehaviour
 
     public void PlayIntroAnimationForCurrentLevel()
     {
-        menuGraphics.ShowStageArt(GM.CurrentLevel);
+        menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
         PlayIntroAnim();
     }
 
     private void PlayIntroAnim()
     {
         mode = AnimationMode.Intro;
-        SetBackgroundSpritesForLevel((int) GM.CurrentLevel);
+        SetBackgroundSpritesForLevel((int) ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
     }
 
     private void OnIntroComplete()
@@ -271,12 +262,12 @@ public class RabbitHole : MonoBehaviour
         mode = AnimationMode.Outro;
         //OwnerLink?.Overlay?.SetActive(false);
         menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - outroAnimationDistance, 0);
-        menuGraphics.ShowStageArt(GM.CurrentLevel+1);
+        menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value+1);
     }
 
     private void OnOutroComplete()
     {
-        GM.FindSingle<Alice>().IsHijacked = false;
+        GlobalObjects.FindSingle<AliceCharacter>().IsHijacked = false;
 
         OwnerLink.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
@@ -289,14 +280,14 @@ public class RabbitHole : MonoBehaviour
         Reset();
 
 
-        GM.OnGameEvent(NavigationEvent.PlatformerLevelEndPostAnimation);
+        GameEventHandler.OnGameEvent(NavigationEvent.PlatformerLevelEndPostAnimation);
     }
 
     public void Reset()
     {
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
 
-        VpLives = GM.MAX_LIVES;
+        VpLives = ApplicationLifetime.MAX_LIVES;
 
         chunkCursor = -LevelChunk.height;
 
@@ -312,7 +303,7 @@ public class RabbitHole : MonoBehaviour
         // clean up game objects
         foreach (var chunk in activeChunks)
         {
-            if (chunk != null) Destroy(chunk.gameObject);
+            if (chunk != null) Object.Destroy(chunk.gameObject);
         }
 
         // clear queue
@@ -325,7 +316,7 @@ public class RabbitHole : MonoBehaviour
         return transform.localPosition.y - (initialHeight + introAnimationDistance);
     }
 
-    public void SetBackgroundSpritesForLevel(int levelIndex)
+    private void SetBackgroundSpritesForLevel(int levelIndex)
     {
         if (perLevelBackgroundSprites.TryGet(levelIndex, out Sprite art)) {
             foreach (var backgroundTile in BackgroundTiles)
@@ -335,7 +326,7 @@ public class RabbitHole : MonoBehaviour
         }
         else
         {
-            Debug.Log(gameObject.name + "failed to find background for level " + levelIndex);
+            Debug.Log("failed to find background for level " + levelIndex);
         }
     }
 

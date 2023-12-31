@@ -22,18 +22,19 @@ public static class GameEventHandler
 
     public static void OnGameEvent(NavigationEvent gameEvent)
     {
+        Debug.Log("On game event: " + gameEvent);
         switch (gameEvent)
         {
             case NavigationEvent.MainMenuGoNext:
             {
-                GM.FindSingle<Alice>().UnbecomeButton();
+                GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
                 BeginGameplayMode();
                 break;
             }
             case NavigationEvent.PlatformerGameOver:
             {
-                GM.CurrentMode = GM.GameMode.GameOver;
-                GM.DeathCount++;
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.GameOver;
+                // death count?
                 //string storyKey = PassageStartPrefix + (DeathCount < 2 ? "" : " " + DeathCount);
                 //ShowStory(storyKey);
 
@@ -53,9 +54,10 @@ public static class GameEventHandler
             case NavigationEvent.PlatformerLevelEndPostAnimation:
             {
                 // begin dialogue
-                GM.CurrentMode = GM.GameMode.Dialogue;
-                GM.CurrentLevel++;
-                GM.FindSingle<Alice>().BecomeButton();
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Dialogue;
+                LevelType val = (LevelType)ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
+                ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(val);
+                GlobalObjects.FindSingle<AliceCharacter>().BecomeButton();
                 AdvanceDialogueContext();
                 break;
             }
@@ -67,7 +69,7 @@ public static class GameEventHandler
                     rh.Reset();
                     rh.PlayIntroAnimationForRestart();
                 });
-                GM.FindSingle<GameplayScreenBehavior>().ShowGame();
+                GlobalObjects.FindSingle<GameplayScreenBehavior>().ShowGame();
                 break;
             }
             case NavigationEvent.SplitAnimationMidPoint:
@@ -78,7 +80,7 @@ public static class GameEventHandler
             case NavigationEvent.GameOverGoNext:
             {
                 Debug.Log("GameOverGoNext");
-                GM.CurrentMode = GM.GameMode.Gameplay;
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
 
                 // reset all displays
                 AllDisplays(disp =>
@@ -87,15 +89,15 @@ public static class GameEventHandler
                     gameOverUI.SetActive(false);
                     var rh = disp.ObstacleContext;
                     rh.Reset();
-                    rh.menuGraphics.ShowStageArt(GM.CurrentLevel);
+                    rh.menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
                     rh.PlayTitleIntro();
                 });
 
                 // set mode to main menu
-                GM.CurrentMode = GM.GameMode.PreMainMenu;
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.PreMainMenu;
 
                 // set alice position
-                var alice = GM.FindSingle<Alice>();
+                var alice = GlobalObjects.FindSingle<AliceCharacter>();
                 var ctx = alice.movementContext;
                 if (ctx != null)
                 {
@@ -114,7 +116,7 @@ public static class GameEventHandler
             case NavigationEvent.BedInteraction:
             {
                 Debug.Log("BedInteraction");
-                GM.CurrentMode = GM.GameMode.Gameplay;
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
                 AllDisplays(disp =>
                 {
                     GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
@@ -128,7 +130,7 @@ public static class GameEventHandler
             case NavigationEvent.MenuAnimationFinished:
             {
                 Debug.Log("MenuAnimationFinished");
-                GM.CurrentMode = GM.GameMode.MainMenu;
+                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.MainMenu;
                 break;
             }
         }
@@ -144,9 +146,9 @@ public static class GameEventHandler
 
     private static void BeginGameplayMode()
     {
-        GM.CurrentMode = GM.GameMode.Gameplay;
-        GM.FindSingle<Alice>().UnbecomeButton();
-        TimeDistortionController.SetBaselineSpeed(GetLevelTimeScale(GM.CurrentLevel));
+        ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
+        GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
+        TimeDistortionController.SetBaselineSpeed(RabbitHole.Current.Config.TimeScaleMultiplier);
         foreach (var disp in RabbitHoleDisplay.All)
         {
             var hole = disp.ObstacleContext;
@@ -155,14 +157,9 @@ public static class GameEventHandler
         }
     }
 
-    private static float GetLevelTimeScale(LevelType level)
-    {
-        return level == LevelType.Caterpillar ? .5f : 1f;
-    }
-
     public static void PlayCaterpillarDoneMoment()
     {
-        GM.FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
+        GlobalObjects.FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
     }
 
     private static void AdvanceDialogueContext()
@@ -187,11 +184,5 @@ public static class GameEventHandler
                 BeginGameplayMode();
         }
     }
-
-    /*private static void ShowStory(string storyKey)
-        {
-            FindSingle<GameplayScreenBehavior>().ShowStory(storyKey);
-            GM.CurrentMode = GameMode.Dialogue;
-        }*/
     #endregion
 }

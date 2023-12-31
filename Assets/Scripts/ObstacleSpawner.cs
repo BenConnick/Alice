@@ -12,7 +12,7 @@ public abstract class ObstacleSpawner
 {
     public abstract ObstacleSpawnInfo[] Update(float deltaTime);
 
-    public ObstacleSpawnersConfig Config => GM.FindSingle<RabbitHole>().SpawnersConfig;
+    public ObstacleSpawnersConfig Config => GlobalObjects.FindSingle<RabbitHole>().SpawnersConfig;
 }
 
 public abstract class ShuffledObstacleSpawner : ObstacleSpawner
@@ -65,7 +65,7 @@ public class RabbitHoleObstacleSpawner : ShuffledObstacleSpawner
             lastObstableSpawnTime = Time.time;
             var prefab = GetNextRandomObstacle();
 
-            var gameCam = GM.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+            var gameCam = GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
             var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
             var lane = Random.Range(0, obstacleXMax); // at a random position
 
@@ -89,7 +89,7 @@ public class ChunkSpawner
     protected LevelChunk[] chunkPrefabs;
 
     protected float lastObstableSpawnTime;
-    private float secondsBetweenObstacles => LevelChunk.height/GM.FindSingle<RabbitHole>().fallSpeed;
+    private float secondsBetweenObstacles => LevelChunk.height/GlobalObjects.FindSingle<RabbitHole>().fallSpeed;
     private float elapsedTime = 0;
     private LevelChunk prevChunk;
 

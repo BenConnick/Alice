@@ -2,9 +2,12 @@
 {
     Default = 0,
     RabbitHole = 1,
-    CheshireCat = 2,
-    Caterpillar = 3,
-    MadHatter = 4,
-    QueenOfHearts = 5,
-    Tweedle = 6,
+    CheshireDoors = 2,
+    GardenOfChange = 3,
+    GardenOfSmoke = 4,
+    MadTeaParty = 5,
+    GameOfChessOrCards = 6,
+    RedKingChamber = 7,
+    MissingLevelPlaceholder = 8,
+    FutureLevelPlaceholder = 9,
 }

@@ -8,6 +8,6 @@ public class NavigationEventTrigger : MonoBehaviour
 
     public void FireEvent()
     {
-        GM.OnGameEvent(NavigationEvent);
+        GameEventHandler.OnGameEvent(NavigationEvent);
     }
 }

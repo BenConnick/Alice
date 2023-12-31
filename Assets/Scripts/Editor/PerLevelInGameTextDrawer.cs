@@ -1,7 +1,9 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(PerLevelInGameTextAsset))]
+//[CustomPropertyDrawer(typeof(LevelTextAsset))]
+[Obsolete]
 public class PerLevelInGameTextDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

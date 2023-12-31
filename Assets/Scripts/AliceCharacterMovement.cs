@@ -5,7 +5,7 @@ using UnityEngine;
 public class AliceCharacterMovement : LaneEntity
 {
     public bool IsHijacked;
-    public RabbitHoleDisplay movementContext => ContextualInputSystem.Context;
+    public RabbitHoleDisplay movementContext => ContextualInputSystem.GameplayContext;
     private RabbitHoleDisplay prevMovementContext;
 
     // inspector
@@ -20,7 +20,7 @@ public class AliceCharacterMovement : LaneEntity
 
     public virtual void Update()
     {
-        if (GM.IsGameplayPaused) return;
+        if (ApplicationLifetime.IsGameplayPaused) return;
 
         if (movementContext == null) return;
 

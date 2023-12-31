@@ -96,7 +96,7 @@ public class CommandPromptWindow : EditorWindow
         CommandMapping.Clear();
         //MapCommands(typeof(LevelEditorWindow));
         MapCommands(typeof(DebugCommands));
-        MapCommands(typeof(GM));
+        MapCommands(typeof(ApplicationLifetime));
 
         // create string list
         var keys = CommandMapping.Keys;

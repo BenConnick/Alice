@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac451fcd2bb40da985de840a5ab17d6, type: 3}
+  m_Name: GardenSet
+  m_EditorClassIdentifier: 
+  Chunks:
+  - {fileID: 8465607651784711365, guid: c1415f9f124d5401b81ee3f8d8be2c30, type: 3}
+  - {fileID: 8465607651784711365, guid: 06060638ca8af4bf5ae9aca0c9b3ce8d, type: 3}
+  - {fileID: 8465607651784711365, guid: e118938a35d464d70a42d90d93300582, type: 3}

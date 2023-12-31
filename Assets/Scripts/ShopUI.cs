@@ -35,7 +35,7 @@ public class ShopUI : MonoBehaviour
         upgradeHeaderLabel.text = upgrade.DisplayName;
         upgradeDescriptionLabel.text = upgrade.ShopDescription;
         buyLabel.text = "Buy for " + upgrade.ShopCost + Util.CurrencyChar;
-        bankLabel.text = "" + GM.Money + Util.CurrencyChar;
+        bankLabel.text = "" + ApplicationLifetime.GetPlayerData().Money.Value + Util.CurrencyChar;
         upgradeImage.sprite = upgrade.ShopSprite;
 
         gameObject.SetActive(true);

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de621601ac44c8ba89541cbb95b74b9, type: 3}
+  m_Name: MasterConfig
+  m_EditorClassIdentifier: 
+  Data:
+    BaseFallSpeed: 6
+    BaseFallAcceleration: 0.01
+    LevelConfigs:
+    - LevelType: 1
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: f06e0d3a60725476697ab43446523194, type: 2}
+      LevelText: {fileID: 11400000, guid: f4979ba76c3fd441fbbab2905a3e84cf, type: 2}
+    - LevelType: 2
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: f06e0d3a60725476697ab43446523194, type: 2}
+      LevelText: {fileID: 11400000, guid: 8c4cb0f817e6c49fb84a80fca61c24b6, type: 2}
+    - LevelType: 3
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: 5fcfdd8932496486ea841c196342f450, type: 2}
+      LevelText: {fileID: 11400000, guid: 41057160354d549198f27017b1a2f2d5, type: 2}
+    - LevelType: 4
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 0}
+      LevelText: {fileID: 11400000, guid: efdcbb27932d84954a8673e95781adaa, type: 2}
+    - LevelType: 4
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: bea7686b47368482694577500baa6bbb, type: 2}
+      LevelText: {fileID: 11400000, guid: af494b828075845ea92828dcc9945aa7, type: 2}
+    - LevelType: 5
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: 734dee5b5affe430f96958ca9ba3da99, type: 2}
+      LevelText: {fileID: 11400000, guid: af494b828075845ea92828dcc9945aa7, type: 2}
+    - LevelType: 6
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: 19ed1f4b190f94231b506dec4fe771fe, type: 2}
+      LevelText: {fileID: 11400000, guid: ef2e56f71bee24f65a4f63f4e728856d, type: 2}
+    - LevelType: 7
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: d93a924bc65794bd39233f1f421ce786, type: 2}
+      LevelText: {fileID: 11400000, guid: e6123679b0a674a998d498ef88e7ad60, type: 2}
