@@ -5,8 +5,8 @@ using UnityEngine;
 public class AliceCharacterMovement : LaneEntity
 {
     public bool IsHijacked;
-    public RabbitHoleDisplay movementContext => ContextualInputSystem.GameplayContext;
-    private RabbitHoleDisplay prevMovementContext;
+    public FallingGameInstance gameContext => ContextualInputSystem.ActiveGameInstance;
+    private FallingGameInstance prevGameContext;
 
     // inspector
     public float CharacterWidth = 1.5f;
@@ -22,12 +22,12 @@ public class AliceCharacterMovement : LaneEntity
     {
         if (ApplicationLifetime.IsGameplayPaused) return;
 
-        if (movementContext == null) return;
+        if (gameContext == null) return;
 
         // switch viewport
-        if (prevMovementContext != movementContext)
+        if (prevGameContext != gameContext)
         {
-            prevMovementContext = movementContext;
+            prevGameContext = gameContext;
             // position in lane
             transform.position = ContextualInputSystem.ViewWorldCursorPos;
         }

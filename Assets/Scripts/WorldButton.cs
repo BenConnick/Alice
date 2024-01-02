@@ -21,7 +21,7 @@ public class WorldButton: MonoBehaviour
     private void Update()
     {
         // while active
-        if (ContextualInputSystem.GameplayContext?.isActiveAndEnabled ?? false)
+        if (ContextualInputSystem.ActiveViewport?.isActiveAndEnabled ?? false)
         {
             // check for overlap
             var pos = ContextualInputSystem.ViewWorldCursorPos;

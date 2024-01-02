@@ -92,10 +92,9 @@ public class AliceCharacter : AliceCharacterMovement
 
     public void OnStartLevelPressed()
     {
-        if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.MainMenu)
-            GameEventHandler.OnGameEvent(NavigationEvent.MainMenuGoNext);
-        else
-            GameEventHandler.OnGameEvent(NavigationEvent.DialogueGoNext);
+        GameEventHandler.OnGameEvent(ApplicationLifetime.CurrentMode is TitleMenuMode
+            ? NavigationEvent.MainMenuGoNext
+            : NavigationEvent.DialogueGoNext);
     }
 
     public void UnbecomeButton()
@@ -143,9 +142,9 @@ public class AliceCharacter : AliceCharacterMovement
             if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
 
             // shake, flash, subtract lives
-            movementContext.InvertColor(0.01f);
+            gameContext.Viewport.InvertColor(0.01f);
             TimeDistortionController.PlayImpactFrame(.9f);
-            movementContext.GameplayCamera.GetComponent<GameplayInnerDisplayCamera>().Shake(); // DISABLED FOR EDITING
+            gameContext.Viewport.GameplayCamera.GetComponent<GameplayInnerDisplayCamera>().Shake(); // DISABLED FOR EDITING
             player.StartFlashing();
             SubtractLife();
         }
@@ -174,9 +173,9 @@ public class AliceCharacter : AliceCharacterMovement
         // late in the game, the player can switch between these contexts
         // and in doing so can effectively gain or lose lives
         // this may eventually switch to a global context if that idea doesn't end up in the game
-        if (movementContext == null || movementContext.ObstacleContext == null) return;
-        movementContext.ObstacleContext.VpLives--;
-        if (movementContext.ObstacleContext.VpLives <= 0)
+        if (gameContext == null) return;
+        gameContext.VpLives--;
+        if (gameContext.VpLives <= 0)
         {
             GameEventHandler.OnGameEvent(NavigationEvent.PlatformerGameOver);
         }

@@ -6,23 +6,13 @@ public delegate void PlatformEventDelegate(int platformID);
 public delegate void NoteEventDelegate(int noteID);
 public delegate void EventDelegate();
 
-// Game Manager
-// static class, top control of the game state
+// Application Manager
+// static class, top control of the app state
 public static partial class ApplicationLifetime
 {
     #region state
-    public enum GameMode
-    {
-        Default,
-        LoadingScreen, // placeholder
-        MainMenu,
-        LevelSelect,
-        PauseMenu, // placeholder
-        Gameplay, // the main gameplay mode
-        Dialogue, // gameplay sub-mode
-        GameOver,
-        PreMainMenu, // animating in
-    }
+
+    public static StateMachine<AppMode> Modes = new StateMachine<AppMode>();
     
     private static SerializablePlayerData _playerData;
 
@@ -43,8 +33,8 @@ public static partial class ApplicationLifetime
 
     #region gamestate
     // Game State
-    public static bool IsGameplayPaused => CurrentMode != GameMode.Gameplay;
-    public static GameMode CurrentMode { get; set; }
+    public static bool IsGameplayPaused => !(CurrentMode is FallingGameActiveMode);
+    public static AppMode CurrentMode => (AppMode)Modes.CurrentState;
     public static int CurrentScore { get; set; }
     public static readonly List<int> PlayerHighScores = new List<int>();
     public static readonly List<string> PlayerHighScoreNames = new List<string>(); // assumed same length as scores^
@@ -60,16 +50,37 @@ public static partial class ApplicationLifetime
 
     public static void Init(BootstrapObject helper)
     {
+        // link bootstrap
         helperObject = helper;
-        CurrentMode = GameMode.PreMainMenu;
+        
+        // init frame rate
         Application.targetFrameRate = 60;
-
+        
+        // init modes
+        InitializeAppModes(Modes);
+        
+        // begin loading
+        Modes.ChangeState(LoadingMode.Instance);
+        
+        // load
         _playerData = new SerializablePlayerData();
         _playerData.TryLoadFromDisk();
-
 #if UNITY_EDITOR
-        MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : MAX_LIVES;
+        DebugOnPostInitialize();
 #endif
+        GameEventHandler.OnGameEvent(NavigationEvent.BootLoadFinished);
+    }
+
+    private static void InitializeAppModes(StateMachine<AppMode> modes)
+    {
+        LoadingMode.Instance = new LoadingMode(modes);
+        TitleMenuMode.Instance = new TitleMenuMode(modes);
+        LevelSelectMode.Instance = new LevelSelectMode(modes);
+        PauseMenuMode.Instance = new PauseMenuMode(modes);
+        FallingGameActiveMode.Instance = new FallingGameActiveMode(modes);
+        FallingGameSpectatorMode.Instance = new FallingGameSpectatorMode(modes);
+        PreFallCutsceneMode.Instance = new PreFallCutsceneMode(modes);
+        PostFallCutsceneMode.Instance = new PostFallCutsceneMode(modes);
     }
 
     public static void InitEditor()
@@ -79,13 +90,20 @@ public static partial class ApplicationLifetime
 
     public static void Tick()
     {
-        Tween.UpdateAll();
         ContextualInputSystem.Update();
+        Modes.Tick(Time.deltaTime);
+        Tween.UpdateAll();
     }
 
     public static void LateTick()
     {
 
+    }
+
+    public static void ChangeMode(AppMode nextMode)
+    {
+        Modes.ChangeState(nextMode);
+        Debug.Log($"Game state changed to '{CurrentMode.Name}'");
     }
     #endregion
 

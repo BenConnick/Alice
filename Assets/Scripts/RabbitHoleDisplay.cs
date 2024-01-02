@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class RabbitHoleDisplay : MonoBehaviour
 {
-    public static List<RabbitHoleDisplay> All = new List<RabbitHoleDisplay>();
-
     public RabbitHoleGroup GameplayGroup;
     public Camera GameplayCamera => GameplayGroup.GameplayCam;
     public RabbitHole ObstacleContext => GameplayGroup.ObstacleContext;
@@ -17,6 +15,8 @@ public class RabbitHoleDisplay : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private RawImage rawImageComponent;
+
+    public FallingGameInstance AssociatedGameInstance;
 
     // linked UI
 
@@ -29,16 +29,24 @@ public class RabbitHoleDisplay : MonoBehaviour
     
     private void Awake()
     {
-        if (!All.Contains(this)) All.Add(this);
+        if (AssociatedGameInstance == null)
+        {
+            AssociatedGameInstance = new FallingGameInstance(GameplayGroup, this);
+        }
 
         invertedColor = false; // rawImageComponent.material == invertedMaterial;
-        if (ObstacleContext.OwnerLink == null) ObstacleContext.OwnerLink = this;
+        if (ObstacleContext.ViewportLink == null) ObstacleContext.ViewportLink = this;
 
         // use new RT for each display
         if (GameplayCamera.targetTexture == DefaultRT)
         {
             SetRT(GetPooledRT());
         }
+    }
+
+    private void Update()
+    {
+        AssociatedGameInstance.Tick();
     }
 
     private void LateUpdate()
@@ -64,7 +72,7 @@ public class RabbitHoleDisplay : MonoBehaviour
         {
             freeRTPool.Add(AssociatedTexture);
         }
-        All.Remove(this);
+        AssociatedGameInstance.OnDisplayDestroyed();
     }
 
     public void SetColorInverted(bool inverted)
@@ -73,27 +81,6 @@ public class RabbitHoleDisplay : MonoBehaviour
         //rawImageComponent.material = inverted ? invertedMaterial : defaultMaterial;
         InvertSpriteTintBehavior.SetAllInverted(inverted);
         invertedColor = inverted;
-    }
-
-    // assumes that there is a RabbitHoleDisplay instance
-    // which exists in the scene and can be copied
-    [Obsolete]
-    public RabbitHoleDisplay Create(Vector2 panelUIPos, Vector3 worldPos)
-    {
-        var source = this;
-        RenderTexture newRT = GetPooledRT();
-        Transform gameplayGroupCopy = Instantiate(source.GameplayCamera.transform.parent, source.GameplayCamera.transform.parent.parent);
-        gameplayGroupCopy.transform.localPosition = worldPos; // shift over
-        Camera cameraCopy = gameplayGroupCopy.GetComponentInChildren<Camera>();
-        // cameraCopy.targetTexture = newRT; now covered below in "SetRT"
-
-        var displayCopy = Instantiate(source,source.transform.parent);
-        displayCopy.transform.localPosition = panelUIPos;
-        displayCopy.GameplayGroup = gameplayGroupCopy.GetComponentInChildren<RabbitHoleGroup>();
-        displayCopy.SetRT(newRT);
-        displayCopy.ObstacleContext.OwnerLink = displayCopy;
-        displayCopy.GetComponent<RawImage>().texture = newRT;
-        return displayCopy;
     }
 
     private void SetRT(RenderTexture renderTexture)
@@ -179,23 +166,18 @@ public class RabbitHoleDisplay : MonoBehaviour
         return GetCursorViewportWorldPos(GetNormalizedCursorPos());
     }
 
-    public float GetProgressTotal()
-    {
-        return ObstacleContext.transform.localPosition.y - ObstacleContext.InitialHeight;
-    }
-
     private void UpdateGameplayUI()
     {
-        float progressTotal = GetProgressTotal();
+        float progressTotal = AssociatedGameInstance.GetProgressTotal();
         
         // score
-        ObstacleContext.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
+        AssociatedGameInstance.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
         scoreLabel.text = string.Format($"{ApplicationLifetime.GetPlayerData().Money.Value:000000}"); // + Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {
-            bool normalActive = i < ObstacleContext.VpLives;
-            bool flashing = invertedColor && i == ObstacleContext.VpLives && Time.unscaledTime % .25f > .15f;
+            bool normalActive = i < AssociatedGameInstance.VpLives;
+            bool flashing = invertedColor && i == AssociatedGameInstance.VpLives && Time.unscaledTime % .25f > .15f;
             heartIcons[i].SetActive(normalActive || flashing);
         }
     }

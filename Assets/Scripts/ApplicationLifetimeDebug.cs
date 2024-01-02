@@ -10,6 +10,14 @@ public static partial class ApplicationLifetime
         SetLevelCaterpillar,
     }
 
+    public static void DebugOnPostInitialize()
+    {
+        // auto inject debug values into game state on startup
+        
+        // lives
+        MAX_LIVES = UnityEditor.EditorPrefs.GetBool("OneLife") ? 1 : MAX_LIVES;
+    }
+
     public static void OnDebugEvent(DebugEvent debugEvent)
     {
         Debug.Log("Debug Event: " + debugEvent);
@@ -40,7 +48,7 @@ public static partial class ApplicationLifetime
     [Command]
     public static void InfiniteHearts()
     {
-        ContextualInputSystem.GameplayContext.ObstacleContext.VpLives = 999;
+        ContextualInputSystem.ActiveGameInstance.VpLives = 999;
     }
 
     [Command]
@@ -67,7 +75,7 @@ public static partial class ApplicationLifetime
     private static void JumpToCaterpillar()
     {
         GetPlayerData().LastUnlockedLevel.Set(LevelType.GardenOfChange);
-        CurrentMode = GameMode.Gameplay;
+        ChangeMode(FallingGameActiveMode.Instance);
         //foreach (var rabbithole in RabbitHoleDisplay.All)
         //{
         //    rabbithole.GameplayGroup.ObstacleContext.SetBackgroundSpritesForLevel((int)CurrentLevel);

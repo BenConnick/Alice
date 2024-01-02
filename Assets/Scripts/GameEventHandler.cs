@@ -3,17 +3,18 @@ using UnityEngine;
 
 public enum NavigationEvent
 {
-    Default,
-    MainMenuGoNext,
-    PlatformerGameOver,
-    PlatformerLevelEndTrigger,
-    PlatformerLevelEndPostAnimation,
-    FallFromMonologue,
-    SplitAnimationMidPoint,
-    GameOverGoNext,
-    DialogueGoNext,
-    BedInteraction,
-    MenuAnimationFinished
+    Default = 0,
+    MainMenuGoNext = 1,
+    PlatformerGameOver = 2,
+    PlatformerLevelEndTrigger = 3,
+    PlatformerLevelEndPostAnimation = 4,
+    FallFromMonologue = 5,
+    SplitAnimationMidPoint = 6,
+    GameOverGoNext = 7,
+    DialogueGoNext = 8,
+    BedInteraction = 9,
+    MenuAnimationFinished = 10,
+    BootLoadFinished = 11,
 }
     
 public static class GameEventHandler
@@ -25,6 +26,11 @@ public static class GameEventHandler
         Debug.Log("On game event: " + gameEvent);
         switch (gameEvent)
         {
+            case NavigationEvent.BootLoadFinished:
+            {
+                ApplicationLifetime.ChangeMode(TitleMenuMode.Instance);
+                break;
+            }
             case NavigationEvent.MainMenuGoNext:
             {
                 GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
@@ -33,28 +39,27 @@ public static class GameEventHandler
             }
             case NavigationEvent.PlatformerGameOver:
             {
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.GameOver;
+                ApplicationLifetime.ChangeMode(PostFallCutsceneMode.Instance);
                 // death count?
                 //string storyKey = PassageStartPrefix + (DeathCount < 2 ? "" : " " + DeathCount);
                 //ShowStory(storyKey);
 
-                AllDisplays(disp =>
+                AllGameInstances(i =>
                 {
-                    GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
-                    gameOverUI.SetActive(true);
+                    i.UIOverlay.GameOverOverlay.SetActive(true);
                 });
                 break;
             }
             case NavigationEvent.PlatformerLevelEndTrigger:
             {
                 // play outro
-                AllDisplays(rhd => rhd.ObstacleContext.PlayOutroAnimation());
+                AllGameInstances(i => i.PlayOutroAnimation());
                 break;
             }
             case NavigationEvent.PlatformerLevelEndPostAnimation:
             {
                 // begin dialogue
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Dialogue;
+                ApplicationLifetime.ChangeMode(PostFallCutsceneMode.Instance);
                 LevelType val = (LevelType)ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
                 ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(val);
                 GlobalObjects.FindSingle<AliceCharacter>().BecomeButton();
@@ -63,11 +68,10 @@ public static class GameEventHandler
             }
             case NavigationEvent.FallFromMonologue:
             {
-                AllDisplays(rhd =>
+                AllGameInstances(i =>
                 {
-                    var rh = rhd.ObstacleContext;
-                    rh.Reset();
-                    rh.PlayIntroAnimationForRestart();
+                    i.Reset();
+                    i.PlayIntroAnimationForRestart();
                 });
                 GlobalObjects.FindSingle<GameplayScreenBehavior>().ShowGame();
                 break;
@@ -80,28 +84,25 @@ public static class GameEventHandler
             case NavigationEvent.GameOverGoNext:
             {
                 Debug.Log("GameOverGoNext");
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
 
                 // reset all displays
-                AllDisplays(disp =>
+                AllGameInstances(i =>
                 {
-                    GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
-                    gameOverUI.SetActive(false);
-                    var rh = disp.ObstacleContext;
-                    rh.Reset();
-                    rh.menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
-                    rh.PlayTitleIntro();
+                    i.UIOverlay.GameOverOverlay.SetActive(false);
+                    i.Reset();
+                    i.menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
+                    i.PlayTitleIntro();
                 });
 
                 // set mode to main menu
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.PreMainMenu;
+                ApplicationLifetime.ChangeMode(TitleMenuMode.Instance);
 
                 // set alice position
                 var alice = GlobalObjects.FindSingle<AliceCharacter>();
-                var ctx = alice.movementContext;
-                if (ctx != null)
+                var fallingGameInstance = alice.gameContext;
+                if (fallingGameInstance != null)
                 {
-                    Vector3 center = ctx.GetCursorViewportWorldPos(new Vector2(.5f, .5f));
+                    Vector3 center = fallingGameInstance.Viewport.GetCursorViewportWorldPos(new Vector2(.5f, .5f));
                     alice.transform.position = center + new Vector3(2.5f, -2.5f, 0);
                     alice.BecomeButton();
                 }
@@ -116,45 +117,42 @@ public static class GameEventHandler
             case NavigationEvent.BedInteraction:
             {
                 Debug.Log("BedInteraction");
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
-                AllDisplays(disp =>
+                ApplicationLifetime.ChangeMode(FallingGameActiveMode.Instance);
+                AllGameInstances(gameInstance =>
                 {
-                    GameObject gameOverUI = disp.GameplayGroup.UIOverlay.GameOverOverlay;
+                    GameObject gameOverUI = gameInstance.UIOverlay.GameOverOverlay;
                     gameOverUI.SetActive(false);
-                    var rh = disp.ObstacleContext;
-                    rh.Reset();
-                    rh.PlayIntroAnimationForRestart();
+                    gameInstance.Reset();
+                    gameInstance.PlayIntroAnimationForRestart();
                 });
                 break;
             }
             case NavigationEvent.MenuAnimationFinished:
             {
                 Debug.Log("MenuAnimationFinished");
-                ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.MainMenu;
                 break;
             }
         }
     }
 
-    private static void AllDisplays(Action<RabbitHoleDisplay> dispAction)
+    private static void AllGameInstances(Action<FallingGameInstance> eachInstanceAction)
     {
-        foreach (var disp in RabbitHoleDisplay.All)
+        foreach (FallingGameInstance instance in FallingGameInstance.All)
         {
-            dispAction(disp);
+            eachInstanceAction(instance);
         }
     }
 
     private static void BeginGameplayMode()
     {
-        ApplicationLifetime.CurrentMode = ApplicationLifetime.GameMode.Gameplay;
+        ApplicationLifetime.ChangeMode(FallingGameActiveMode.Instance);
         GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
-        TimeDistortionController.SetBaselineSpeed(RabbitHole.Current.Config.TimeScaleMultiplier);
-        foreach (var disp in RabbitHoleDisplay.All)
+        TimeDistortionController.SetBaselineSpeed(FallingGameInstance.Current.Config.TimeScaleMultiplier);
+        AllGameInstances(i =>
         {
-            var hole = disp.ObstacleContext;
-            hole.Reset();
-            hole.PlayIntroAnimationForCurrentLevel();
-        }
+            i.Reset();
+            i.PlayIntroAnimationForCurrentLevel();
+        });
     }
 
     public static void PlayCaterpillarDoneMoment()

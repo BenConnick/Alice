@@ -30,7 +30,8 @@ MonoBehaviour:
     LevelWinText:
       Lines:
       - 'Alice recalled what she knew about the game of chess. '
-      - "\u201CThe king, where is the king?\u201D She thought aloud. "
+      - She noticed that a usual piece was absent.
+      - "\u201CThe king, where is the king?\u201D She thought aloud."
       - "Unexpectedly, a booming voice replied: \u201C\u2588\u2588\u2588\u2588\u2588\u2588\u2588\""
     LevelLoseText:
       Lines:

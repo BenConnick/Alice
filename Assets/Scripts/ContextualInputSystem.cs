@@ -2,7 +2,16 @@
 using UnityEngine;
 public static class ContextualInputSystem
 {
-    public static RabbitHoleDisplay GameplayContext;
+    public enum InputType
+    {
+        Error,
+        MouseUp,
+        MouseDown
+    }
+    
+    public static RabbitHoleDisplay ActiveViewport => ActiveGameInstance?.Viewport;
+    
+    public static FallingGameInstance ActiveGameInstance;
 
     // where the cursor would be if it were in the world 
     // shown in the (raycast-hit) viewport
@@ -17,21 +26,13 @@ public static class ContextualInputSystem
         if (Input.GetMouseButtonUp(0))
         {
             Debug.Log("Mouse up");
-            if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.PreMainMenu)
-            {
-                var rh = GlobalObjects.FindSingle<RabbitHoleDisplay>();
-                rh.GameplayGroup.ObstacleContext.FastForwardTitleIntro();
-            }
-            else if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.MainMenu)
-            {
-                Debug.Log("Title Mouse up");
-                GameEventHandler.OnGameEvent(NavigationEvent.MainMenuGoNext);
-            }
-            else if (ApplicationLifetime.CurrentMode == ApplicationLifetime.GameMode.GameOver)
-            {
-                Debug.Log("Game over Mouse up");
-                GameEventHandler.OnGameEvent(NavigationEvent.GameOverGoNext);
-            }
+            ApplicationLifetime.CurrentMode.HandleInput(InputType.MouseUp);
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Mouse down");
+            ApplicationLifetime.CurrentMode.HandleInput(InputType.MouseDown);
         }
 
         if (UICapturedInput)
@@ -40,25 +41,27 @@ public static class ContextualInputSystem
         }
         else
         {
-            ProcessInput();
+            UpdateActiveInstance();
         }
     }
 
     //private RaycastHit[] raycastHits = new RaycastHit[1];
-    private static void ProcessInput()
+    private static void UpdateActiveInstance()
     {
         // compare the mouse position against every display
-        // PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
         var cam = GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
-        foreach (var viewport in RabbitHoleDisplay.All)
+        foreach (var instance in FallingGameInstance.All)
         {
+            var viewport = instance.Viewport;
             ViewNormalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
             if (Util.IsInBounds(ViewNormalizedCursorPos))
             {
-                GameplayContext = viewport;
+                ActiveGameInstance = instance;
                 ViewWorldCursorPos = viewport.GetCursorViewportWorldPos(ViewNormalizedCursorPos);
                 break;
             }
         }
+        
+        // PerFrameVariableWatches.SetDebugQuantity("mouse", Input.mousePosition.ToString());
     }
 }

@@ -24,6 +24,17 @@ public class MasterConfig : LazyLoadedGlobalResource<MasterConfig, MasterConfigA
     public float BaseFallAcceleration = 0.01f;
     
     public LevelConfig[] LevelConfigs;
+    
+    // TODO animation configs
+    
+    [Header("Animation")] 
+    public float titleAnimationDistance;
+    public float titleAnimationDuration;
+    public float introAnimationDistance;
+    public float outroAnimationDistance;
+    public float introAnimationSpeed;
+    public AnimationCurve titleAnimationCurve;
+    public AnimationCurve introAnimationCurve;
 
     public LevelConfig GetLevelConfig(LevelType levelType)
     {

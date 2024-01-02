@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class LevelConfig
@@ -11,4 +12,5 @@ public class LevelConfig
     public float FallAccelerationMultiplier;
     public ChunkSetAsset ChunkSet;
     public LevelTextAsset LevelText;
+    public Sprite BackgroundSprite;
 }

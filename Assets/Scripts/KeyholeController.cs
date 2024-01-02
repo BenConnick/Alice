@@ -9,7 +9,7 @@ public class KeyholeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var c = ContextualInputSystem.GameplayContext;
+        var c = ContextualInputSystem.ActiveViewport;
         if (c == null) return;
         controlledCamera = c.GameplayCamera;
         Vector2 normalized = ContextualInputSystem.ViewNormalizedCursorPos;

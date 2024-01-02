@@ -23,6 +23,8 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: f06e0d3a60725476697ab43446523194, type: 2}
       LevelText: {fileID: 11400000, guid: f4979ba76c3fd441fbbab2905a3e84cf, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
     - LevelType: 2
       FallLength: 100
       TimeScaleMultiplier: 1
@@ -30,6 +32,8 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: f06e0d3a60725476697ab43446523194, type: 2}
       LevelText: {fileID: 11400000, guid: 8c4cb0f817e6c49fb84a80fca61c24b6, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
     - LevelType: 3
       FallLength: 100
       TimeScaleMultiplier: 1
@@ -37,20 +41,17 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: 5fcfdd8932496486ea841c196342f450, type: 2}
       LevelText: {fileID: 11400000, guid: 41057160354d549198f27017b1a2f2d5, type: 2}
-    - LevelType: 4
-      FallLength: 100
-      TimeScaleMultiplier: 1
-      FallSpeedMultiplier: 1
-      FallAccelerationMultiplier: 1
-      ChunkSet: {fileID: 0}
-      LevelText: {fileID: 11400000, guid: efdcbb27932d84954a8673e95781adaa, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 4433a1e1bc1b74df2a3a7a693079ce99,
+        type: 3}
     - LevelType: 4
       FallLength: 100
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: bea7686b47368482694577500baa6bbb, type: 2}
-      LevelText: {fileID: 11400000, guid: af494b828075845ea92828dcc9945aa7, type: 2}
+      LevelText: {fileID: 11400000, guid: efdcbb27932d84954a8673e95781adaa, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 4433a1e1bc1b74df2a3a7a693079ce99,
+        type: 3}
     - LevelType: 5
       FallLength: 100
       TimeScaleMultiplier: 1
@@ -58,6 +59,8 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: 734dee5b5affe430f96958ca9ba3da99, type: 2}
       LevelText: {fileID: 11400000, guid: af494b828075845ea92828dcc9945aa7, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
     - LevelType: 6
       FallLength: 100
       TimeScaleMultiplier: 1
@@ -65,6 +68,8 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: 19ed1f4b190f94231b506dec4fe771fe, type: 2}
       LevelText: {fileID: 11400000, guid: ef2e56f71bee24f65a4f63f4e728856d, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
     - LevelType: 7
       FallLength: 100
       TimeScaleMultiplier: 1
@@ -72,3 +77,85 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: d93a924bc65794bd39233f1f421ce786, type: 2}
       LevelText: {fileID: 11400000, guid: e6123679b0a674a998d498ef88e7ad60, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
+    - LevelType: 8
+      FallLength: 100
+      TimeScaleMultiplier: 1
+      FallSpeedMultiplier: 1
+      FallAccelerationMultiplier: 1
+      ChunkSet: {fileID: 11400000, guid: d93a924bc65794bd39233f1f421ce786, type: 2}
+      LevelText: {fileID: 11400000, guid: e6123679b0a674a998d498ef88e7ad60, type: 2}
+      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+        type: 3}
+    titleAnimationDistance: 22
+    titleAnimationDuration: 4
+    introAnimationDistance: 12
+    outroAnimationDistance: 30
+    introAnimationSpeed: 1.5
+    titleAnimationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.14998779
+        value: 0.000012792181
+        inSlope: 0.011002859
+        outSlope: -0.005317943
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0.17707507
+      - serializedVersion: 3
+        time: 0.7798484
+        value: 0.82302284
+        inSlope: 2.875117
+        outSlope: 2.875117
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.07697433
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0.12270657
+        outSlope: 0.12270657
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.68064183
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    introAnimationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

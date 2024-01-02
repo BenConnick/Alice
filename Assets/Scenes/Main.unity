@@ -5263,14 +5263,6 @@ MonoBehaviour:
   SearchRoots:
   - {fileID: 1413504792}
   - {fileID: 169287864}
-  LevelLengths:
-  - 0
-  - 100000000
-  - 300
-  - 300
-  - 300
-  DefaultFallSpeed: 6
-  FallAcceleration: 0.01
   FallSpeedVariation:
     serializedVersion: 2
     m_Curve:
@@ -5340,7 +5332,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  LevelConfigsAsset: {fileID: 11400000, guid: 6d29f96139ebf44d1b673443c19c1130, type: 2}
+  MasterConfigsAsset: {fileID: 11400000, guid: fe3a3e3e3ec2c42d8b0b0816b786ff05, type: 2}
   MenuSprites: []
 --- !u!4 &610466559
 Transform:
