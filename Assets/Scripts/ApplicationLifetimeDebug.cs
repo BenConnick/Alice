@@ -54,7 +54,7 @@ public static partial class ApplicationLifetime
     [Command]
     public static void SkipCaterpillarDialogue()
     {
-        GameEventHandler.PlayCaterpillarDoneMoment();
+        Nav.PlayCaterpillarDoneMoment();
     }
 
     [Command]
@@ -83,7 +83,7 @@ public static partial class ApplicationLifetime
         //    //rabbithole.GameplayGroup.UIOverlay.gameObject.SetActive(false);
         //}
         //PlayGameInner();
-        GameEventHandler.PlayCaterpillarDoneMoment();
+        Nav.PlayCaterpillarDoneMoment();
     }
     
     

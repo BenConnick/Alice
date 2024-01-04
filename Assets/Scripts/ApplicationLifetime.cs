@@ -68,7 +68,7 @@ public static partial class ApplicationLifetime
 #if UNITY_EDITOR
         DebugOnPostInitialize();
 #endif
-        GameEventHandler.OnGameEvent(NavigationEvent.BootLoadFinished);
+        Nav.Go(NavigationEvent.BootLoadFinished);
     }
 
     private static void InitializeAppModes(StateMachine<AppMode> modes)

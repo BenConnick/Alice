@@ -17,11 +17,11 @@ public enum NavigationEvent
     BootLoadFinished = 11,
 }
     
-public static class GameEventHandler
+public static class Nav
 {
     #region game event handlers
 
-    public static void OnGameEvent(NavigationEvent gameEvent)
+    public static void Go(NavigationEvent gameEvent)
     {
         Debug.Log("On game event: " + gameEvent);
         switch (gameEvent)

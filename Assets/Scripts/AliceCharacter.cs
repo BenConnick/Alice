@@ -92,7 +92,7 @@ public class AliceCharacter : AliceCharacterMovement
 
     public void OnStartLevelPressed()
     {
-        GameEventHandler.OnGameEvent(ApplicationLifetime.CurrentMode is TitleMenuMode
+        Nav.Go(ApplicationLifetime.CurrentMode is TitleMenuMode
             ? NavigationEvent.MainMenuGoNext
             : NavigationEvent.DialogueGoNext);
     }
@@ -177,7 +177,7 @@ public class AliceCharacter : AliceCharacterMovement
         gameContext.VpLives--;
         if (gameContext.VpLives <= 0)
         {
-            GameEventHandler.OnGameEvent(NavigationEvent.PlatformerGameOver);
+            Nav.Go(NavigationEvent.PlatformerGameOver);
         }
     }
 

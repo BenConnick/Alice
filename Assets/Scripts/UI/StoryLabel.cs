@@ -67,7 +67,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             case "$play":
                 Story.Reset();
-                GameEventHandler.OnGameEvent(NavigationEvent.FallFromMonologue);
+                Nav.Go(NavigationEvent.FallFromMonologue);
                 break;
             default:
                 throw new System.Exception("command not implemented: " + command);

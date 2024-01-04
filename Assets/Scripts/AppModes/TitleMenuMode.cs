@@ -29,7 +29,7 @@ public class TitleMenuMode : AppMode
                 bool done = ContextualInputSystem.ActiveViewport.GameplayCamera.transform.localPosition.y == 0; // kinda hacky
                 if (done)
                 {
-                    GameEventHandler.OnGameEvent(NavigationEvent.MainMenuGoNext);
+                    Nav.Go(NavigationEvent.MainMenuGoNext);
                 }
                 else
                 {
