@@ -142,7 +142,7 @@ public class FallingGameInstance
 
         if (!ApplicationLifetime.IsGameplayPaused)
         {
-            var player = GlobalObjects.FindSingle<AliceCharacter>();
+            var player = Root.Find<AliceCharacter>();
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -238,11 +238,11 @@ public class FallingGameInstance
         rabbitHoleObject.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
 
         // alice lerp to resting pos
-        var player = GlobalObjects.FindSingle<AliceCharacter>();
+        var player = Root.Find<AliceCharacter>();
         bool hasFocus = player.gameContext == this;
         if (hasFocus)
         {
-            GlobalObjects.FindSingle<AliceCharacter>().IsHijacked = true;
+            Root.Find<AliceCharacter>().IsHijacked = true;
             float t = (rabbitHoleObject.localPosition.y - outroStartHeight) / outroAnimationDistance;
             Vector3 characterTargetRestingPos = new Vector3(rabbitHoleObject.position.x, -2, 0);
             Transform aliceTransform = player.transform;
@@ -269,12 +269,12 @@ public class FallingGameInstance
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // shrink
-            GlobalObjects.FindSingle<AliceCharacter>().OnShrink();
+            Root.Find<AliceCharacter>().OnShrink();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // grow
-            GlobalObjects.FindSingle<AliceCharacter>().OnGrow();
+            Root.Find<AliceCharacter>().OnGrow();
         }
     }
 
@@ -313,7 +313,7 @@ public class FallingGameInstance
 
     private void OnOutroComplete()
     {
-        GlobalObjects.FindSingle<AliceCharacter>().IsHijacked = false;
+        Root.Find<AliceCharacter>().IsHijacked = false;
 
         Viewport.Overlay?.SetActive(false);
         mode = AnimationMode.Default;

@@ -35,14 +35,4 @@ public class MasterConfig : LazyLoadedGlobalResource<MasterConfig, MasterConfigA
     public float introAnimationSpeed;
     public AnimationCurve titleAnimationCurve;
     public AnimationCurve introAnimationCurve;
-
-    public LevelConfig GetLevelConfig(LevelType levelType)
-    {
-        int levelIndex = GameHelper.ToIndex(levelType);
-        if (levelIndex < 0)
-        {
-            return default;
-        }
-        return LevelConfigs[levelIndex];
-    }
 }

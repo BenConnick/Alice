@@ -11,10 +11,12 @@ public enum NavigationEvent
     FallFromMonologue = 5,
     SplitAnimationMidPoint = 6,
     GameOverGoNext = 7,
-    DialogueGoNext = 8,
+    LegacyDialogueGoNext = 8,
     BedInteraction = 9,
     MenuAnimationFinished = 10,
     BootLoadFinished = 11,
+    PreRunDialogueFinished = 12,
+    PostRunDialogueFinished = 13,
 }
     
 public static class Nav
@@ -33,18 +35,13 @@ public static class Nav
             }
             case NavigationEvent.MainMenuGoNext:
             {
-                GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
-                BeginGameplayMode();
+                Root.Find<AliceCharacter>().UnbecomeButton();
+                ApplicationLifetime.ChangeMode(PreFallCutsceneMode.Instance);
                 break;
             }
             case NavigationEvent.PlatformerGameOver:
             {
-                ApplicationLifetime.ChangeMode(PostFallCutsceneMode.Instance);
-                // death count?
-                //string storyKey = PassageStartPrefix + (DeathCount < 2 ? "" : " " + DeathCount);
-                //ShowStory(storyKey);
-
-                AllGameInstances(i =>
+                GameHelper.AllGameInstances(i =>
                 {
                     i.UIOverlay.GameOverOverlay.SetActive(true);
                 });
@@ -53,32 +50,32 @@ public static class Nav
             case NavigationEvent.PlatformerLevelEndTrigger:
             {
                 // play outro
-                AllGameInstances(i => i.PlayOutroAnimation());
+                GameHelper.AllGameInstances(i => i.PlayOutroAnimation());
                 break;
             }
             case NavigationEvent.PlatformerLevelEndPostAnimation:
             {
                 // begin dialogue
-                ApplicationLifetime.ChangeMode(PostFallCutsceneMode.Instance);
+                ApplicationLifetime.ChangeMode(PostFallWinCutsceneMode.Instance);
                 LevelType val = (LevelType)ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
                 ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(val);
-                GlobalObjects.FindSingle<AliceCharacter>().BecomeButton();
-                AdvanceDialogueContext();
+                Root.Find<AliceCharacter>().BecomeButton();
+                LegacyAdvanceDialogueContext();
                 break;
             }
             case NavigationEvent.FallFromMonologue:
             {
-                AllGameInstances(i =>
+                GameHelper.AllGameInstances(i =>
                 {
                     i.Reset();
                     i.PlayIntroAnimationForRestart();
                 });
-                GlobalObjects.FindSingle<GameplayScreenBehavior>().ShowGame();
+                Root.Find<GameplayScreenBehavior>().ShowGame();
                 break;
             }
             case NavigationEvent.SplitAnimationMidPoint:
             {
-                BeginGameplayMode();
+                LegacyBeginGameplayMode();
             }
                 break;
             case NavigationEvent.GameOverGoNext:
@@ -86,7 +83,7 @@ public static class Nav
                 Debug.Log("GameOverGoNext");
 
                 // reset all displays
-                AllGameInstances(i =>
+                GameHelper.AllGameInstances(i =>
                 {
                     i.UIOverlay.GameOverOverlay.SetActive(false);
                     i.Reset();
@@ -95,10 +92,10 @@ public static class Nav
                 });
 
                 // set mode to main menu
-                ApplicationLifetime.ChangeMode(TitleMenuMode.Instance);
+                ApplicationLifetime.ChangeMode(PostFallLoseCutsceneMode.Instance);
 
                 // set alice position
-                var alice = GlobalObjects.FindSingle<AliceCharacter>();
+                var alice = Root.Find<AliceCharacter>();
                 var fallingGameInstance = alice.gameContext;
                 if (fallingGameInstance != null)
                 {
@@ -109,16 +106,16 @@ public static class Nav
                 
                 break;
             }
-            case NavigationEvent.DialogueGoNext:
+            case NavigationEvent.LegacyDialogueGoNext:
             {
-                AdvanceDialogueContext();
+                LegacyAdvanceDialogueContext();
                 break;
             }
             case NavigationEvent.BedInteraction:
             {
                 Debug.Log("BedInteraction");
                 ApplicationLifetime.ChangeMode(FallingGameActiveMode.Instance);
-                AllGameInstances(gameInstance =>
+                GameHelper.AllGameInstances(gameInstance =>
                 {
                     GameObject gameOverUI = gameInstance.UIOverlay.GameOverOverlay;
                     gameOverUI.SetActive(false);
@@ -132,35 +129,36 @@ public static class Nav
                 Debug.Log("MenuAnimationFinished");
                 break;
             }
+            case NavigationEvent.PreRunDialogueFinished:
+            {
+                BeginGameplay();
+                break;
+            }
+            case NavigationEvent.PostRunDialogueFinished:
+            {
+                ApplicationLifetime.ChangeMode(LevelSelectMode.Instance);
+                break;
+            }
         }
     }
 
-    private static void AllGameInstances(Action<FallingGameInstance> eachInstanceAction)
+    private static void LegacyBeginGameplayMode()
     {
-        foreach (FallingGameInstance instance in FallingGameInstance.All)
-        {
-            eachInstanceAction(instance);
-        }
+        Root.Find<AliceCharacter>().UnbecomeButton();
+        BeginGameplay();
     }
 
-    private static void BeginGameplayMode()
+    private static void BeginGameplay()
     {
         ApplicationLifetime.ChangeMode(FallingGameActiveMode.Instance);
-        GlobalObjects.FindSingle<AliceCharacter>().UnbecomeButton();
-        TimeDistortionController.SetBaselineSpeed(FallingGameInstance.Current.Config.TimeScaleMultiplier);
-        AllGameInstances(i =>
-        {
-            i.Reset();
-            i.PlayIntroAnimationForCurrentLevel();
-        });
     }
 
     public static void PlayCaterpillarDoneMoment()
     {
-        GlobalObjects.FindSingle<SplitGameplayMomentAnimationController>().RevealSecondView();
+        Root.Find<SplitGameplayMomentAnimationController>().RevealSecondView();
     }
 
-    private static void AdvanceDialogueContext()
+    private static void LegacyAdvanceDialogueContext()
     {
         // get current dialogue context
         var ctx = CharacterDialogueBehavior.ActiveDialogue;
@@ -179,7 +177,7 @@ public static class Nav
             if (ctx is CaterpillarDialogueBehavior)
                 PlayCaterpillarDoneMoment();
             else
-                BeginGameplayMode();
+                LegacyBeginGameplayMode();
         }
     }
     #endregion

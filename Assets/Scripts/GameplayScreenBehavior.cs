@@ -7,17 +7,44 @@ public class GameplayScreenBehavior : MonoBehaviour
 {
     public CanvasGroup StoryGroup;
     public CanvasGroup GameplayGroup;
+    public CanvasGroup LevelSelectGroup;
     public MovieCardLabel StoryController;
 
-    public void ShowStory(string passage)
+    public void ShowStory()
     {
         ContextualInputSystem.UICapturedInput = true;
-        UIHelper.SwapActiveCanvasGroup(StoryGroup, GameplayGroup);
+        UIHelper.SetCanvasGroupActive(StoryGroup, true);
+    }
+
+    public void HideStory()
+    {
+        UIHelper.SetCanvasGroupActive(StoryGroup, false);
     }
 
     public void ShowGame()
     {
         ContextualInputSystem.UICapturedInput = false;
-        UIHelper.SwapActiveCanvasGroup(GameplayGroup,StoryGroup);
+        UIHelper.SetCanvasGroupActive(GameplayGroup, true);
+    }
+
+    public void HideGame()
+    {
+        UIHelper.SetCanvasGroupActive(GameplayGroup, false);
+    }
+
+    public void ShowLevelSelect()
+    {
+        ContextualInputSystem.UICapturedInput = true;
+        UIHelper.SetCanvasGroupActive(LevelSelectGroup, true);
+    }
+
+    public void HideLevelSelect()
+    {
+        UIHelper.SetCanvasGroupActive(LevelSelectGroup, false);
+    }
+
+    public void OnLevelButtonPressed(int levelIndex)
+    {
+        Debug.Log($"Level button {levelIndex} pressed");
     }
 }

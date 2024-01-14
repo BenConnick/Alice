@@ -49,7 +49,7 @@ public static class ContextualInputSystem
     private static void UpdateActiveInstance()
     {
         // compare the mouse position against every display
-        var cam = GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>();
+        var cam = Root.Find<GameplayCameraBehavior>().GetComponent<Camera>();
         foreach (var instance in FallingGameInstance.All)
         {
             var viewport = instance.Viewport;

@@ -132,7 +132,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (fadeProgress > 0 && fadeProgress < 1) return; // no click during fade
-        var linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, eventData.pointerPressRaycast.screenPosition, GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>());
+        var linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, eventData.pointerPressRaycast.screenPosition, Root.Find<GameplayCameraBehavior>().GetComponent<Camera>());
         Debug.Log("link clicked with local index " + linkIndex);
         if (linkIndex >= 0)
         {
@@ -158,7 +158,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     private void Update()
     {
-        int linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, Input.mousePosition, GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>());
+        int linkIndex = TMPro.TMP_TextUtilities.FindIntersectingLink(label, Input.mousePosition, Root.Find<GameplayCameraBehavior>().GetComponent<Camera>());
         // PerFrameVariableWatches.SetDebugQuantity("OverLink", linkIndex.ToString());
         if (highlightedLink != linkIndex)
         {

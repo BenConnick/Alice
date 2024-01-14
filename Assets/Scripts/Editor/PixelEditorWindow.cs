@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.IO;
 
@@ -12,6 +13,7 @@ public class PixelEditorWindow : EditorWindow
     private int prevX;
     private int prevY;
     private Vector2 scrollPos;
+    private Color overlayClearColor = new Color(1, 1, 1, .1f);
 
     [MenuItem("Assets/Edit")]
     public static void ShowPixelEditor()
@@ -21,10 +23,16 @@ public class PixelEditorWindow : EditorWindow
         if (selectedAsset is Texture2D t2d)
         {
             var w = GetWindow<PixelEditorWindow>();
+            w.autoRepaintOnSceneChange = true;
             w.assetReference = t2d;
             w.firstShow = true;
             w.Show();
         }
+    }
+
+    private void Update()
+    {
+        Repaint();
     }
 
     private void OnInspectorUpdate()
@@ -45,7 +53,7 @@ public class PixelEditorWindow : EditorWindow
             firstShow = false;
             inMemoryTexture = new Texture2D(assetReference.width, assetReference.height, TextureFormat.RGBA32, false);
             overlayTexture = new Texture2D(assetReference.width, assetReference.height, TextureFormat.RGBA32, false);
-            overlayTexture.SetPixels(0, 0, assetReference.width, assetReference.height, new Color[assetReference.width * assetReference.height].Populate(Color.clear));
+            overlayTexture.SetPixels(0, 0, assetReference.width, assetReference.height, new Color[assetReference.width * assetReference.height].Populate(overlayClearColor));
             overlayTexture.Apply();
             inMemoryTexture.filterMode = FilterMode.Point;
             overlayTexture.filterMode = FilterMode.Point;
@@ -63,7 +71,8 @@ public class PixelEditorWindow : EditorWindow
 
         int x = Mathf.CeilToInt((Event.current.mousePosition.x - scaleFactor) / scaleFactor);
         int y = Mathf.CeilToInt((inMemoryTexture.height * scaleFactor - Event.current.mousePosition.y - scaleFactor*.75f) / scaleFactor);
-        if (viewportSize.Contains(Event.current.mousePosition))
+        bool mouseOverPixelGrid = viewportSize.Contains(Event.current.mousePosition); 
+        if (mouseOverPixelGrid)
         {
             if (Event.current.isMouse && Event.current.button == 0 || Event.current.button == 1)
             {
@@ -74,16 +83,17 @@ public class PixelEditorWindow : EditorWindow
                 DebugLog(inMemoryTexture.GetPixel(x, y));
                 Repaint();
             }
-            else
-            {
-                overlayTexture.SetPixel(prevX, prevY, Color.clear);
-                prevX = x;
-                prevY = y;
-                overlayTexture.SetPixel(x, y, new Color(1,1,0,1f));
-                overlayTexture.Apply();
-                Repaint();
-            }
         }
+        overlayTexture.SetPixel(prevX, prevY, overlayClearColor);
+        if (mouseOverPixelGrid)
+        {
+            prevX = x;
+            prevY = y;
+            overlayTexture.SetPixel(x, y, new Color(1, 1, 0, 1f));
+        }
+        overlayTexture.Apply();
+        // Repaint(); // sus
+        
         GUI.EndScrollView();
         GUI.color = new Color(1, 1, 1, 1);
 
@@ -142,7 +152,14 @@ public class NewImageFileWindow : EditorWindow
     [MenuItem("Assets/Create/Image")]
     public static void ShowCreateImageWindow()
     {
-        GetWindow<NewImageFileWindow>().Show();
+        var window = GetWindow<NewImageFileWindow>();
+        window.autoRepaintOnSceneChange = true;
+        window.Show();
+    }
+
+    private void Update()
+    {
+        this.Repaint();
     }
 
     public void OnGUI()

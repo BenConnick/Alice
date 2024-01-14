@@ -24,17 +24,14 @@ public static class UIHelper
         fadeOutGroup.alpha = 0;
         fadeInGroup.alpha = 1;
     }
-    
-    public static void SwapActiveCanvasGroup(CanvasGroup activeGroup, CanvasGroup previousGroup)
+
+    public static void SetCanvasGroupActive(CanvasGroup group, bool active)
     {
         // instantly swap which group receives input
-        activeGroup.interactable = true;
-        activeGroup.blocksRaycasts = true;
-        previousGroup.interactable = false;
-        previousGroup.blocksRaycasts = false;
+        group.interactable = active;
+        group.blocksRaycasts = active;
         
         // instantly change which group is visible
-        previousGroup.alpha = 0;
-        activeGroup.alpha = 1;
+        group.alpha = active ? 1 : 0;
     }
 }

@@ -8,7 +8,7 @@ public static class TimeDistortionController
 
     public static Coroutine StartCoroutine(IEnumerator routine)
     {
-        return GlobalObjects.StartGlobalCoroutine(routine);
+        return Root.StartGlobalCoroutine(routine);
     }
 
     public static void SlowResume()

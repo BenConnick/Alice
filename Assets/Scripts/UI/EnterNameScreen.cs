@@ -73,7 +73,7 @@ public class EnterNameScreen : MonoBehaviour
         for (int i = 0; i < letterRabbits.Length; i++)
         {
             GameObject rabbit = letterRabbits[i];
-            Vector3 rabbitScreen = RectTransformUtility.WorldToScreenPoint(GlobalObjects.FindSingle<GameplayCameraBehavior>().GetComponent<Camera>(), rabbit.transform.position);
+            Vector3 rabbitScreen = RectTransformUtility.WorldToScreenPoint(Root.Find<GameplayCameraBehavior>().GetComponent<Camera>(), rabbit.transform.position);
             if ((rabbitScreen - raw).sqrMagnitude < closestDistance)
             {
                 closestDistance = (rabbitScreen - raw).sqrMagnitude;

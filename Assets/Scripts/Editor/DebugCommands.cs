@@ -38,4 +38,24 @@ public static class DebugCommands
         EditorPrefs.DeleteKey("OneLife");
         EditorApplication.EnterPlaymode();
     }
+    
+    [Command]
+    public static void SkipThis()
+    {
+        switch (ApplicationLifetime.CurrentMode)
+        {
+            case FallingGameActiveMode playing:
+                // TODO no idea if this will skip correctly
+                GameHelper.AllGameInstances(g => g.PlayOutroAnimation());
+                break;
+            case PostFallLoseCutsceneMode lose:
+            case PostFallWinCutsceneMode win:
+                Nav.Go(NavigationEvent.PostRunDialogueFinished);
+                GameHelper.UnlockNextLevel();
+                break;
+            case LevelSelectMode levelSelect:
+                break;
+        }
+        
+    }
 }

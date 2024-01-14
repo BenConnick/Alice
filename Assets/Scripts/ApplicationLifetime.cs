@@ -80,7 +80,13 @@ public static partial class ApplicationLifetime
         FallingGameActiveMode.Instance = new FallingGameActiveMode(modes);
         FallingGameSpectatorMode.Instance = new FallingGameSpectatorMode(modes);
         PreFallCutsceneMode.Instance = new PreFallCutsceneMode(modes);
-        PostFallCutsceneMode.Instance = new PostFallCutsceneMode(modes);
+        PostFallWinCutsceneMode.Instance = new PostFallWinCutsceneMode(modes);
+        PostFallLoseCutsceneMode.Instance = new PostFallLoseCutsceneMode(modes);
+        
+        // additional initialization
+        PreFallCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PreRunDialogueFinished);
+        PostFallWinCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
+        PostFallLoseCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
     }
 
     public static void InitEditor()

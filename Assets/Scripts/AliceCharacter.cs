@@ -94,7 +94,7 @@ public class AliceCharacter : AliceCharacterMovement
     {
         Nav.Go(ApplicationLifetime.CurrentMode is TitleMenuMode
             ? NavigationEvent.MainMenuGoNext
-            : NavigationEvent.DialogueGoNext);
+            : NavigationEvent.LegacyDialogueGoNext);
     }
 
     public void UnbecomeButton()

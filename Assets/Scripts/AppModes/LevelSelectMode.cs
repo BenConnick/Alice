@@ -7,7 +7,7 @@ public class LevelSelectMode : AppMode
 
     public override void OnEnter()
     {
-        
+        Root.Find<GameplayScreenBehavior>().ShowLevelSelect();
     }
 
     public override void Tick(float dt)

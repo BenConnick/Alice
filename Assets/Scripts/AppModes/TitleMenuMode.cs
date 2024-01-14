@@ -17,7 +17,7 @@ public class TitleMenuMode : AppMode
 
     public override void OnExit()
     {
-        
+        Root.Find<GameplayScreenBehavior>().HideGame();
     }
 
     public override string Name => "Title";
@@ -26,8 +26,7 @@ public class TitleMenuMode : AppMode
         switch (inputType)
         {
             case ContextualInputSystem.InputType.MouseUp:
-                bool done = ContextualInputSystem.ActiveViewport.GameplayCamera.transform.localPosition.y == 0; // kinda hacky
-                if (done)
+                if (IsTitleAnimationDone())
                 {
                     Nav.Go(NavigationEvent.MainMenuGoNext);
                 }
@@ -39,5 +38,13 @@ public class TitleMenuMode : AppMode
         }
 
         return true;
+    }
+
+    private bool IsTitleAnimationDone()
+    {
+        bool done = false;
+        if (ContextualInputSystem.ActiveViewport != null && ContextualInputSystem.ActiveViewport.GameplayCamera != null)
+            done = ContextualInputSystem.ActiveViewport.GameplayCamera.transform.localPosition.y == 0; // kinda hacky
+        return done;
     }
 }

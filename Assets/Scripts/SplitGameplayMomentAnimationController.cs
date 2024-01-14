@@ -43,7 +43,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
     public void RevealSecondView()
     {
         // play animation: walk to shroom
-        GlobalObjects.FindSingle<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("walking"); // walk
+        Root.Find<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("walking"); // walk
         Tween.Start(WalkToShroomInterpolate, walkDuration, OnWalkToShroomComplete);
     }
 
@@ -55,7 +55,7 @@ public class SplitGameplayMomentAnimationController : MonoBehaviour
 
     private void OnWalkToShroomComplete()
     {
-        GlobalObjects.FindSingle<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("standing"); // walk
+        Root.Find<AliceCharacter>().GetComponent<SpriteAnimator>().SetAnimation("standing"); // walk
         Tween.StartDelayedAction(postWalkPauseDuration, OnPostWalkPauseComplete);
     }
 

@@ -27,5 +27,16 @@ namespace DefaultNamespace
                 label.text = text;
             }
         }
+
+        public bool IsStillTyping()
+        {
+            bool notFinished = typewriterText.ProgressNorm < 1;
+            return notFinished;
+        }
+
+        public void FinishTyping()
+        {
+            typewriterText.Finish();
+        }
     }
 }

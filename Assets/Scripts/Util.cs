@@ -90,7 +90,7 @@ public static class Util
 
     public static void Delay1Frame(System.Action action)
     {
-        GlobalObjects.StartGlobalCoroutine(Delay1FrameCoroutine(action));
+        Root.StartGlobalCoroutine(Delay1FrameCoroutine(action));
     }
 
     private static IEnumerator Delay1FrameCoroutine(System.Action action)
