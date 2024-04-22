@@ -21,13 +21,13 @@ public class GameplayScreenBehavior : MonoBehaviour
         UIHelper.SetCanvasGroupActive(StoryGroup, false);
     }
 
-    public void ShowGame()
+    public void SetGameViewVisible()
     {
         ContextualInputSystem.UICapturedInput = false;
         UIHelper.SetCanvasGroupActive(GameplayGroup, true);
     }
 
-    public void HideGame()
+    public void SetGameViewHidden()
     {
         UIHelper.SetCanvasGroupActive(GameplayGroup, false);
     }
@@ -36,7 +36,7 @@ public class GameplayScreenBehavior : MonoBehaviour
     {
         ContextualInputSystem.UICapturedInput = true;
         UIHelper.SetCanvasGroupActive(LevelSelectGroup, true);
-        Root.Find<LevelSelectUI>().UpdateUI();
+        World.Get<LevelSelectUI>().UpdateUI();
     }
 
     public void HideLevelSelect()

@@ -1,6 +1,6 @@
 public class PreFallCutsceneMode : CutsceneMode
 {
-	public PreFallCutsceneMode(StateMachine<AppMode> owner) : base(owner)
+	public PreFallCutsceneMode() : base()
     {
     }
     
@@ -12,4 +12,10 @@ public class PreFallCutsceneMode : CutsceneMode
     }
 
     public override string Name => "Pre-Fall Cutscene";
+    
+    
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
+    }
 }

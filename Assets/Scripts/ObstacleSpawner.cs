@@ -70,7 +70,7 @@ public class RabbitHoleObstacleSpawner : ShuffledObstacleSpawner
             lastObstableSpawnTime = Time.time;
             var prefab = GetNextRandomObstacle();
 
-            var gameCam = Root.Find<GameplayCameraBehavior>().GetComponent<Camera>();
+            var gameCam = World.Get<GameplayCameraBehavior>().GetComponent<Camera>();
             var yPos = -gameCam.orthographicSize * 2; // below bottom of the screen
             var lane = Random.Range(0, obstacleXMax); // at a random position
 

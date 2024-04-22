@@ -56,7 +56,7 @@ public static class DebugCommands
                 break;
             case PostFallLoseCutsceneMode lose:
             case PostFallWinCutsceneMode win:
-                GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
+                GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
                 GameHelper.UnlockNextLevel();
                 break;
             case LevelSelectMode levelSelect:

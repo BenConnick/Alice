@@ -2,21 +2,14 @@ public class FallingGameActiveMode : AppMode
 {
     private FallingGameInstance gameInstance;
 
-    public FallingGameActiveMode(StateMachine<AppMode> owner) : base(owner)
+    public FallingGameActiveMode() : base()
     {
     }
 
     public override void OnEnter()
-    {
-        Root.Find<GameplayScreenBehavior>().ShowGame();
-        Root.Find<AliceCharacter>().ActivateGameplayMode();
-        TimeDistortionController.SetBaselineSpeed(FallingGameInstance.Current.Config.TimeScaleMultiplier);
-        GameHelper.AllGameInstances(i =>
-        {
-            i.Reset();
-            i.PlayIntroAnimationForCurrentLevel();
-            gameInstance = i;
-        });
+    { 
+        gameInstance = FallingGameInstance.All[0]; // expecting one instance, list of instances is legacy structure
+        gameInstance.OnShow();
     }
 
     public override void Tick(float dt)
@@ -26,17 +19,17 @@ public class FallingGameActiveMode : AppMode
 
     public override void OnExit()
     {
-        Root.Find<GameplayScreenBehavior>().HideGame();
-        gameInstance.Reset();
-        gameInstance.UIOverlay.GameOverOverlay.SetActive(false);
-        LevelType levelValue = ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
-        gameInstance.menuGraphics.ShowStageArt(levelValue);
-        gameInstance.PlayTitleIntro();
+        gameInstance.OnHide();
     }
 
     public override string Name => "Gameplay";
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
     {
         return true;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return gameInstance.HandleGlobalEvent(gameEvent);
     }
 }

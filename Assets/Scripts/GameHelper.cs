@@ -25,15 +25,13 @@ public class GameHelper
         }
     }
 
-    public static LevelType GetHighestUnlockedLevel()
-    {
-        LevelType currentLevel = ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
-        return currentLevel;
-    }
+    public static LevelType HighestUnlockedLevel => ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
+
+    public static LevelType SelectedLevel => ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
 
     public static void UnlockNextLevel()
     {
-        LevelType currentLevel = GetHighestUnlockedLevel();
+        LevelType currentLevel = HighestUnlockedLevel;
         LevelType nextLevel = currentLevel + 1;
         ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(nextLevel);
     }

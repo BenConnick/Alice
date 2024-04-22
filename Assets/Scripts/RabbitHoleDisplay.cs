@@ -125,7 +125,7 @@ public class RabbitHoleDisplay : MonoBehaviour
 
         // fallback to default
         if (finalCam == null)
-            finalCam = Root.Find<GameplayCameraBehavior>().GetComponent<Camera>();
+            finalCam = World.Get<GameplayCameraBehavior>().GetComponent<Camera>();
 
         // mouse pos
         // PerFrameVariableWatches.SetDebugQuantity("mouse", finalCam.ScreenToViewportPoint(Input.mousePosition).ToString());

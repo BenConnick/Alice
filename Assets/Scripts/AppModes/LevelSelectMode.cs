@@ -1,12 +1,12 @@
 public class LevelSelectMode : AppMode
 {
-	public LevelSelectMode(StateMachine<AppMode> owner) : base(owner)
+	public LevelSelectMode() : base()
     {
     }
 
     public override void OnEnter()
     {
-        Root.Find<GameplayScreenBehavior>().ShowLevelSelect();
+        World.Get<GameplayScreenBehavior>().ShowLevelSelect();
     }
 
     public override void Tick(float dt)
@@ -16,12 +16,17 @@ public class LevelSelectMode : AppMode
 
     public override void OnExit()
     {
-        Root.Find<GameplayScreenBehavior>().HideLevelSelect();
+        World.Get<GameplayScreenBehavior>().HideLevelSelect();
     }
 
     public override string Name => "Level Select";
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
     {
         return true;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
     }
 }

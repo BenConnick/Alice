@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Root
+public static class World
 {
     // cached singletons for ease of reference
     public static readonly Dictionary<System.Type, MonoBehaviour> gameplayComponentsCache = new Dictionary<System.Type, MonoBehaviour>();
@@ -13,7 +13,7 @@ public static class Root
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Find<T>() where T : MonoBehaviour
+    public static T Get<T>() where T : MonoBehaviour
     {
         // cached
         if (gameplayComponentsCache.ContainsKey(typeof(T)))

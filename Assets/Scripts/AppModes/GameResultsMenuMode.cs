@@ -1,6 +1,6 @@
 public class GameResultsMenuMode : AppMode
 {
-    public GameResultsMenuMode(StateMachine<AppMode> owner) : base(owner)
+    public GameResultsMenuMode(StateMachine<AppMode> owner) : base()
     {
     }
 
@@ -22,10 +22,15 @@ public class GameResultsMenuMode : AppMode
         
     }
 
-    public override string Name => throw new System.NotImplementedException();
+    public override string Name => "Game Over Results Screen";
 
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
     {
         return true;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
     }
 }

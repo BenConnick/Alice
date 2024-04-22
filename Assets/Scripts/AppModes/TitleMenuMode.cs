@@ -1,6 +1,6 @@
 public class TitleMenuMode : AppMode
 {
-	public TitleMenuMode(StateMachine<AppMode> owner) : base(owner)
+	public TitleMenuMode() : base()
     {
     }
 
@@ -16,7 +16,7 @@ public class TitleMenuMode : AppMode
 
     public override void OnExit()
     {
-        Root.Find<GameplayScreenBehavior>().HideGame();
+        World.Get<GameplayScreenBehavior>().SetGameViewHidden();
     }
 
     public override string Name => "Title";
@@ -37,6 +37,11 @@ public class TitleMenuMode : AppMode
         }
 
         return true;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
     }
 
     private bool IsTitleAnimationDone()

@@ -1,6 +1,6 @@
 public class PostFallWinCutsceneMode : CutsceneMode
 {
-	public PostFallWinCutsceneMode(StateMachine<AppMode> owner) : base(owner)
+	public PostFallWinCutsceneMode() : base()
     {
     }
 
@@ -10,9 +10,13 @@ public class PostFallWinCutsceneMode : CutsceneMode
 	    _TextToShow = GameHelper.GetCurrentLevelConfig().LevelText.Data.LevelWinText;
 	    base.OnEnter();
 
-	    Root.Find<AliceCharacter>().ActivateMenuMode();
+	    World.Get<AliceCharacter>().ActivateMenuMode();
 	    GameHelper.UnlockNextLevel();
     }
 
     public override string Name => "Post-Fall Cutscene";
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+	    return false;
+    }
 }

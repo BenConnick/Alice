@@ -5,19 +5,6 @@ public class StateMachine<T> where T : StateMachine<T>.State
 {
     public abstract class State
     {
-        protected StateMachine<T> Owner;
-        
-        protected State(StateMachine<T> owner)
-        {
-            Owner = owner;
-            Owner.RegisteredStates.Add(typeof(T), (T)this);
-        }
-
-        ~State()
-        {
-            Owner.RegisteredStates.Remove(GetType());
-        }
-        
         public abstract void OnEnter();
 
         public abstract void Tick(float dt);
@@ -25,10 +12,22 @@ public class StateMachine<T> where T : StateMachine<T>.State
         public abstract void OnExit();
     }
 
-    public virtual Dictionary<Type, T> RegisteredStates { get; protected set; }  = new Dictionary<Type, T>();
+    protected virtual Dictionary<Type, T> RegisteredStates { get; set; }  = new Dictionary<Type, T>();
 
-    public virtual TState Get<TState>() where TState : T
+    public IEnumerable<State> ForAllStates()
     {
+        foreach (var kv in RegisteredStates)
+        {
+            yield return kv.Value;
+        }
+    }
+
+    public virtual TState Get<TState>() where TState : T, new()
+    {
+        if (!RegisteredStates.ContainsKey(typeof(TState)))
+        {
+            RegisteredStates.Add(typeof(TState), new TState());
+        }
         if (RegisteredStates.TryGetValue(typeof(TState), out T state))
         {
             return (TState)state;

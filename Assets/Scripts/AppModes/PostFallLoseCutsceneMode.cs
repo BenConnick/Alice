@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PostFallLoseCutsceneMode : CutsceneMode
 {
-    public PostFallLoseCutsceneMode(StateMachine<AppMode> owner) : base(owner)
+    public PostFallLoseCutsceneMode() : base()
     {
     }
 
@@ -14,7 +14,7 @@ public class PostFallLoseCutsceneMode : CutsceneMode
         
         
         // set alice position
-        var alice = Root.Find<AliceCharacter>();
+        var alice = World.Get<AliceCharacter>();
         var fallingGameInstance = alice.gameContext;
         if (fallingGameInstance != null)
         {
@@ -25,4 +25,8 @@ public class PostFallLoseCutsceneMode : CutsceneMode
     }
 
     public override string Name => "Post-Fall Cutscene";
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
+    }
 }

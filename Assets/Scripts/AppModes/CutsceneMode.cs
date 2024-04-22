@@ -8,14 +8,14 @@ public abstract class CutsceneMode : AppMode
     protected int _TextIndex;
     
     
-    public CutsceneMode(StateMachine<AppMode> owner) : base(owner)
+    public CutsceneMode() : base()
     {
     }
 
     public override void OnEnter()
     {
         // assign _TextToShow in subclass
-        var ui = Root.Find<GameplayScreenBehavior>();
+        var ui = World.Get<GameplayScreenBehavior>();
         ui.ShowStory();
         RequestDialogueAdvance();
     }
@@ -27,7 +27,7 @@ public abstract class CutsceneMode : AppMode
 
     public override void OnExit()
     {
-        var ui = Root.Find<GameplayScreenBehavior>();
+        var ui = World.Get<GameplayScreenBehavior>();
         ui.HideStory();
     }
 
@@ -42,7 +42,7 @@ public abstract class CutsceneMode : AppMode
 
     protected void RequestDialogueAdvance()
     {
-        var ui = Root.Find<GameplayScreenBehavior>();
+        var ui = World.Get<GameplayScreenBehavior>();
         var StoryController = ui.StoryController;
         if (StoryController.IsStillTyping())
         {

@@ -1,6 +1,6 @@
 public class PauseMenuMode : AppMode
 {
-	public PauseMenuMode(StateMachine<AppMode> owner) : base(owner)
+	public PauseMenuMode(StateMachine<AppMode> owner) : base()
     {
     }
 
@@ -20,8 +20,14 @@ public class PauseMenuMode : AppMode
     }
 
     public override string Name => "Paused";
+    
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
     {
-        throw new System.NotImplementedException();
+        return false;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
     }
 }

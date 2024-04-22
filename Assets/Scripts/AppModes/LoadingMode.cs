@@ -1,6 +1,6 @@
 public class LoadingMode : AppMode
 {
-	public LoadingMode(StateMachine<AppMode> owner) : base(owner)
+	public LoadingMode() : base()
     {
         
     }
@@ -22,6 +22,11 @@ public class LoadingMode : AppMode
 
     public override string Name => "Loading";
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
+    {
+	    return false;
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
     {
 	    return false;
     }

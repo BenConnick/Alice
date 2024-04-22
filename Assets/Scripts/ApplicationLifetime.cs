@@ -63,21 +63,10 @@ public static partial class ApplicationLifetime
 
     private static void InitializeAppModes(StateMachine<AppMode> modes)
     {
-        new LoadingMode(modes);
-        new TitleMenuMode(modes);
-        new LevelSelectMode(modes);
-        new PauseMenuMode(modes);
-        new FallingGameActiveMode(modes);
-        new FallingGameSpectatorMode(modes);
-        new GameResultsMenuMode(modes);
-        new PreFallCutsceneMode(modes);
-        new PostFallWinCutsceneMode(modes);
-        new PostFallLoseCutsceneMode(modes);
-        
         // additional initialization
-        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PreRunDialogueFinished);
-        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
-        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
+        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PreRunCutsceneFinished);
+        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
+        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
     }
 
     public static void InitEditor()
@@ -97,13 +86,9 @@ public static partial class ApplicationLifetime
 
     }
 
-    public static void ChangeMode<T>() where T : AppMode
+    public static void ChangeMode<T>() where T : AppMode, new()
     {
-        if (!Modes.RegisteredStates.TryGetValue(typeof(T), out AppMode appMode)) 
-        {
-            Debug.LogError($"Mode {typeof(T)} not registered");
-            return;
-        }
+        AppMode appMode = Modes.Get<T>();
         if (appMode == CurrentMode)
         {
             Debug.LogError($"Current mode and next mode ({appMode.GetType()}) {appMode} are the same");
@@ -135,20 +120,16 @@ public static partial class ApplicationLifetime
                 ChangeMode<PreFallCutsceneMode>();
                 break;
             }
-            case GlobalGameEvent.PreRunDialogueFinished:
+            case GlobalGameEvent.PreRunCutsceneFinished:
             {
                 ChangeMode<FallingGameActiveMode>();
                 break;
             }
-            case GlobalGameEvent.AllLivesLost:
-            {
-                ChangeMode<FallingGameSpectatorMode>();
-                break;
-            }
             case GlobalGameEvent.PlatformerLevelEndReached:
+            case GlobalGameEvent.AllLivesLost:
+            case GlobalGameEvent.MenuAnimationFinished:
             {
-                // play outro
-                GameHelper.AllGameInstances(i => i.PlayOutroAnimation());
+                CurrentMode.HandleGameEvent(gameEvent);
                 break;
             }
             case GlobalGameEvent.PlatformerLevelEndAnimationFinished:
@@ -157,20 +138,15 @@ public static partial class ApplicationLifetime
                 ChangeMode<PostFallWinCutsceneMode>();
                 break;
             }
-            case GlobalGameEvent.MenuAnimationFinished:
-            {
-                Debug.Log("MenuAnimationFinished");
-                break;
-            }
-            case GlobalGameEvent.PostRunDialogueFinished:
-            {
-                ChangeMode<LevelSelectMode>();
-                break;
-            }
-            case GlobalGameEvent.OnGameResultsClosed:
+            case GlobalGameEvent.GameResultsClosed:
             {
                 // set mode to main menu
                 ChangeMode<PostFallLoseCutsceneMode>();
+                break;
+            }
+            case GlobalGameEvent.PostRunCutsceneFinished:
+            {
+                ChangeMode<LevelSelectMode>();
                 break;
             }
         }

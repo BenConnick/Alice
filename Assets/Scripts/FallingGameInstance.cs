@@ -88,14 +88,11 @@ public class FallingGameInstance
         // link
         gameplayObjects.ObstacleContext.AssociatedGameInstance = this;
         viewport.AssociatedGameInstance = this;
-        
-        Initialize();
-    }
 
-    private void Initialize()
-    {
+        // register
         if (!All.Contains(this)) All.Add(this);
         
+        // initialize values
         if (levelConfig == default)
         {
             levelConfig = MasterConfig.Values.LevelConfigs[0]; // initial level
@@ -123,6 +120,39 @@ public class FallingGameInstance
         RemoveAllChunks();
     }
 
+    public bool HandleGlobalEvent(GlobalGameEvent globalGameEvent)
+    {
+        switch (globalGameEvent)
+        {
+            case GlobalGameEvent.AllLivesLost:
+                UIOverlay.GameOverOverlay.SetActive(true);
+                break;
+            case GlobalGameEvent.PlatformerLevelEndReached:
+                PlayOutroAnimation();
+                break;
+        }
+
+        return false;
+    }
+
+    public void OnShow()
+    {
+        World.Get<GameplayScreenBehavior>().SetGameViewVisible();
+        World.Get<AliceCharacter>().ActivateGameplayMode();
+        TimeDistortionController.SetBaselineSpeed(Current.Config.TimeScaleMultiplier);
+        Reset();
+        PlayIntroAnimationForCurrentLevel();
+    }
+
+    public void OnHide()
+    {
+        World.Get<GameplayScreenBehavior>().SetGameViewHidden();
+        Reset();
+        UIOverlay.GameOverOverlay.SetActive(false);
+        menuGraphics.ShowStageArt(GameHelper.SelectedLevel);
+        PlayTitleIntro();
+    }
+
     public void OnDisplayDestroyed()
     {
         All.Remove(this);
@@ -143,7 +173,7 @@ public class FallingGameInstance
 
         if (!ApplicationLifetime.IsGameplayPaused)
         {
-            var player = Root.Find<AliceCharacter>();
+            var player = World.Get<AliceCharacter>();
 
             // update active obstacles
             for (int i = activeObstacles.Count-1; i >= 0; i--)
@@ -244,11 +274,11 @@ public class FallingGameInstance
         rabbitHoleObject.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
 
         // alice lerp to resting pos
-        var player = Root.Find<AliceCharacter>();
+        var player = World.Get<AliceCharacter>();
         bool hasFocus = player.gameContext == this;
         if (hasFocus)
         {
-            Root.Find<AliceCharacter>().IsHijacked = true;
+            World.Get<AliceCharacter>().IsHijacked = true;
             float t = (rabbitHoleObject.localPosition.y - outroStartHeight) / outroAnimationDistance;
             Vector3 characterTargetRestingPos = new Vector3(rabbitHoleObject.position.x, -2, 0);
             Transform aliceTransform = player.transform;
@@ -275,12 +305,12 @@ public class FallingGameInstance
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // shrink
-            Root.Find<AliceCharacter>().GetComponent<ShrinkBehavior>().OnShrink();
+            World.Get<AliceCharacter>().GetComponent<ShrinkBehavior>().OnShrink();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // grow
-            Root.Find<AliceCharacter>().GetComponent<ShrinkBehavior>().OnGrow();
+            World.Get<AliceCharacter>().GetComponent<ShrinkBehavior>().OnGrow();
         }
     }
 
@@ -319,18 +349,13 @@ public class FallingGameInstance
 
     private void OnOutroComplete()
     {
-        Root.Find<AliceCharacter>().IsHijacked = false;
+        World.Get<AliceCharacter>().IsHijacked = false;
 
         Viewport.Overlay?.SetActive(false);
         mode = AnimationMode.Default;
 
         // move the menu graphics to the new player position so that the player cannot tell that the height is back to zero
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
-
-        // clear the chunks
-        // set the position to zero instantly
-        Reset();
-
 
         GameEvents.Report(GlobalGameEvent.PlatformerLevelEndAnimationFinished);
     }

@@ -10,13 +10,13 @@ public enum GlobalGameEvent
     PlatformerLevelEndAnimationFinished = 4,
     FallFromMonologue = 5,
     SplitAnimationMidPoint = 6,
-    OnGameResultsClosed = 7,
+    GameResultsClosed = 7,
     LegacyDialogueGoNext = 8,
     BedInteraction = 9,
     MenuAnimationFinished = 10,
     BootLoadFinished = 11,
-    PreRunDialogueFinished = 12,
-    PostRunDialogueFinished = 13,
+    PreRunCutsceneFinished = 12,
+    PostRunCutsceneFinished = 13,
 }
     
 public static class GameEvents
