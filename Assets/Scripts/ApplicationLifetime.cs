@@ -58,7 +58,7 @@ public static partial class ApplicationLifetime
 #if UNITY_EDITOR
         DebugOnPostInitialize();
 #endif
-        Nav.Go(NavigationEvent.BootLoadFinished);
+        GameEvents.Report(GlobalGameEvent.BootLoadFinished);
     }
 
     private static void InitializeAppModes(StateMachine<AppMode> modes)
@@ -75,9 +75,9 @@ public static partial class ApplicationLifetime
         new PostFallLoseCutsceneMode(modes);
         
         // additional initialization
-        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PreRunDialogueFinished);
-        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
-        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
+        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PreRunDialogueFinished);
+        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
+        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
     }
 
     public static void InitEditor()
@@ -117,6 +117,62 @@ public static partial class ApplicationLifetime
         if (newSelection <= _playerData.LastUnlockedLevel.Value)
         {
             _playerData.LastSelectedLevel.Set(newSelection);
+        }
+    }
+
+    public static void HandleGlobalGameEvent(GlobalGameEvent gameEvent)
+    {
+        Debug.Log("On game event: " + gameEvent);
+        switch (gameEvent)
+        {
+            case GlobalGameEvent.BootLoadFinished:
+            {
+                ChangeMode<TitleMenuMode>();
+                break;
+            }
+            case GlobalGameEvent.MainMenuGoNext:
+            {
+                ChangeMode<PreFallCutsceneMode>();
+                break;
+            }
+            case GlobalGameEvent.PreRunDialogueFinished:
+            {
+                ChangeMode<FallingGameActiveMode>();
+                break;
+            }
+            case GlobalGameEvent.AllLivesLost:
+            {
+                ChangeMode<FallingGameSpectatorMode>();
+                break;
+            }
+            case GlobalGameEvent.PlatformerLevelEndReached:
+            {
+                // play outro
+                GameHelper.AllGameInstances(i => i.PlayOutroAnimation());
+                break;
+            }
+            case GlobalGameEvent.PlatformerLevelEndAnimationFinished:
+            {
+                // begin dialogue
+                ChangeMode<PostFallWinCutsceneMode>();
+                break;
+            }
+            case GlobalGameEvent.MenuAnimationFinished:
+            {
+                Debug.Log("MenuAnimationFinished");
+                break;
+            }
+            case GlobalGameEvent.PostRunDialogueFinished:
+            {
+                ChangeMode<LevelSelectMode>();
+                break;
+            }
+            case GlobalGameEvent.OnGameResultsClosed:
+            {
+                // set mode to main menu
+                ChangeMode<PostFallLoseCutsceneMode>();
+                break;
+            }
         }
     }
 }

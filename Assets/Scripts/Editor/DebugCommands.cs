@@ -45,10 +45,10 @@ public static class DebugCommands
         switch (ApplicationLifetime.CurrentMode)
         {
             case TitleMenuMode titleMenuMode:
-                Nav.Go(NavigationEvent.MainMenuGoNext);
+                GameEvents.Report(GlobalGameEvent.MainMenuGoNext);
                 break;
             case PreFallCutsceneMode pre:
-                Nav.Go(NavigationEvent.MainMenuGoNext);
+                GameEvents.Report(GlobalGameEvent.MainMenuGoNext);
                 break;
             case FallingGameActiveMode playing:
                 // TODO no idea if this will skip correctly
@@ -56,7 +56,7 @@ public static class DebugCommands
                 break;
             case PostFallLoseCutsceneMode lose:
             case PostFallWinCutsceneMode win:
-                Nav.Go(NavigationEvent.PostRunDialogueFinished);
+                GameEvents.Report(GlobalGameEvent.PostRunDialogueFinished);
                 GameHelper.UnlockNextLevel();
                 break;
             case LevelSelectMode levelSelect:
