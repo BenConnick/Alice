@@ -1,8 +1,6 @@
 public class PauseMenuMode : AppMode
 {
-	public static PauseMenuMode Instance;
-    
-    public PauseMenuMode(StateMachine<AppMode> owner) : base(owner)
+	public PauseMenuMode(StateMachine<AppMode> owner) : base(owner)
     {
     }
 

@@ -2,13 +2,10 @@ using System.Collections.Generic;
 
 public abstract class AppMode : StateMachine<AppMode>.State
 {
-    public static readonly List<AppMode> All = new List<AppMode>();
-
     public abstract string Name { get; }
 
     protected AppMode(StateMachine<AppMode> owner) : base(owner)
     {
-        All.Add(this);
     }
 
     /// <summary>
@@ -20,6 +17,5 @@ public abstract class AppMode : StateMachine<AppMode>.State
 
     ~AppMode()
     {
-        All.Remove(this);
     }
 }

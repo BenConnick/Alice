@@ -1,18 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelNodeWidget : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] 
+    private Image levelCompleteImage;
+    
+    [SerializeField] 
+    private Image levelIconImage;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] 
+    private Sprite levelIcon;
+    
+    [SerializeField] 
+    private Sprite lockIcon;
+
+    public void SetState(bool locked, bool complete)
     {
+        if (levelIconImage == null || levelCompleteImage == null) return;
         
+        levelCompleteImage.gameObject.SetActive(complete);
+        levelIconImage.gameObject.SetActive(complete == false);
+        
+        if (locked)
+        {
+            levelIconImage.sprite = lockIcon;
+            return;
+        }
+
+        else
+        {
+            levelIconImage.sprite = levelIcon;
+        }
     }
 }

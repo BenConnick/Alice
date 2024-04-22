@@ -44,6 +44,12 @@ public static class DebugCommands
     {
         switch (ApplicationLifetime.CurrentMode)
         {
+            case TitleMenuMode titleMenuMode:
+                Nav.Go(NavigationEvent.MainMenuGoNext);
+                break;
+            case PreFallCutsceneMode pre:
+                Nav.Go(NavigationEvent.MainMenuGoNext);
+                break;
             case FallingGameActiveMode playing:
                 // TODO no idea if this will skip correctly
                 GameHelper.AllGameInstances(g => g.PlayOutroAnimation());

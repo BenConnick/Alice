@@ -11,6 +11,8 @@ public class SerializablePlayerData
     public IntWrapper Money;
     
     public EnumWrapper<LevelType> LastUnlockedLevel;
+    
+    public EnumWrapper<LevelType> LastSelectedLevel;
 
     protected readonly List<IPlayerDataValueWrapper> SerializableValues = new List<IPlayerDataValueWrapper>();
 
@@ -39,14 +41,16 @@ public class SerializablePlayerData
     private void InitializeWithDefaults()
     {
         LastUnlockedLevel = new EnumWrapper<LevelType>(LevelType.RabbitHole, nameof(LastUnlockedLevel));
+        LastSelectedLevel = new EnumWrapper<LevelType>(LevelType.RabbitHole, nameof(LastUnlockedLevel));
         Money = new IntWrapper(0, nameof(Money));
-        FillWrapperCollection();
+        RegisterAllSerializedFields();
     }
 
-    private void FillWrapperCollection()
+    private void RegisterAllSerializedFields()
     {
         SerializableValues.Clear();
         SerializableValues.Add(LastUnlockedLevel);
+        SerializableValues.Add(LastSelectedLevel);
         SerializableValues.Add(Money);
     }
 }

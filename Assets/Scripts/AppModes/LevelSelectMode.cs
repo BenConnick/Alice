@@ -1,7 +1,6 @@
 public class LevelSelectMode : AppMode
 {
-	public static LevelSelectMode Instance;
-    public LevelSelectMode(StateMachine<AppMode> owner) : base(owner)
+	public LevelSelectMode(StateMachine<AppMode> owner) : base(owner)
     {
     }
 
@@ -17,7 +16,7 @@ public class LevelSelectMode : AppMode
 
     public override void OnExit()
     {
-        
+        Root.Find<GameplayScreenBehavior>().HideLevelSelect();
     }
 
     public override string Name => "Level Select";

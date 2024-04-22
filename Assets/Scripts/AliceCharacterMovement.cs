@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AliceCharacterMovement : LaneEntity
+public class AliceCharacterMovement : MonoBehaviour
 {
     public bool IsHijacked;
     public FallingGameInstance gameContext => ContextualInputSystem.ActiveGameInstance;
     private FallingGameInstance prevGameContext;
 
     // inspector
-    public float CharacterWidth = 1.5f;
+    public float CharacterWidth => 1.5f * transform.localScale.x;
     public SpriteRenderer spriteRenderer;
     public float flipAnimationSpeed = 20;
     public float laneChangeSpeed = 2;
@@ -85,7 +85,7 @@ public class AliceCharacterMovement : LaneEntity
     }
 
 #if UNITY_EDITOR
-    public override void OnDrawGizmos()
+    public void OnDrawGizmos()
     {
         // unused
     }

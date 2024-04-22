@@ -1,8 +1,6 @@
 public class LoadingMode : AppMode
 {
-	public static LoadingMode Instance;
-    
-    public LoadingMode(StateMachine<AppMode> owner) : base(owner)
+	public LoadingMode(StateMachine<AppMode> owner) : base(owner)
     {
         
     }

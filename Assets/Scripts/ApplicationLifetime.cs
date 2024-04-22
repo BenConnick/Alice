@@ -2,10 +2,6 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public delegate void PlatformEventDelegate(int platformID);
-public delegate void NoteEventDelegate(int noteID);
-public delegate void EventDelegate();
-
 // Application Manager
 // static class, top control of the app state
 public static partial class ApplicationLifetime
@@ -16,17 +12,11 @@ public static partial class ApplicationLifetime
     
     private static SerializablePlayerData _playerData;
 
-    //private static FallingGameLifetime _fallingGame;
+    #endregion
     
     public static SerializablePlayerData GetPlayerData()
     {
         return _playerData;
-    }
-
-    public static IGameLifetime GetActiveGameLifetime()
-    {
-        //return _fallingGame;
-        throw new NotImplementedException();
     }
 
     public static int MAX_LIVES = 3;
@@ -60,7 +50,7 @@ public static partial class ApplicationLifetime
         InitializeAppModes(Modes);
         
         // begin loading
-        Modes.ChangeState(LoadingMode.Instance);
+        ChangeMode<LoadingMode>();
         
         // load
         _playerData = new SerializablePlayerData();
@@ -73,20 +63,21 @@ public static partial class ApplicationLifetime
 
     private static void InitializeAppModes(StateMachine<AppMode> modes)
     {
-        LoadingMode.Instance = new LoadingMode(modes);
-        TitleMenuMode.Instance = new TitleMenuMode(modes);
-        LevelSelectMode.Instance = new LevelSelectMode(modes);
-        PauseMenuMode.Instance = new PauseMenuMode(modes);
-        FallingGameActiveMode.Instance = new FallingGameActiveMode(modes);
-        FallingGameSpectatorMode.Instance = new FallingGameSpectatorMode(modes);
-        PreFallCutsceneMode.Instance = new PreFallCutsceneMode(modes);
-        PostFallWinCutsceneMode.Instance = new PostFallWinCutsceneMode(modes);
-        PostFallLoseCutsceneMode.Instance = new PostFallLoseCutsceneMode(modes);
+        new LoadingMode(modes);
+        new TitleMenuMode(modes);
+        new LevelSelectMode(modes);
+        new PauseMenuMode(modes);
+        new FallingGameActiveMode(modes);
+        new FallingGameSpectatorMode(modes);
+        new GameResultsMenuMode(modes);
+        new PreFallCutsceneMode(modes);
+        new PostFallWinCutsceneMode(modes);
+        new PostFallLoseCutsceneMode(modes);
         
         // additional initialization
-        PreFallCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PreRunDialogueFinished);
-        PostFallWinCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
-        PostFallLoseCutsceneMode.Instance.DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
+        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PreRunDialogueFinished);
+        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
+        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => Nav.Go(NavigationEvent.PostRunDialogueFinished);
     }
 
     public static void InitEditor()
@@ -106,12 +97,26 @@ public static partial class ApplicationLifetime
 
     }
 
-    public static void ChangeMode(AppMode nextMode)
+    public static void ChangeMode<T>() where T : AppMode
     {
-        Modes.ChangeState(nextMode);
+        if (!Modes.RegisteredStates.TryGetValue(typeof(T), out AppMode appMode)) 
+        {
+            Debug.LogError($"Mode {typeof(T)} not registered");
+            return;
+        }
+        if (appMode == CurrentMode)
+        {
+            Debug.LogError($"Current mode and next mode ({appMode.GetType()}) {appMode} are the same");
+        }
+        Modes.ChangeState(appMode);
         Debug.Log($"Game state changed to '{CurrentMode.Name}'");
     }
-    #endregion
 
-
+    public static void ChangeSelectedLevel(LevelType newSelection)
+    {
+        if (newSelection <= _playerData.LastUnlockedLevel.Value)
+        {
+            _playerData.LastSelectedLevel.Set(newSelection);
+        }
+    }
 }

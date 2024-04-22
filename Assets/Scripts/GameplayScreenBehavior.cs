@@ -36,6 +36,7 @@ public class GameplayScreenBehavior : MonoBehaviour
     {
         ContextualInputSystem.UICapturedInput = true;
         UIHelper.SetCanvasGroupActive(LevelSelectGroup, true);
+        Root.Find<LevelSelectUI>().UpdateUI();
     }
 
     public void HideLevelSelect()
@@ -46,5 +47,6 @@ public class GameplayScreenBehavior : MonoBehaviour
     public void OnLevelButtonPressed(int levelIndex)
     {
         Debug.Log($"Level button {levelIndex} pressed");
+        Nav.GoToLevel(MasterConfig.Values.LevelConfigs[levelIndex].LevelType);
     }
 }

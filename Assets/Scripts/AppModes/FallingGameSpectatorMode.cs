@@ -1,7 +1,6 @@
 public class FallingGameSpectatorMode : AppMode
 {
-	public static FallingGameSpectatorMode Instance;
-    public FallingGameSpectatorMode(StateMachine<AppMode> owner) : base(owner)
+	public FallingGameSpectatorMode(StateMachine<AppMode> owner) : base(owner)
     {
     }
 

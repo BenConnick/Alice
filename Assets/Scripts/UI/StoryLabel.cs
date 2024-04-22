@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Text.RegularExpressions;
 
+[Obsolete]
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
@@ -67,7 +69,7 @@ public class StoryLabel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         {
             case "$play":
                 Story.Reset();
-                Nav.Go(NavigationEvent.FallFromMonologue);
+                // Nav.Go(NavigationEvent.FallFromMonologue); deprecated
                 break;
             default:
                 throw new System.Exception("command not implemented: " + command);

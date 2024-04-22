@@ -34,79 +34,14 @@ public class AliceCharacter : AliceCharacterMovement
         transform.localScale = new Vector3(scale, scale, scale);
     }
 
-    public void OnShrink()
-    {
-        switch (ShrinkStatus)
-        {
-            case SizeCategory.Default:
-                ChangeSizeTo(SizeCategory.Small); // shrink
-                break;
-            case SizeCategory.Small:
-                break; // minimum, cannot shrink more
-            case SizeCategory.Large:
-                ChangeSizeTo(SizeCategory.Default); // shrink
-                break;
-        }
-    }
-
-    public void OnGrow()
-    {
-        switch (ShrinkStatus)
-        {
-            case SizeCategory.Default:
-                ChangeSizeTo(SizeCategory.Large); // grow
-                break;
-            case SizeCategory.Small:
-                ChangeSizeTo(SizeCategory.Default); // grow
-                break;
-            case SizeCategory.Large:
-                break; // maximum
-        }
-    }
-
-    private void ChangeSizeTo(SizeCategory newSize)
-    {
-        ShrinkStatus = newSize;
-        float scale = 1;
-        switch (newSize)
-        {
-            
-            case SizeCategory.Default:
-                scale = 1;
-                WidthLanes = 2;
-                CharacterWidth = 1.5f;
-                break;
-            case SizeCategory.Small:
-                scale = 0.5f;
-                WidthLanes = 1;
-                CharacterWidth = 0.75f;
-                break;
-            case SizeCategory.Large:
-                scale = 2;
-                WidthLanes = 4;
-                CharacterWidth = 3f;
-                break;
-        }
-        targetScale = DefaultScale * scale;
-    }
-
-    public void OnStartLevelPressed()
-    {
-        Nav.Go(ApplicationLifetime.CurrentMode is TitleMenuMode
-            ? NavigationEvent.MainMenuGoNext
-            : NavigationEvent.LegacyDialogueGoNext);
-    }
-
-    public void UnbecomeButton()
+    public void ActivateGameplayMode()
     {
         SetStanding(false);
-        GetComponent<WorldButton>().Release();
     }
 
-    public void BecomeButton()
+    public void ActivateMenuMode()
     {
         SetStanding(true);
-        GetComponent<WorldButton>().enabled = true;
     }
 
     public bool CheckOverlap(LevelCollider levelCollider)
@@ -150,11 +85,11 @@ public class AliceCharacter : AliceCharacterMovement
         }
         if (obstacle.HasTag(LevelCollider.Tag_GrowOnHit))
         {
-            player.OnGrow();
+            player.GetComponent<ShrinkBehavior>().OnGrow();
         }
         if (obstacle.HasTag(LevelCollider.Tag_ShrinkOnHit))
         {
-            player.OnShrink();
+            player.GetComponent<ShrinkBehavior>().OnShrink();
         }
         if (obstacle.HasTag(LevelCollider.Tag_MoneyOnHit))
         {
@@ -177,11 +112,11 @@ public class AliceCharacter : AliceCharacterMovement
         gameContext.VpLives--;
         if (gameContext.VpLives <= 0)
         {
-            Nav.Go(NavigationEvent.PlatformerGameOver);
+            Nav.Go(NavigationEvent.AllLivesLost);
         }
     }
 
-    public void SetStanding(bool standing)
+    private void SetStanding(bool standing)
     {
         string newAnimation = standing ? StandingAnimName : FallingAnimName;
         if (spriteAnimator.GetAnimation() != newAnimation)

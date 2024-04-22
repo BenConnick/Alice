@@ -1,7 +1,6 @@
 public class TitleMenuMode : AppMode
 {
-	public static TitleMenuMode Instance;
-    public TitleMenuMode(StateMachine<AppMode> owner) : base(owner)
+	public TitleMenuMode(StateMachine<AppMode> owner) : base(owner)
     {
     }
 

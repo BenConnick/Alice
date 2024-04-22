@@ -54,6 +54,7 @@ public class FallingGameInstance
     private float outroStartHeight;
     private readonly List<LevelChunk> activeChunks = new List<LevelChunk>();
     private readonly List<LevelCollider> activeObstacles = new List<LevelCollider>();
+    private readonly List<LevelCollider> collisionBuffer = new List<LevelCollider>();
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
     private AnimationMode mode;
@@ -155,6 +156,7 @@ public class FallingGameInstance
             bool hasFocus = player.gameContext == this;
             if (hasFocus)
             {
+                collisionBuffer.Clear();
                 foreach (var obstacle in activeObstacles)
                 {
                     bool ignoresInvincibility = obstacle.HasTag(LevelCollider.Tag_MoneyOnHit);
@@ -163,9 +165,13 @@ public class FallingGameInstance
                     {
                         if (player.CheckOverlap(obstacle))
                         {
-                            player.HandleObstacleCollision(obstacle);
+                            collisionBuffer.Add(obstacle);
                         }
                     }
+                }
+                foreach (LevelCollider hit in collisionBuffer)
+                {
+                    player.HandleObstacleCollision(hit);
                 }
             }
 
@@ -194,7 +200,7 @@ public class FallingGameInstance
             // check game over condition
             if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
             {
-                Nav.Go(NavigationEvent.PlatformerLevelEndTrigger);
+                Nav.Go(NavigationEvent.PlatformerLevelEndReached);
             }
 
             // debug
@@ -269,12 +275,12 @@ public class FallingGameInstance
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // shrink
-            Root.Find<AliceCharacter>().OnShrink();
+            Root.Find<AliceCharacter>().GetComponent<ShrinkBehavior>().OnShrink();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // grow
-            Root.Find<AliceCharacter>().OnGrow();
+            Root.Find<AliceCharacter>().GetComponent<ShrinkBehavior>().OnGrow();
         }
     }
 
@@ -326,7 +332,7 @@ public class FallingGameInstance
         Reset();
 
 
-        Nav.Go(NavigationEvent.PlatformerLevelEndPostAnimation);
+        Nav.Go(NavigationEvent.PlatformerLevelEndAnimationFinished);
     }
 
     private void RemoveAllChunks()
@@ -342,7 +348,7 @@ public class FallingGameInstance
         activeObstacles.Clear();
     }
 
-    public float GetIntroOffset()
+    private float GetIntroOffset()
     {
         return rabbitHoleObject.localPosition.y - (initialHeight + introAnimationDistance);
     }

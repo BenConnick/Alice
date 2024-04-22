@@ -1,8 +1,6 @@
 public class PreFallCutsceneMode : CutsceneMode
 {
-	public static PreFallCutsceneMode Instance;
-
-    public PreFallCutsceneMode(StateMachine<AppMode> owner) : base(owner)
+	public PreFallCutsceneMode(StateMachine<AppMode> owner) : base(owner)
     {
     }
     

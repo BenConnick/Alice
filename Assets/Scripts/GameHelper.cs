@@ -40,7 +40,7 @@ public class GameHelper
     
     public static LevelConfig GetCurrentLevelConfig()
     {
-        LevelType levelIndex = ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
+        LevelType levelIndex = ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
         return GetLevelConfig(levelIndex);
     }
     

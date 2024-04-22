@@ -40,52 +40,11 @@ public static partial class ApplicationLifetime
     #region Commands
 
     [Command]
-    public static void SetLevelCaterpillar()
-    {
-        OnDebugEvent(DebugEvent.SetLevelCaterpillar);
-    }
-
-    [Command]
     public static void InfiniteHearts()
     {
         ContextualInputSystem.ActiveGameInstance.VpLives = 999;
     }
 
-    [Command]
-    public static void SkipCaterpillarDialogue()
-    {
-        Nav.PlayCaterpillarDoneMoment();
-    }
 
-    [Command]
-    public static void JumpToPOI()
-    {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-        {
-            UnityEditor.EditorApplication.EnterPlaymode();
-            return;
-        }
-#endif
-        // replace the contents of this function with the latest point of interest
-        JumpToCaterpillar();
-
-    }
-
-    private static void JumpToCaterpillar()
-    {
-        GetPlayerData().LastUnlockedLevel.Set(LevelType.GardenOfChange);
-        ChangeMode(FallingGameActiveMode.Instance);
-        //foreach (var rabbithole in RabbitHoleDisplay.All)
-        //{
-        //    rabbithole.GameplayGroup.ObstacleContext.SetBackgroundSpritesForLevel((int)CurrentLevel);
-        //    rabbithole.GameplayGroup.ObstacleContext.menuGraphics.ShowStageArt(CurrentLevel);
-        //    //rabbithole.GameplayGroup.UIOverlay.gameObject.SetActive(false);
-        //}
-        //PlayGameInner();
-        Nav.PlayCaterpillarDoneMoment();
-    }
-    
-    
     #endregion
 }

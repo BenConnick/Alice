@@ -5,7 +5,6 @@ using UnityEngine;
 public class CaterpillarDialogueBehavior : CharacterDialogueBehavior
 {
     // Serialized Fields
-    public WorldButton AliceButton;
     public WorldButton CaterpillarButton;
     public WorldButton MushroomButton;
     public GameObject CaterpillarVanishParticles;
@@ -41,7 +40,7 @@ public class CaterpillarDialogueBehavior : CharacterDialogueBehavior
     private void RequireClickCharacter(WorldButton target)
     {
         WorldButton activeButton = target;
-        List<WorldButton> inactiveButtons = new List<WorldButton> { AliceButton, CaterpillarButton, MushroomButton };
+        List<WorldButton> inactiveButtons = new List<WorldButton> { CaterpillarButton, MushroomButton };
         inactiveButtons.Remove(target);
         activeButton.enabled = true;
         foreach (var btn in inactiveButtons) btn.Release();

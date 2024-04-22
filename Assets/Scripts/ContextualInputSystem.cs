@@ -25,13 +25,11 @@ public static class ContextualInputSystem
     {
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("Mouse up");
             ApplicationLifetime.CurrentMode.HandleInput(InputType.MouseUp);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Mouse down");
             ApplicationLifetime.CurrentMode.HandleInput(InputType.MouseDown);
         }
 

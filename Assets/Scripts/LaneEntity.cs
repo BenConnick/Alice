@@ -11,7 +11,8 @@ public class LaneEntity : MonoBehaviour
 {
     // public
     public int Lane = 0;
-    public int WidthLanes = 2;
+    public int WidthLanes => (int)FractionalWidthLanes;
+    public float FractionalWidthLanes = 2;
     public float Height = 1f; // world-space units
     public byte Tags = Tag_DamageOnHit;
 
