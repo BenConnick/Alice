@@ -149,7 +149,7 @@ public class FallingGameInstance
         World.Get<GameplayScreenBehavior>().SetGameViewHidden();
         Reset();
         UIOverlay.GameOverOverlay.SetActive(false);
-        menuGraphics.ShowStageArt(GameHelper.SelectedLevel);
+        menuGraphics.ShowStageArt(GameplayManager.SelectedLevel);
         PlayTitleIntro();
     }
 

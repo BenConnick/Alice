@@ -11,13 +11,13 @@ public class PostFallWinSlideshowMode : SlideshowMode
 	    DialogueExhausted += () => GameplayManager.Fire(GlobalGameEvent.PostRunCutsceneFinished);
 	    // additional
 	    World.Get<AliceCharacter>().ActivateMenuMode();
-	    GameHelper.UnlockNextLevel();
+	    GameplayManager.UnlockNextLevel();
     }
 
     public override string Name => "Post-Fall Slideshow";
 
     protected override InGameText GetSlideshowText()
     {
-	    return GameHelper.GetCurrentLevelConfig().LevelText.Data.LevelWinText;
+	    return GameplayManager.GetCurrentLevelConfig().LevelText.Data.LevelWinText;
     }
 }

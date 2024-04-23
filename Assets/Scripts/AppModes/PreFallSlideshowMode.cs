@@ -14,6 +14,6 @@ public class PreFallSlideshowMode : SlideshowMode
 
     protected override InGameText GetSlideshowText()
     {
-	    return GameHelper.GetCurrentLevelConfig().LevelText.Data.LevelStartText;
+	    return GameplayManager.GetCurrentLevelConfig().LevelText.Data.LevelStartText;
     }
 }

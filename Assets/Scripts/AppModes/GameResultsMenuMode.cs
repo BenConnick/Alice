@@ -6,7 +6,7 @@ public class GameResultsMenuMode : AppMode
 
     public override void OnEnter()
     {
-        GameHelper.AllGameInstances(i =>
+        GameplayManager.AllGameInstances(i =>
         {
             i.UIOverlay.GameOverOverlay.SetActive(true);
         });
