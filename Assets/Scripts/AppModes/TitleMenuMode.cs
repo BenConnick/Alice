@@ -27,7 +27,7 @@ public class TitleMenuMode : AppMode
             case ContextualInputSystem.InputType.MouseUp:
                 if (IsTitleAnimationDone())
                 {
-                    GameEvents.Report(GlobalGameEvent.MainMenuGoNext);
+                    GameplayManager.Fire(GlobalGameEvent.MainMenuGoNext);
                 }
                 else
                 {

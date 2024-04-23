@@ -16,12 +16,6 @@ MonoBehaviour:
     Name: Mad Tea Party
     LevelStartText:
       Lines:
-      - 'Through the clouds, Alice made out a familiar shape. '
-      - 'It was a teapot. '
-      - 'Then, she spotted a saucer, and later a teacup. '
-      - "\u201CI could have my very own tea party!\u201D she exclaimed. "
-      - 'No sooner had she said this, than a storm of tea sets came rushing past
-        her. '
       - "Amid the rattling of porcelain came the sound of discordant voices\u2026 "
     LevelBackgroundText:
       Lines: []

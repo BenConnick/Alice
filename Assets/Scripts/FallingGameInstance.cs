@@ -230,7 +230,7 @@ public class FallingGameInstance
             // check game over condition
             if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
             {
-                GameEvents.Report(GlobalGameEvent.PlatformerLevelEndReached);
+                GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
             }
 
             // debug
@@ -257,7 +257,7 @@ public class FallingGameInstance
         titleAnimationSpeed = 1f;
         Viewport.GameplayCamera.transform.localPosition = Vector3.zero;
         mode = AnimationMode.Default;
-        GameEvents.Report(GlobalGameEvent.MenuAnimationFinished);
+        GameplayManager.Fire(GlobalGameEvent.MenuAnimationFinished);
     }
 
     private void UpdateIntroAnim()
@@ -357,7 +357,7 @@ public class FallingGameInstance
         // move the menu graphics to the new player position so that the player cannot tell that the height is back to zero
         menuGraphics.transform.localPosition = new Vector3(0, -initialHeight, 0);
 
-        GameEvents.Report(GlobalGameEvent.PlatformerLevelEndAnimationFinished);
+        GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndAnimationFinished);
     }
 
     private void RemoveAllChunks()

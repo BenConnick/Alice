@@ -112,7 +112,7 @@ public class AliceCharacter : AliceCharacterMovement
         gameContext.VpLives--;
         if (gameContext.VpLives <= 0)
         {
-            GameEvents.Report(GlobalGameEvent.AllLivesLost);
+            GameplayManager.Fire(GlobalGameEvent.AllLivesLost);
         }
     }
 

@@ -47,6 +47,7 @@ public class GameplayScreenBehavior : MonoBehaviour
     public void OnLevelButtonPressed(int levelIndex)
     {
         Debug.Log($"Level button {levelIndex} pressed");
-        GameEvents.SelectLevel(MasterConfig.Values.LevelConfigs[levelIndex].LevelType);
+        GameplayManager.ChangeSelectedLevel(MasterConfig.Values.LevelConfigs[levelIndex].LevelType);
+        GameplayManager.Fire(GlobalGameEvent.LevelSelectionConfirmed);
     }
 }

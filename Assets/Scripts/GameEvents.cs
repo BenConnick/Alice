@@ -17,18 +17,5 @@ public enum GlobalGameEvent
     BootLoadFinished = 11,
     PreRunCutsceneFinished = 12,
     PostRunCutsceneFinished = 13,
-}
-    
-public static class GameEvents
-{
-    public static void Report(GlobalGameEvent gameEvent)
-    {
-        ApplicationLifetime.HandleGlobalGameEvent(gameEvent);
-    }
-
-    public static void SelectLevel(LevelType level)
-    {
-        ApplicationLifetime.ChangeSelectedLevel(level);
-        ApplicationLifetime.ChangeMode<FallingGameActiveMode>();
-    }
+    LevelSelectionConfirmed = 14,
 }

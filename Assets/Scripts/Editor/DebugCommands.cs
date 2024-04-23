@@ -40,24 +40,23 @@ public static class DebugCommands
     }
     
     [Command]
-    public static void SkipThis()
+    public static void SkipActivePhase()
     {
         switch (ApplicationLifetime.CurrentMode)
         {
             case TitleMenuMode titleMenuMode:
-                GameEvents.Report(GlobalGameEvent.MainMenuGoNext);
+                GameplayManager.Fire(GlobalGameEvent.MainMenuGoNext);
                 break;
-            case PreFallCutsceneMode pre:
-                GameEvents.Report(GlobalGameEvent.MainMenuGoNext);
+            case PreFallSlideshowMode pre:
+                GameplayManager.Fire(GlobalGameEvent.PreRunCutsceneFinished);
                 break;
             case FallingGameActiveMode playing:
                 // TODO no idea if this will skip correctly
-                GameHelper.AllGameInstances(g => g.PlayOutroAnimation());
+                GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
                 break;
-            case PostFallLoseCutsceneMode lose:
-            case PostFallWinCutsceneMode win:
-                GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
-                GameHelper.UnlockNextLevel();
+            case PostFallLoseSlideshowMode lose:
+            case PostFallWinSlideshowMode win:
+                GameplayManager.Fire(GlobalGameEvent.PostRunCutsceneFinished);
                 break;
             case LevelSelectMode levelSelect:
                 break;

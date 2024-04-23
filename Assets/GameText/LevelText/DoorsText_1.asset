@@ -16,19 +16,14 @@ MonoBehaviour:
     Name: Doors
     LevelStartText:
       Lines:
-      - "Alice was beginning to get very tired\u2026 "
-      - 'She heard the empty space around her whisper: '
-      - "\u201CThere are many doors to Wonderland...\u201D "
-      - 'Alice rubbed her eyes and looked around. '
-      - "The scenery around her had become altogether different\u2026"
       - 'The air was filled with doors, all locked. '
+      - 'Alice heard the empty space around her whisper: '
+      - "\u201CThere are many doors to Wonderland...\u201D "
     LevelBackgroundText:
       Lines: []
     LevelWinText:
       Lines:
-      - 'Door after door would not yield. '
-      - 'Curious, Alice tried to glimpse through a keyhole. '
-      - 'On the other side, she saw a beautiful garden. '
+      - 'Through a keyhole, she saw a beautiful garden. '
       - 'The emptiness whispered again, '
       - "\u201CWouldn\u2019t you like to slip right on through that little keyhole?\u201D "
     LevelLoseText:

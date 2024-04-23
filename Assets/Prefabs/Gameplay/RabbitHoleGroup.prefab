@@ -689,72 +689,7 @@ MonoBehaviour:
   - {fileID: 534837934596057670}
   - {fileID: 883553792915381672}
   titleAnimationDistance: 22
-  titleAnimationDuration: 4
-  introAnimationDistance: 12
-  outroAnimationDistance: 30
-  introAnimationSpeed: 1.5
   menuGraphics: {fileID: 0}
-  titleAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3
-      value: 0
-      inSlope: 0
-      outSlope: 1.4285715
-      tangentMode: 65
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1.4285715
-      outSlope: 1.6884383
-      tangentMode: 5
-      weightedMode: 0
-      inWeight: 0.99583787
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  introAnimationCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  obstaclePrefabs:
-  - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
-  - {fileID: 7750014687331218534, guid: 8a3857c9f237844bdbf4e2d92605b593, type: 3}
-  - {fileID: 109536891054318655, guid: b6a1810b76992456a8bb2f7af3b0af88, type: 3}
-  - {fileID: 1898889223514662594, guid: 049fb33210bd2427e96f0893a8d376f5, type: 3}
-  - {fileID: 1230781960852054474, guid: 96c226e964cfa4742aa053a63ea5a904, type: 3}
-  - {fileID: 1002140274851293307, guid: 44d56d4cd8699406a87b73d5e1fe481f, type: 3}
-  - {fileID: 6636092000778370348, guid: 95b5611b8fc7d4944b563e4e10a75ac8, type: 3}
-  rabbitChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: 41de4226498ab47acab2b42d3127ba7f, type: 3}
-  - {fileID: 8465607651784711365, guid: fa286984d2e0d43cb9459383ef59b486, type: 3}
-  - {fileID: 8465607651784711365, guid: 99c9344ce472242bc8bc5eb45e187b70, type: 3}
-  - {fileID: 8465607651784711365, guid: ac1ac51779d8449e6b42b358bf957838, type: 3}
-  caterpillarChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: e118938a35d464d70a42d90d93300582, type: 3}
-  - {fileID: 8465607651784711365, guid: e118938a35d464d70a42d90d93300582, type: 3}
-  chessChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: 96a0e4e368a2c478e86962ad0954794f, type: 3}
-  teaPartyChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: 1e0a280f8566242d2892b2ec7386834d, type: 3}
-  queenChunkPrefabs:
-  - {fileID: 8465607651784711365, guid: 64caf92665f534a61b905d27d1323cdb, type: 3}
   perLevelBackgroundSprites:
   - {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6, type: 3}
   - {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6, type: 3}
@@ -1241,7 +1176,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -1
   far clip plane: 1000
   field of view: 60
   orthographic: 1

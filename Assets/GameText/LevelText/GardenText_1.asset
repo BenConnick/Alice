@@ -23,11 +23,8 @@ MonoBehaviour:
       Lines: []
     LevelWinText:
       Lines:
-      - "\u201CWho are you?\u201D demanded a shrill voice "
-      - 'Alice opened her eyes, to find an enormous caterpillar peering down at her '
-      - "\u201CI am Alice\u201D she replied. "
-      - 'The caterpillar did not say more.  '
-      - 'Alice waited and waited, but it continued to puff from its hookah. '
+      - Who are you?
+      - ...the Caterpillar waits for an answer.
     LevelLoseText:
       Lines:
       - 'Alice felt, with things changing so much,  '

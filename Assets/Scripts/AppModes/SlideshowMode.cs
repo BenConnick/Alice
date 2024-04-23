@@ -1,6 +1,6 @@
 using System;
 
-public abstract class CutsceneMode : AppMode
+public abstract class SlideshowMode : AppMode
 {
     public event Action DialogueExhausted;
     
@@ -8,12 +8,17 @@ public abstract class CutsceneMode : AppMode
     protected int _TextIndex;
     
     
-    public CutsceneMode() : base()
+    public SlideshowMode() : base()
     {
+        DialogueExhausted = null;
     }
+
+    protected abstract InGameText GetSlideshowText();
 
     public override void OnEnter()
     {
+        _TextIndex = 0;
+        _TextToShow = GetSlideshowText();
         // assign _TextToShow in subclass
         var ui = World.Get<GameplayScreenBehavior>();
         ui.ShowStory();
@@ -59,5 +64,10 @@ public abstract class CutsceneMode : AppMode
             StoryController.SetText(line, 10f);
             _TextIndex++;
         }
+    }
+
+    public override bool HandleGameEvent(GlobalGameEvent gameEvent)
+    {
+        return false;
     }
 }

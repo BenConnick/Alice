@@ -46,9 +46,6 @@ public static partial class ApplicationLifetime
         // init frame rate
         Application.targetFrameRate = 60;
         
-        // init modes
-        InitializeAppModes(Modes);
-        
         // begin loading
         ChangeMode<LoadingMode>();
         
@@ -58,15 +55,11 @@ public static partial class ApplicationLifetime
 #if UNITY_EDITOR
         DebugOnPostInitialize();
 #endif
-        GameEvents.Report(GlobalGameEvent.BootLoadFinished);
+        GameplayManager.Fire(GlobalGameEvent.BootLoadFinished);
     }
 
     private static void InitializeAppModes(StateMachine<AppMode> modes)
     {
-        // additional initialization
-        Modes.Get<PreFallCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PreRunCutsceneFinished);
-        Modes.Get<PostFallWinCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
-        Modes.Get<PostFallLoseCutsceneMode>().DialogueExhausted += () => GameEvents.Report(GlobalGameEvent.PostRunCutsceneFinished);
     }
 
     public static void InitEditor()
@@ -97,15 +90,7 @@ public static partial class ApplicationLifetime
         Debug.Log($"Game state changed to '{CurrentMode.Name}'");
     }
 
-    public static void ChangeSelectedLevel(LevelType newSelection)
-    {
-        if (newSelection <= _playerData.LastUnlockedLevel.Value)
-        {
-            _playerData.LastSelectedLevel.Set(newSelection);
-        }
-    }
-
-    public static void HandleGlobalGameEvent(GlobalGameEvent gameEvent)
+    public static void HandleGameEvent(GlobalGameEvent gameEvent)
     {
         Debug.Log("On game event: " + gameEvent);
         switch (gameEvent)
@@ -117,7 +102,7 @@ public static partial class ApplicationLifetime
             }
             case GlobalGameEvent.MainMenuGoNext:
             {
-                ChangeMode<PreFallCutsceneMode>();
+                ChangeMode<PreFallSlideshowMode>();
                 break;
             }
             case GlobalGameEvent.PreRunCutsceneFinished:
@@ -135,18 +120,23 @@ public static partial class ApplicationLifetime
             case GlobalGameEvent.PlatformerLevelEndAnimationFinished:
             {
                 // begin dialogue
-                ChangeMode<PostFallWinCutsceneMode>();
+                ChangeMode<PostFallWinSlideshowMode>();
                 break;
             }
             case GlobalGameEvent.GameResultsClosed:
             {
                 // set mode to main menu
-                ChangeMode<PostFallLoseCutsceneMode>();
+                ChangeMode<PostFallLoseSlideshowMode>();
                 break;
             }
             case GlobalGameEvent.PostRunCutsceneFinished:
             {
                 ChangeMode<LevelSelectMode>();
+                break;
+            }
+            case GlobalGameEvent.LevelSelectionConfirmed:
+            {
+                ChangeMode<PreFallSlideshowMode>();
                 break;
             }
         }

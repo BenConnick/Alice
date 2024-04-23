@@ -7,6 +7,6 @@ public class GlobalGameEventComponent : MonoBehaviour
 
     public void FireEvent()
     {
-        GameEvents.Report(GlobalGameEvent);
+        GameplayManager.Fire(GlobalGameEvent);
     }
 }
