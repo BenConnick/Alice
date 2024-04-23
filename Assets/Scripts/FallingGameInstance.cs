@@ -137,7 +137,7 @@ public class FallingGameInstance
 
     public void OnShow()
     {
-        World.Get<GameplayScreenBehavior>().SetGameViewVisible();
+        World.Get<MainUIController>().SetGameViewVisible();
         World.Get<AliceCharacter>().ActivateGameplayMode();
         TimeDistortionController.SetBaselineSpeed(Current.Config.TimeScaleMultiplier);
         Reset();
@@ -146,7 +146,7 @@ public class FallingGameInstance
 
     public void OnHide()
     {
-        World.Get<GameplayScreenBehavior>().SetGameViewHidden();
+        World.Get<MainUIController>().SetGameViewHidden();
         Reset();
         UIOverlay.GameOverOverlay.SetActive(false);
         menuGraphics.ShowStageArt(GameplayManager.SelectedLevel);

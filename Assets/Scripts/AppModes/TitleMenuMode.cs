@@ -16,7 +16,7 @@ public class TitleMenuMode : AppMode
 
     public override void OnExit()
     {
-        World.Get<GameplayScreenBehavior>().SetGameViewHidden();
+        World.Get<MainUIController>().SetGameViewHidden();
     }
 
     public override string Name => "Title";

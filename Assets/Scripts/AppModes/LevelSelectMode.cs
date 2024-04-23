@@ -6,7 +6,7 @@ public class LevelSelectMode : AppMode
 
     public override void OnEnter()
     {
-        World.Get<GameplayScreenBehavior>().ShowLevelSelect();
+        World.Get<MainUIController>().ShowLevelSelect();
     }
 
     public override void Tick(float dt)
@@ -16,7 +16,7 @@ public class LevelSelectMode : AppMode
 
     public override void OnExit()
     {
-        World.Get<GameplayScreenBehavior>().HideLevelSelect();
+        World.Get<MainUIController>().HideLevelSelect();
     }
 
     public override string Name => "Level Select";

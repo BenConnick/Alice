@@ -20,7 +20,7 @@ public abstract class SlideshowMode : AppMode
         _TextIndex = 0;
         _TextToShow = GetSlideshowText();
         // assign _TextToShow in subclass
-        var ui = World.Get<GameplayScreenBehavior>();
+        var ui = World.Get<MainUIController>();
         ui.ShowStory();
         RequestDialogueAdvance();
     }
@@ -32,7 +32,7 @@ public abstract class SlideshowMode : AppMode
 
     public override void OnExit()
     {
-        var ui = World.Get<GameplayScreenBehavior>();
+        var ui = World.Get<MainUIController>();
         ui.HideStory();
     }
 
@@ -47,7 +47,7 @@ public abstract class SlideshowMode : AppMode
 
     protected void RequestDialogueAdvance()
     {
-        var ui = World.Get<GameplayScreenBehavior>();
+        var ui = World.Get<MainUIController>();
         var StoryController = ui.StoryController;
         if (StoryController.IsStillTyping())
         {

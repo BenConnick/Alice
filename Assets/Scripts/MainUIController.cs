@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class GameplayScreenBehavior : MonoBehaviour
+public class MainUIController : MonoBehaviour
 {
     public CanvasGroup StoryGroup;
     public CanvasGroup GameplayGroup;
@@ -49,5 +50,10 @@ public class GameplayScreenBehavior : MonoBehaviour
         Debug.Log($"Level button {levelIndex} pressed");
         GameplayManager.ChangeSelectedLevel(MasterConfig.Values.LevelConfigs[levelIndex].LevelType);
         GameplayManager.Fire(GlobalGameEvent.LevelSelectionConfirmed);
+    }
+
+    public void ReloadAll()
+    {
+        World.Get<LevelSelectUI>().UpdateUI();
     }
 }

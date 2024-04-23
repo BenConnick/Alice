@@ -40,6 +40,26 @@ public static class DebugCommands
     }
     
     [Command]
+    public static void UnlockNextLevel()
+    {
+        GameplayManager.UnlockNextLevel();
+    }
+    
+    [Command]
+    public static void ResetSaveData()
+    {
+        ApplicationLifetime.GetPlayerData().Money.Set(default);
+        ApplicationLifetime.GetPlayerData().LastSelectedLevel.Set(default);
+        ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(default);
+    }
+
+    [Command]
+    public static void ReloadUI()
+    {
+        World.Get<MainUIController>().ReloadAll();
+    }
+    
+    [Command]
     public static void SkipActivePhase()
     {
         switch (ApplicationLifetime.CurrentMode)
