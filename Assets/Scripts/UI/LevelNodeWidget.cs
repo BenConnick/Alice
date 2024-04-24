@@ -19,18 +19,8 @@ public class LevelNodeWidget : MonoBehaviour
     {
         if (levelIconImage == null || levelCompleteImage == null) return;
         
-        levelCompleteImage.gameObject.SetActive(complete);
-        levelIconImage.gameObject.SetActive(complete == false);
-        
-        if (locked)
-        {
-            levelIconImage.sprite = lockIcon;
-            return;
-        }
-
-        else
-        {
-            levelIconImage.sprite = levelIcon;
-        }
+        levelCompleteImage.gameObject.SetActive(!complete && !locked);
+        levelIconImage.color = complete || locked ? Color.white : Color.black;
+        levelIconImage.sprite = locked ? lockIcon : levelIcon;
     }
 }
