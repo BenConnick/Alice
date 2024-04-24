@@ -30,7 +30,7 @@ MonoBehaviour:
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
-      ChunkSet: {fileID: 11400000, guid: f06e0d3a60725476697ab43446523194, type: 2}
+      ChunkSet: {fileID: 11400000, guid: 44c10c99c52364df988c4dc38aef7b38, type: 2}
       LevelText: {fileID: 11400000, guid: 8c4cb0f817e6c49fb84a80fca61c24b6, type: 2}
       BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
         type: 3}
@@ -85,7 +85,7 @@ MonoBehaviour:
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: d93a924bc65794bd39233f1f421ce786, type: 2}
-      LevelText: {fileID: 11400000, guid: e6123679b0a674a998d498ef88e7ad60, type: 2}
+      LevelText: {fileID: 11400000, guid: 48f2bf9315598469493c8832ca3f2708, type: 2}
       BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
         type: 3}
     titleAnimationDistance: 22
