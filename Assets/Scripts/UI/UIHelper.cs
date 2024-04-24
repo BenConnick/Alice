@@ -34,4 +34,9 @@ public static class UIHelper
         // instantly change which group is visible
         group.alpha = active ? 1 : 0;
     }
+
+    public static void ShowToast(string message, float duration = 2f)
+    {
+        World.Get<MainUIController>().ShowToast(message, duration);
+    }
 }

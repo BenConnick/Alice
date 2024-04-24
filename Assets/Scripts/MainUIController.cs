@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +11,7 @@ public class MainUIController : MonoBehaviour
     public CanvasGroup GameplayGroup;
     public CanvasGroup LevelSelectGroup;
     public MovieCardLabel StoryController;
+    public TextMeshProUGUI ToastLabel;
 
     public void ShowStory()
     {
@@ -55,5 +57,18 @@ public class MainUIController : MonoBehaviour
     public void ReloadAll()
     {
         World.Get<LevelSelectUI>().UpdateUI();
+    }
+
+    public void ShowToast(string message, float duration = 2f)
+    {
+        StartCoroutine(ShowToastForSeconds(message, duration));
+    }
+
+    private IEnumerator ShowToastForSeconds(string toast, float seconds)
+    {
+        ToastLabel.text = toast;
+        ToastLabel.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(seconds);
+        ToastLabel.gameObject.SetActive(false);
     }
 }
