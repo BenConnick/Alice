@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+// ReSharper disable UnusedMember.Global
 
 public static class DebugCommands
 {
@@ -46,11 +47,11 @@ public static class DebugCommands
     }
     
     [Command]
-    public static void ResetSaveData()
+    public static void ClearSaveData()
     {
-        ApplicationLifetime.GetPlayerData().Money.Set(default);
-        ApplicationLifetime.GetPlayerData().LastSelectedLevel.Set(default);
-        ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Set(default);
+        ApplicationLifetime.GetPlayerData().ResetValuesToDefaults();
+        ApplicationLifetime.GetPlayerData().SaveToDisk();
+        UIHelper.ShowToast("Save Data Reset To Defaults");
     }
 
     [Command]
@@ -58,7 +59,31 @@ public static class DebugCommands
     {
         World.Get<MainUIController>().ReloadAll();
     }
-    
+
+    [Command]
+    public static void JumpToLevelSelect()
+    {
+        // skip title animation
+        if (ApplicationLifetime.CurrentMode is TitleMenuMode)
+        {
+            SkipActivePhase();
+        }
+
+        // skip intro cutscene
+        if (ApplicationLifetime.CurrentMode is PreFallSlideshowMode)
+        {
+            SkipActivePhase(); 
+        }
+
+        // skip gameplay
+        SkipActivePhase();
+        
+        // skip post-gameplay slideshow
+        SkipActivePhase();
+        
+        UIHelper.ShowToast("Skipping...");
+    }
+
     [Command]
     public static void SkipActivePhase()
     {
@@ -73,6 +98,7 @@ public static class DebugCommands
             case FallingGameActiveMode playing:
                 // TODO no idea if this will skip correctly
                 GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
+                GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndAnimationFinished);
                 break;
             case PostFallLoseSlideshowMode lose:
             case PostFallWinSlideshowMode win:
@@ -81,6 +107,6 @@ public static class DebugCommands
             case LevelSelectMode levelSelect:
                 break;
         }
-        
+
     }
 }

@@ -38,10 +38,15 @@ public class SerializablePlayerData
         return SerializableValues.Count > 0 && PlayerPrefs.HasKey(SerializableValues[0].KeyName);
     }
 
+    public void ResetValuesToDefaults()
+    {
+        InitializeWithDefaults();
+    }
+
     private void InitializeWithDefaults()
     {
         LastUnlockedLevel = new EnumWrapper<LevelType>(LevelType.RabbitHole, nameof(LastUnlockedLevel));
-        LastSelectedLevel = new EnumWrapper<LevelType>(LevelType.RabbitHole, nameof(LastUnlockedLevel));
+        LastSelectedLevel = new EnumWrapper<LevelType>(LevelType.RabbitHole, nameof(LastSelectedLevel));
         Money = new IntWrapper(0, nameof(Money));
         RegisterAllSerializedFields();
     }
