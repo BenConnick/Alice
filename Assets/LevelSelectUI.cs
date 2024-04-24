@@ -7,7 +7,7 @@ public class LevelSelectUI : MonoBehaviour
 
     public void UpdateUI()
     {
-        int maxLevel = 1 + (int)ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
+        int maxLevel = GameplayManager.ToLevelIndex(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
         for (int i = 0; i < nodeWidgets.Length; i++)
         {
             bool isLocked = i > maxLevel;

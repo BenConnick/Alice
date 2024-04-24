@@ -16,11 +16,9 @@ MonoBehaviour:
     Name: Rabbit Hole
     LevelStartText:
       Lines:
-      - "Alice was beginning to get very tired\u2026"
-      - "\u2026when suddenly, a White Rabbit ran by her."
-      - "\u201COh dear! Oh dear! I shall be late!\u201D said the Rabbit."
-      - Burning with curiosity, Alice followed, to a rabbit-hole under the hedge.
-      - "\u2026never once considering how to get out again\u2026"
+      - "\u201COh dear! Oh dear! I shall be late!\u201D "
+      - The White Rabbit. The hole under the hedge.
+      - ...the curious way it begins.
     LevelBackgroundText:
       Lines: []
     LevelWinText:

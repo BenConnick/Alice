@@ -50,6 +50,11 @@ public class MainUIController : MonoBehaviour
     public void OnLevelButtonPressed(int levelIndex)
     {
         Debug.Log($"Level button {levelIndex} pressed");
+        if (GameplayManager.IsLevelLocked(levelIndex))
+        {
+            ShowToast("LOCKED");
+            return;
+        }
         GameplayManager.ChangeSelectedLevel(MasterConfig.Values.LevelConfigs[levelIndex].LevelType);
         GameplayManager.Fire(GlobalGameEvent.LevelSelectionConfirmed);
     }

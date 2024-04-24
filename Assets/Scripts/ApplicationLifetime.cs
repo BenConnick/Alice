@@ -52,9 +52,13 @@ public static partial class ApplicationLifetime
         // load
         _playerData = new SerializablePlayerData();
         _playerData.TryLoadFromDisk();
+        
 #if UNITY_EDITOR
         DebugOnPostInitialize();
 #endif
+
+        _playerData.LastSelectedLevel.Set(_playerData.LastUnlockedLevel.Value);
+
         GameplayManager.Fire(GlobalGameEvent.BootLoadFinished);
     }
 
@@ -84,7 +88,7 @@ public static partial class ApplicationLifetime
         AppMode appMode = Modes.Get<T>();
         if (appMode == CurrentMode)
         {
-            Debug.LogError($"Current mode and next mode ({appMode.GetType()}) {appMode} are the same");
+            Debug.LogWarning($"Current mode and next mode are the same: ({appMode.GetType()}) {appMode}");
         }
         Modes.ChangeState(appMode);
         Debug.Log($"Game state changed to '{CurrentMode.Name}'");

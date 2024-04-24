@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CheshireDoorsSet
   m_EditorClassIdentifier: 
   Chunks:
-  - {fileID: 8465607651784711365, guid: 96a0e4e368a2c478e86962ad0954794f, type: 3}
+  - {fileID: 8465607651784711365, guid: ddfaf5dd9a3ff42faaaabc39c3fb9af9, type: 3}

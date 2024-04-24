@@ -6,7 +6,7 @@ public class TitleMenuMode : AppMode
 
     public override void OnEnter()
     {
-        
+        World.Get<MenuGraphics>().ShowStageArt(GameplayManager.SelectedLevel);
     }
 
     public override void Tick(float dt)

@@ -58,7 +58,7 @@ public class FallingGameInstance
     private ChunkSpawner chunkSpawner;
     private float chunkCursor;
     private AnimationMode mode;
-    private float multipurposeTimer;
+    private float titleAnimationTimer;
     private float titleAnimationSpeed = 1f;
     private LevelConfig levelConfig;
     private Transform rabbitHoleObject => gameplayObjects.ObstacleContext.transform;
@@ -92,21 +92,19 @@ public class FallingGameInstance
         // register
         if (!All.Contains(this)) All.Add(this);
         
-        // initialize values
-        if (levelConfig == default)
-        {
-            levelConfig = MasterConfig.Values.LevelConfigs[0]; // initial level
-        }
+        // initialize starting values
         mode = AnimationMode.Title; // first load
         initialHeight = rabbitHoleObject.localPosition.y;
         Time.timeScale = 1f;
-        multipurposeTimer = titleAnimationDuration;
+        titleAnimationTimer = titleAnimationDuration;
         
         Reset();
     }
 
     public void Reset()
     {
+        levelConfig = GameplayManager.GetCurrentLevelConfig();
+        
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
 
         VpLives = ApplicationLifetime.MAX_LIVES;
@@ -117,6 +115,9 @@ public class FallingGameInstance
 
         // reset level height
         rabbitHoleObject.localPosition = new Vector3(rabbitHoleObject.localPosition.x, initialHeight, rabbitHoleObject.localPosition.z);
+        
+        // reset title time?
+        titleAnimationTimer = titleAnimationDuration;
 
         // clean up game objects
         RemoveAllChunks();
@@ -141,7 +142,7 @@ public class FallingGameInstance
     {
         World.Get<MainUIController>().SetGameViewVisible();
         World.Get<AliceCharacter>().ActivateGameplayMode();
-        TimeDistortionController.SetBaselineSpeed(Current.Config.TimeScaleMultiplier);
+        TimeDistortionController.SetBaselineSpeed(Config.TimeScaleMultiplier);
         Reset();
         PlayIntroAnimationForCurrentLevel();
     }
@@ -242,13 +243,13 @@ public class FallingGameInstance
 
     private void UpdateTitleAnim()
     {
-        multipurposeTimer -= Time.deltaTime * titleAnimationSpeed;
+        titleAnimationTimer -= Time.deltaTime * titleAnimationSpeed;
         Vector3 camRootPos = Vector3.zero;
-        float t = (titleAnimationDuration - multipurposeTimer) / titleAnimationDuration;
+        float t = (titleAnimationDuration - titleAnimationTimer) / titleAnimationDuration;
         float newY = Mathf.Lerp(camRootPos.y + titleAnimationDistance, camRootPos.y, titleAnimationCurve.Evaluate(t));
         Transform cameraTransform = Viewport.GameplayCamera.transform;
         cameraTransform.localPosition = new Vector3(camRootPos.x, newY, camRootPos.z);
-        if (multipurposeTimer <= 0)
+        if (titleAnimationTimer <= 0)
         {
             OnTitleAnimComplete();
         }
