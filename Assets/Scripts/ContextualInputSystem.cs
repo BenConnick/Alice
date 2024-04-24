@@ -23,6 +23,11 @@ public static class ContextualInputSystem
 
     public static void Update()
     {
+        if (ReferenceEquals(ActiveGameInstance, null) && FallingGameInstance.All.Count > 0)
+        {
+            ActiveGameInstance = FallingGameInstance.All[0];
+        }
+        
         if (Input.GetMouseButtonUp(0))
         {
             ApplicationLifetime.CurrentMode.HandleInput(InputType.MouseUp);
