@@ -23,15 +23,16 @@ public static class GameplayManager
 
     public static LevelConfig GetLevelConfig(LevelType levelType)
     {
-        int levelIndex = ToLevelIndex(levelType);
+        int levelIndex = ToLevelIndexSlow(levelType);
         if (levelIndex < 0)
         {
-            return default;
+            const int MissingLevelIndex = 7;
+            return MasterConfig.Values.LevelConfigs[MissingLevelIndex];
         }
         return MasterConfig.Values.LevelConfigs[levelIndex];
     }
 
-    public static int ToLevelIndex(LevelType levelType)
+    public static int ToLevelIndexSlow(LevelType levelType)
     {
         for (int i = 0; i < MasterConfig.Values.LevelConfigs.Length; i++)
         {
