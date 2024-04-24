@@ -113,6 +113,8 @@ public class FallingGameInstance
 
         chunkCursor = -LevelChunk.height;
 
+        totalFallDistance = 0;
+
         // reset level height
         rabbitHoleObject.localPosition = new Vector3(rabbitHoleObject.localPosition.x, initialHeight, rabbitHoleObject.localPosition.z);
 
