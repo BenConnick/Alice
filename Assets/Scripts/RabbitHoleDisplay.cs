@@ -10,7 +10,7 @@ public class RabbitHoleDisplay : MonoBehaviour
     public Camera GameplayCamera => GameplayGroup.GameplayCam;
     public RabbitHole ObstacleContext => GameplayGroup.ObstacleContext;
     public RenderTexture AssociatedTexture => GameplayCamera != null ? GameplayCamera.targetTexture : null;
-    public GameObject Overlay => GameplayGroup.UIOverlay.gameObject;
+    public RabbitHoleHUD Overlay => GameplayGroup.UIOverlay;
     public RenderTexture DefaultRT;
 
     [Header("UI")]
