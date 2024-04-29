@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AliceCharacterMovement : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class AliceCharacterMovement : MonoBehaviour
     public float flipAnimationSpeed = 20;
     public float laneChangeSpeed = 2;
     public float invincibilityTime = 2f;
-    public float rotationSpeed;
+    public float rotationSpeed; 
+    public float maxInstantMovePerSecond = 15f;
 
     private float angle;
 
@@ -37,8 +39,7 @@ public class AliceCharacterMovement : MonoBehaviour
             // position
             if (!IsHijacked)
             {
-                const float MaxInstantMovePerSecond = 15f;
-                float maxInstantMove = MaxInstantMovePerSecond * Time.deltaTime;
+                float maxInstantMove = maxInstantMovePerSecond * Time.deltaTime;
                 Vector3 prevPos = transform.position;
                 Vector3 toVec = ContextualInputSystem.ViewWorldCursorPos - prevPos;
                 if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
