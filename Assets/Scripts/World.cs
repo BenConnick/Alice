@@ -16,8 +16,10 @@ public static class World
     public static T Get<T>() where T : MonoBehaviour
     {
         // cached
-        if (gameplayComponentsCache.ContainsKey(typeof(T)))
-            return (T)gameplayComponentsCache[typeof(T)];
+        if (gameplayComponentsCache.TryGetValue(typeof(T), out MonoBehaviour cached))
+        {
+            return (T)cached;
+        }
 
         // search GM helper first (slow)
         T found = null;
