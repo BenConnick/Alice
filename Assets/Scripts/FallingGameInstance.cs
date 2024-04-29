@@ -187,13 +187,13 @@ public class FallingGameInstance
 
             // check collisions
             bool hasFocus = player.gameContext == this;
+            bool invincible = player.IsFlashing() || player.IsHijacked;
             if (hasFocus)
             {
                 collisionBuffer.Clear();
                 foreach (var obstacle in activeObstacles)
                 {
                     bool ignoresInvincibility = obstacle.HasTag(LevelCollider.Tag_MoneyOnHit);
-                    bool invincible = player.IsFlashing();
                     if (ignoresInvincibility || !invincible)
                     {
                         if (player.CheckOverlap(obstacle))
@@ -283,7 +283,7 @@ public class FallingGameInstance
         {
             World.Get<AliceCharacter>().IsHijacked = true;
             float t = (rabbitHoleObject.localPosition.y - outroStartHeight) / outroAnimationDistance;
-            Vector3 characterTargetRestingPos = new Vector3(rabbitHoleObject.position.x, -2, 0);
+            Vector3 characterTargetRestingPos = new Vector3(rabbitHoleObject.position.x, -LevelChunk.height, 0);
             Transform aliceTransform = player.transform;
             aliceTransform.position = Vector3.Lerp(aliceTransform.position, characterTargetRestingPos, t);
         }
@@ -337,7 +337,7 @@ public class FallingGameInstance
 
     private void OnIntroComplete()
     {
-        Viewport.Overlay?.SetActive(true);
+        Viewport.Overlay?.gameObject?.SetActive(true);
         mode = AnimationMode.Interactive;
     }
     
@@ -345,16 +345,18 @@ public class FallingGameInstance
     {
         outroStartHeight = rabbitHoleObject.localPosition.y;
         mode = AnimationMode.Outro;
+        
+        // OBSOLETE
         //OwnerLink?.Overlay?.SetActive(false);
-        menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - outroAnimationDistance, 0);
-        menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value+1);
+        //menuGraphics.transform.localPosition = new Vector3(0, -outroStartHeight - outroAnimationDistance, 0);
+        //menuGraphics.ShowStageArt(ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value+1);
     }
 
     private void OnOutroComplete()
     {
         World.Get<AliceCharacter>().IsHijacked = false;
 
-        Viewport.Overlay?.SetActive(false);
+        Viewport.Overlay?.gameObject?.SetActive(false);
         mode = AnimationMode.Default;
 
         // move the menu graphics to the new player position so that the player cannot tell that the height is back to zero

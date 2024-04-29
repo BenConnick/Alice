@@ -91,7 +91,7 @@ MonoBehaviour:
     titleAnimationDistance: 22
     titleAnimationDuration: 4
     introAnimationDistance: 12
-    outroAnimationDistance: 30
+    outroAnimationDistance: 5
     introAnimationSpeed: 1.5
     titleAnimationCurve:
       serializedVersion: 2
