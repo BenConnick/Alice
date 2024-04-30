@@ -1,6 +1,6 @@
 public class GameResultsMenuMode : AppMode
 {
-    public GameResultsMenuMode(StateMachine<AppMode> owner) : base()
+    public GameResultsMenuMode() : base()
     {
     }
 

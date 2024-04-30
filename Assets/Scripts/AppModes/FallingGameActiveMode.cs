@@ -1,15 +1,12 @@
 public class FallingGameActiveMode : AppMode
 {
-    private FallingGameInstance gameInstance;
-
     public FallingGameActiveMode() : base()
     {
     }
 
     public override void OnEnter()
-    { 
-        gameInstance = FallingGameInstance.All[0]; // expecting one instance, list of instances is legacy structure
-        gameInstance.OnShow();
+    {
+        FallingGameInstance.Current.OnShow();
     }
 
     public override void Tick(float dt)
@@ -19,17 +16,18 @@ public class FallingGameActiveMode : AppMode
 
     public override void OnExit()
     {
-        gameInstance.OnHide();
+        FallingGameInstance.Current.OnHide();
     }
 
     public override string Name => "Gameplay";
     public override bool HandleInput(ContextualInputSystem.InputType inputType)
     {
+        FallingGameInstance.Current.HandlePlayerInput(inputType);
         return true;
     }
 
     public override bool HandleGameEvent(GlobalGameEvent gameEvent)
     {
-        return gameInstance.HandleGlobalEvent(gameEvent);
+        return FallingGameInstance.Current.HandleGlobalEvent(gameEvent);
     }
 }

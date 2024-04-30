@@ -23,7 +23,7 @@ public static partial class ApplicationLifetime
 
     #region gamestate
     // Game State
-    public static bool IsGameplayPaused => !(CurrentMode is FallingGameActiveMode);
+    public static bool IsGameplayPaused => (!(CurrentMode is FallingGameActiveMode) || FallingGameInstance.Current.IsPaused);
     public static AppMode CurrentMode => (AppMode)Modes.CurrentState;
     public static int CurrentScore { get; set; }
     public static readonly List<int> PlayerHighScores = new List<int>();

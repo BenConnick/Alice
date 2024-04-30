@@ -71,7 +71,8 @@ public class FallingGameInstance
         // no player control
         Intro,
         Outro, 
-        Title
+        Title,
+        GameOver,
     }
 
     private LevelChunk[] chunkPrefabs => levelConfig.ChunkSet.Chunks;
@@ -79,6 +80,8 @@ public class FallingGameInstance
     // per instance values TODO rename
     public int VpLives { get; set; }
     public int VpScore { get; set; }
+
+    public bool IsPaused { get; set; }
 
     public FallingGameInstance(RabbitHoleGroup gameplayObjects, RabbitHoleDisplay viewport)
     {
@@ -129,6 +132,8 @@ public class FallingGameInstance
         {
             case GlobalGameEvent.AllLivesLost:
                 UIOverlay.GameOverOverlay.SetActive(true);
+                mode = AnimationMode.GameOver;
+                IsPaused = true;
                 break;
             case GlobalGameEvent.PlatformerLevelEndReached:
                 PlayOutroAnimation();
@@ -144,6 +149,7 @@ public class FallingGameInstance
         World.Get<AliceCharacter>().ActivateGameplayMode();
         TimeDistortionController.SetBaselineSpeed(Config.TimeScaleMultiplier);
         Reset();
+        IsPaused = false;
         PlayIntroAnimationForCurrentLevel();
     }
 
@@ -169,76 +175,104 @@ public class FallingGameInstance
     // runs every tick
     public void Tick()
     {
+        if (IsPaused)
+        {
+            PausedTick();
+            return;
+        }
+        
+        // position update logic - animations focus-independent
+        UpdateLevelPosition();
+        bool hasFocus = World.Get<AliceCharacter>().gameContext == this;
+        if (hasFocus) ForegroundUpdate();
+        else BackgroundUpdate();
+    }
+
+    private void PausedTick()
+    {
+        
+    }
+
+    private void UpdateLevelPosition()
+    {
         if (mode == AnimationMode.Title) UpdateTitleAnim();
         else if (mode == AnimationMode.Intro) UpdateIntroAnim();
         else if (mode == AnimationMode.Outro) UpdateOutroAnim();
-        else if (mode == AnimationMode.Interactive) UpdateInteractive();
-
-        if (!ApplicationLifetime.IsGameplayPaused)
+        else if (mode == AnimationMode.Interactive)
         {
-            var player = World.Get<AliceCharacter>();
-
-            // update active obstacles
-            for (int i = activeObstacles.Count-1; i >= 0; i--)
-            {
-                if (activeObstacles[i] == null)
-                    activeObstacles.RemoveAt(i);
-            }
-
-            // check collisions
-            bool hasFocus = player.gameContext == this;
-            bool invincible = player.IsFlashing() || player.IsHijacked;
-            if (hasFocus)
-            {
-                collisionBuffer.Clear();
-                foreach (var obstacle in activeObstacles)
-                {
-                    bool ignoresInvincibility = obstacle.HasTag(LevelCollider.Tag_MoneyOnHit);
-                    if (ignoresInvincibility || !invincible)
-                    {
-                        if (player.CheckOverlap(obstacle))
-                        {
-                            collisionBuffer.Add(obstacle);
-                        }
-                    }
-                }
-                foreach (LevelCollider hit in collisionBuffer)
-                {
-                    player.HandleObstacleCollision(hit);
-                }
-            }
-
-            // spawn new obstacles
-            // PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
-            if (initialHeight - rabbitHoleObject.localPosition.y < chunkCursor + 6
-                // stop spawning chunks before the level end
-                && totalFallDistance < levelConfig.FallLength - LevelChunk.height * 2)
-            {
-                var newChunkPrefab = chunkSpawner.Force();
-                LevelChunk newChunk = Object.Instantiate(newChunkPrefab, rabbitHoleObject);
-                chunkCursor -= Mathf.Sign(fallSpeed) * LevelChunk.height;
-                newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
-                activeChunks.Add(newChunk);
-                activeObstacles.AddRange(newChunk.Obstacles);
-
-                const int maxChunks = 3;
-                if (activeChunks.Count > maxChunks)
-                {
-                    var oldest = activeChunks[0];
-                    activeChunks.RemoveAt(0);
-                    Object.Destroy(oldest.gameObject);
-                }
-            }
-
-            // check game over condition
-            if (hasFocus && mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
-            {
-                GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
-            }
-
-            // debug
-            UpdateDebug();
+            Vector3 rabbitHolePos = rabbitHoleObject.localPosition;
+            Vector3 newPos = rabbitHolePos + new Vector3(0, Time.deltaTime * fallSpeed, 0);
+            rabbitHoleObject.localPosition = newPos;
+            totalFallDistance = newPos.y - initialHeight;
         }
+    }
+
+    private void ForegroundUpdate()
+    {
+        // update active obstacles
+        for (int i = activeObstacles.Count-1; i >= 0; i--)
+        {
+            if (activeObstacles[i] == null)
+                activeObstacles.RemoveAt(i);
+        }
+        
+        // check collisions
+        var player = World.Get<AliceCharacter>();
+        bool invincible = player.IsFlashing() || player.IsHijacked;
+        collisionBuffer.Clear();
+        foreach (var obstacle in activeObstacles)
+        {
+            bool ignoresInvincibility = obstacle.HasTag(LevelCollider.Tag_MoneyOnHit);
+            if (ignoresInvincibility || !invincible)
+            {
+                if (player.CheckOverlap(obstacle))
+                {
+                    collisionBuffer.Add(obstacle);
+                }
+            }
+        }
+
+        foreach (LevelCollider hit in collisionBuffer)
+        {
+            player.HandleObstacleCollision(hit);
+        }
+
+
+        // spawn new obstacles
+        // PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
+        if (initialHeight - rabbitHoleObject.localPosition.y < chunkCursor + 6
+            // stop spawning chunks before the level end
+            && totalFallDistance < levelConfig.FallLength - LevelChunk.height * 2)
+        {
+            var newChunkPrefab = chunkSpawner.Force();
+            LevelChunk newChunk = Object.Instantiate(newChunkPrefab, rabbitHoleObject);
+            chunkCursor -= Mathf.Sign(fallSpeed) * LevelChunk.height;
+            newChunk.transform.localPosition = new Vector3(0, chunkCursor - initialHeight, 0);
+            activeChunks.Add(newChunk);
+            activeObstacles.AddRange(newChunk.Obstacles);
+
+            const int maxChunks = 3;
+            if (activeChunks.Count > maxChunks)
+            {
+                var oldest = activeChunks[0];
+                activeChunks.RemoveAt(0);
+                Object.Destroy(oldest.gameObject);
+            }
+        }
+
+        // check game over condition
+        if (mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
+        {
+            GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
+        }
+
+        // debug
+        UpdateDebug();
+    }
+
+    private void BackgroundUpdate()
+    {
+        // unused
     }
 
     private void UpdateTitleAnim()
@@ -299,15 +333,6 @@ public class FallingGameInstance
         }
     }
 
-    private void UpdateInteractive()
-    {
-        if (!ApplicationLifetime.IsGameplayPaused)
-        {
-            rabbitHoleObject.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
-            totalFallDistance = rabbitHoleObject.localPosition.y - initialHeight;
-        }
-    }
-
     private void UpdateDebug()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -319,6 +344,17 @@ public class FallingGameInstance
         {
             // grow
             World.Get<AliceCharacter>().GetComponent<ShrinkBehavior>().OnGrow();
+        }
+    }
+
+    public void HandlePlayerInput(ContextualInputSystem.InputType inputType)
+    {
+        if (inputType == ContextualInputSystem.InputType.MouseUp)
+        {
+            if (mode == AnimationMode.GameOver)
+            {
+                GameplayManager.Fire(GlobalGameEvent.GameResultsClosed);
+            }
         }
     }
 
