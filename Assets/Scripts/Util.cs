@@ -288,6 +288,11 @@ public static class Util
         t.localPosition = new Vector3(t.localPosition.x, y, t.localPosition.z);
     }
 
+    public static bool Approximately(Vector3 a, Vector3 b)
+    {
+        return Vector3.SqrMagnitude(a-b) < .001f;
+    }
+
 #if UNITY_EDITOR
     [UnityEditor.MenuItem("Tools/Refresh Collider")]
     public static void RefreshCollider()

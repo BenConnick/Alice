@@ -17,7 +17,7 @@ MonoBehaviour:
     BaseFallAcceleration: 0.01
     LevelConfigs:
     - LevelType: 1
-      FallLength: 100
+      FallLength: 50
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
@@ -26,7 +26,7 @@ MonoBehaviour:
       BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
         type: 3}
     - LevelType: 2
-      FallLength: 100
+      FallLength: 50
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
       BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
         type: 3}
     - LevelType: 3
-      FallLength: 100
+      FallLength: 50
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1
@@ -68,10 +68,10 @@ MonoBehaviour:
       FallAccelerationMultiplier: 1
       ChunkSet: {fileID: 11400000, guid: 19ed1f4b190f94231b506dec4fe771fe, type: 2}
       LevelText: {fileID: 11400000, guid: ef2e56f71bee24f65a4f63f4e728856d, type: 2}
-      BackgroundSprite: {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6,
+      BackgroundSprite: {fileID: 21300000, guid: 24ece80dcdfbc4a2aa2175a5078e44e0,
         type: 3}
     - LevelType: 7
-      FallLength: 100
+      FallLength: 50
       TimeScaleMultiplier: 1
       FallSpeedMultiplier: 1
       FallAccelerationMultiplier: 1

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6360734537605309339}
   - component: {fileID: 3575476460403748650}
   - component: {fileID: 4082777782692676419}
-  - component: {fileID: 96609866961934654}
+  - component: {fileID: 4011915651718177037}
   m_Layer: 0
   m_Name: shroomsheet_4 (2)
   m_TagString: Untagged
@@ -72,7 +72,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e7bac63bf791e4bee8cdfbcd3a6820b1, type: 3}
+  m_Sprite: {fileID: 6227759415691998657, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,9 +96,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 96609866961934654}
+  Collider: {fileID: 4011915651718177037}
   Tags: 1
---- !u!60 &96609866961934654
+--- !u!60 &4011915651718177037
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,7 +115,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5257143, y: 0.4457143}
+    oldSize: {x: 0.37714285, y: 0.35428572}
     newSize: {x: 0.49142858, y: 0.60571426}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -122,17 +123,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.26285714, y: -0.017142856}
-      - {x: 0.26285714, y: 0.074285716}
-      - {x: 0.14857143, y: 0.21142857}
-      - {x: -0.034285713, y: 0.21142857}
-      - {x: -0.25142857, y: 0.017142856}
-      - {x: -0.25142857, y: -0.108571425}
-      - {x: -0.16, y: -0.22285715}
-      - {x: -0.057142857, y: -0.22285715}
-      - {x: -0.045714285, y: -0.21142857}
-      - {x: 0.045714285, y: -0.05142857}
-      - {x: 0.25142857, y: -0.04}
+    - - {x: -0.18857142, y: 0.17714286}
+      - {x: -0.18857142, y: -0.05142857}
+      - {x: -0.16571428, y: -0.14285713}
+      - {x: -0.13142857, y: -0.17714286}
+      - {x: 0.04, y: -0.17714286}
+      - {x: 0.18857142, y: -0.04}
+      - {x: 0.18857142, y: 0.13142857}
+      - {x: 0.17714286, y: 0.17714286}
+    - - {x: -0.18857142, y: -0.108571425}
+      - {x: -0.15428571, y: -0.09714285}
+      - {x: -0.15428571, y: -0.05142857}
+      - {x: -0.17714286, y: -0.028571429}
+      - {x: -0.18857142, y: -0.028571429}
 --- !u!1 &2155833284678131054
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +147,7 @@ GameObject:
   - component: {fileID: 5563649879593562427}
   - component: {fileID: 4758241727888687590}
   - component: {fileID: 6486329423114410153}
-  - component: {fileID: 5433830435466624519}
+  - component: {fileID: 2329968994560485074}
   m_Layer: 0
   m_Name: shroomsheet_4 (4)
   m_TagString: Untagged
@@ -205,7 +208,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e7bac63bf791e4bee8cdfbcd3a6820b1, type: 3}
+  m_Sprite: {fileID: 6227759415691998657, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -228,9 +232,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 5433830435466624519}
+  Collider: {fileID: 2329968994560485074}
   Tags: 1
---- !u!60 &5433830435466624519
+--- !u!60 &2329968994560485074
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,7 +251,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5257143, y: 0.4457143}
+    oldSize: {x: 0.37714285, y: 0.35428572}
     newSize: {x: 0.49142858, y: 0.60571426}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -255,17 +259,19 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.26285714, y: -0.017142856}
-      - {x: 0.26285714, y: 0.074285716}
-      - {x: 0.14857143, y: 0.21142857}
-      - {x: -0.034285713, y: 0.21142857}
-      - {x: -0.25142857, y: 0.017142856}
-      - {x: -0.25142857, y: -0.108571425}
-      - {x: -0.16, y: -0.22285715}
-      - {x: -0.057142857, y: -0.22285715}
-      - {x: -0.045714285, y: -0.21142857}
-      - {x: 0.045714285, y: -0.05142857}
-      - {x: 0.25142857, y: -0.04}
+    - - {x: -0.18857142, y: 0.17714286}
+      - {x: -0.18857142, y: -0.05142857}
+      - {x: -0.16571428, y: -0.14285713}
+      - {x: -0.13142857, y: -0.17714286}
+      - {x: 0.04, y: -0.17714286}
+      - {x: 0.18857142, y: -0.04}
+      - {x: 0.18857142, y: 0.13142857}
+      - {x: 0.17714286, y: 0.17714286}
+    - - {x: -0.18857142, y: -0.108571425}
+      - {x: -0.15428571, y: -0.09714285}
+      - {x: -0.15428571, y: -0.05142857}
+      - {x: -0.17714286, y: -0.028571429}
+      - {x: -0.18857142, y: -0.028571429}
 --- !u!1 &2794051975027142759
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +283,7 @@ GameObject:
   - component: {fileID: 6887118238634903010}
   - component: {fileID: 9122667921554490904}
   - component: {fileID: 1450979518806709557}
-  - component: {fileID: 5775240343696153204}
+  - component: {fileID: 3152360245488495919}
   m_Layer: 0
   m_Name: Shroom (2)
   m_TagString: Untagged
@@ -338,7 +344,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bd00144312d894396935a1388b37f5dd, type: 3}
+  m_Sprite: {fileID: -4156199956192256261, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -361,9 +368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 5775240343696153204}
+  Collider: {fileID: 3152360245488495919}
   Tags: 1
---- !u!60 &5775240343696153204
+--- !u!60 &3152360245488495919
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -380,7 +387,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.0514286, y: 0.6857143}
+    oldSize: {x: 0.49142858, y: 0.60571426}
     newSize: {x: 0.62, y: 0.7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -388,30 +395,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.24, y: -0.34285715}
-      - {x: 0.33142856, y: -0.34285715}
-      - {x: 0.5257143, y: -0.16}
-      - {x: 0.5257143, y: 0.16}
-      - {x: 0.36571428, y: 0.34285715}
-      - {x: 0.26285714, y: 0.34285715}
-      - {x: 0.12571429, y: 0.28571427}
-      - {x: -0.011428571, y: 0.32}
-      - {x: -0.16, y: 0.045714285}
-      - {x: -0.22857143, y: 0.29714286}
-      - {x: -0.29714286, y: 0.33142856}
-      - {x: -0.4457143, y: 0.022857143}
-      - {x: -0.5257143, y: -0.022857143}
-      - {x: -0.5257143, y: -0.12571429}
-      - {x: -0.50285715, y: -0.14857143}
-      - {x: -0.29714286, y: -0.34285715}
-      - {x: -0.1942857, y: -0.34285715}
-      - {x: -0.14857143, y: -0.17142858}
-      - {x: 0.18285714, y: -0.17142858}
-      - {x: 0.18285714, y: -0.32}
-    - - {x: 0.011428571, y: 0.034285713}
-      - {x: 0, y: 0}
-      - {x: -0.011428571, y: -0.011428571}
-      - {x: 0, y: -0.011428571}
+    - - {x: 0.14285713, y: 0.30285713}
+      - {x: -0.18857142, y: 0.30285713}
+      - {x: -0.24571428, y: 0.24571428}
+      - {x: -0.24571428, y: -0.074285716}
+      - {x: -0.22285715, y: -0.30285713}
+      - {x: 0.2, y: -0.30285713}
+      - {x: 0.24571428, y: -0.12}
+      - {x: 0.24571428, y: 0.26857144}
+      - {x: 0.23428571, y: 0.28}
 --- !u!1 &5108860317182252404
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +415,7 @@ GameObject:
   - component: {fileID: 7395251092066523909}
   - component: {fileID: 5469877664441795517}
   - component: {fileID: 233301558345423158}
-  - component: {fileID: 969454535433487624}
+  - component: {fileID: 8613287848950556348}
   m_Layer: 0
   m_Name: shroomsheet_6 (2)
   m_TagString: Untagged
@@ -484,7 +476,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 046f802a77bd34ed7bda02683f942364, type: 3}
+  m_Sprite: {fileID: -8633203281069561234, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -507,9 +500,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 969454535433487624}
+  Collider: {fileID: 8613287848950556348}
   Tags: 1
---- !u!60 &969454535433487624
+--- !u!60 &8613287848950556348
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -526,7 +519,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2228571, y: 1.68}
+    oldSize: {x: 0.8, y: 0.98285717}
     newSize: {x: 0.69714284, y: 0.9942857}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -534,36 +527,25 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.16571428, y: -0.45142856}
-      - {x: 0.3257143, y: -0.41714284}
-      - {x: 0.44, y: -0.68}
-      - {x: 0.57714283, y: -0.70285714}
-      - {x: 0.5885714, y: -0.6457143}
-      - {x: 0.5885714, y: -0.3942857}
-      - {x: 0.52, y: -0.14285713}
-      - {x: 0.49714285, y: -0.074285716}
-      - {x: 0.47428572, y: -0.04}
-      - {x: 0.3942857, y: 0.108571425}
-      - {x: 0.33714285, y: 0.26857144}
-      - {x: -0.108571425, y: 0.14285713}
-      - {x: -0.15428571, y: 0.25714284}
-      - {x: -0.14285713, y: 0.59999996}
-      - {x: -0.26857144, y: 0.7828571}
-      - {x: -0.34857142, y: 0.81714284}
-      - {x: -0.41714284, y: 0.84}
-      - {x: -0.52, y: 0.84}
-      - {x: -0.59999996, y: 0.7828571}
-      - {x: -0.59999996, y: 0.6342857}
-      - {x: -0.42857143, y: 0.38285714}
-      - {x: -0.30285713, y: -0.074285716}
-      - {x: -0.34857142, y: -0.59999996}
-      - {x: -0.31428573, y: -0.81714284}
-      - {x: -0.28, y: -0.84}
-      - {x: -0.21142857, y: -0.84}
-      - {x: -0.16571428, y: -0.82857144}
-      - {x: -0.18857142, y: -0.6342857}
-      - {x: -0.108571425, y: -0.57714283}
-      - {x: -0.09714285, y: -0.47428572}
+    - - {x: 0.29714286, y: 0.045714285}
+      - {x: 0.37714285, y: 0.045714285}
+      - {x: 0.4, y: 0.10285714}
+      - {x: 0.4, y: 0.2742857}
+      - {x: 0.32, y: 0.33142856}
+      - {x: 0.09142857, y: 0.49142855}
+      - {x: -0.114285715, y: 0.49142855}
+      - {x: -0.33142856, y: 0.35428572}
+      - {x: -0.4, y: 0.26285714}
+      - {x: -0.4, y: 0.09142857}
+      - {x: -0.36571428, y: 0.045714285}
+      - {x: -0.12571429, y: 0.057142857}
+      - {x: -0.1942857, y: -0.13714285}
+      - {x: -0.29714286, y: -0.46857142}
+      - {x: -0.26285714, y: -0.49142855}
+      - {x: 0.1942857, y: -0.49142855}
+      - {x: 0.35428572, y: -0.4457143}
+      - {x: 0.4, y: -0.21714285}
+      - {x: 0.4, y: 0}
 --- !u!111 &8004346900632719175
 Animation:
   m_ObjectHideFlags: 0
@@ -591,7 +573,7 @@ GameObject:
   - component: {fileID: 5745138639385985939}
   - component: {fileID: 3944213580762137974}
   - component: {fileID: 8045030446591411498}
-  - component: {fileID: 5321236704631880404}
+  - component: {fileID: 7090580867147235405}
   m_Layer: 0
   m_Name: Shroom
   m_TagString: Untagged
@@ -652,7 +634,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bd00144312d894396935a1388b37f5dd, type: 3}
+  m_Sprite: {fileID: -4156199956192256261, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -675,9 +658,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 5321236704631880404}
+  Collider: {fileID: 7090580867147235405}
   Tags: 1
---- !u!60 &5321236704631880404
+--- !u!60 &7090580867147235405
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -694,7 +677,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.0514286, y: 0.6857143}
+    oldSize: {x: 0.49142858, y: 0.60571426}
     newSize: {x: 0.62, y: 0.7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -702,30 +685,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.24, y: -0.34285715}
-      - {x: 0.33142856, y: -0.34285715}
-      - {x: 0.5257143, y: -0.16}
-      - {x: 0.5257143, y: 0.16}
-      - {x: 0.36571428, y: 0.34285715}
-      - {x: 0.26285714, y: 0.34285715}
-      - {x: 0.12571429, y: 0.28571427}
-      - {x: -0.011428571, y: 0.32}
-      - {x: -0.16, y: 0.045714285}
-      - {x: -0.22857143, y: 0.29714286}
-      - {x: -0.29714286, y: 0.33142856}
-      - {x: -0.4457143, y: 0.022857143}
-      - {x: -0.5257143, y: -0.022857143}
-      - {x: -0.5257143, y: -0.12571429}
-      - {x: -0.50285715, y: -0.14857143}
-      - {x: -0.29714286, y: -0.34285715}
-      - {x: -0.1942857, y: -0.34285715}
-      - {x: -0.14857143, y: -0.17142858}
-      - {x: 0.18285714, y: -0.17142858}
-      - {x: 0.18285714, y: -0.32}
-    - - {x: 0.011428571, y: 0.034285713}
-      - {x: 0, y: 0}
-      - {x: -0.011428571, y: -0.011428571}
-      - {x: 0, y: -0.011428571}
+    - - {x: 0.14285713, y: 0.30285713}
+      - {x: -0.18857142, y: 0.30285713}
+      - {x: -0.24571428, y: 0.24571428}
+      - {x: -0.24571428, y: -0.074285716}
+      - {x: -0.22285715, y: -0.30285713}
+      - {x: 0.2, y: -0.30285713}
+      - {x: 0.24571428, y: -0.12}
+      - {x: 0.24571428, y: 0.26857144}
+      - {x: 0.23428571, y: 0.28}
 --- !u!1 &6805087651905322926
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,7 +705,7 @@ GameObject:
   - component: {fileID: 2103101274171844756}
   - component: {fileID: 1097960062910966106}
   - component: {fileID: 6630063775580715072}
-  - component: {fileID: 429322307705074100}
+  - component: {fileID: 7818413415908729991}
   m_Layer: 0
   m_Name: shroomsheet_6
   m_TagString: Untagged
@@ -798,7 +766,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 046f802a77bd34ed7bda02683f942364, type: 3}
+  m_Sprite: {fileID: -8633203281069561234, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -821,9 +790,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 429322307705074100}
+  Collider: {fileID: 7818413415908729991}
   Tags: 1
---- !u!60 &429322307705074100
+--- !u!60 &7818413415908729991
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -840,7 +809,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2228571, y: 1.68}
+    oldSize: {x: 0.8, y: 0.98285717}
     newSize: {x: 0.69714284, y: 0.9942857}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -848,36 +817,25 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.16571428, y: -0.45142856}
-      - {x: 0.3257143, y: -0.41714284}
-      - {x: 0.44, y: -0.68}
-      - {x: 0.57714283, y: -0.70285714}
-      - {x: 0.5885714, y: -0.6457143}
-      - {x: 0.5885714, y: -0.3942857}
-      - {x: 0.52, y: -0.14285713}
-      - {x: 0.49714285, y: -0.074285716}
-      - {x: 0.47428572, y: -0.04}
-      - {x: 0.3942857, y: 0.108571425}
-      - {x: 0.33714285, y: 0.26857144}
-      - {x: -0.108571425, y: 0.14285713}
-      - {x: -0.15428571, y: 0.25714284}
-      - {x: -0.14285713, y: 0.59999996}
-      - {x: -0.26857144, y: 0.7828571}
-      - {x: -0.34857142, y: 0.81714284}
-      - {x: -0.41714284, y: 0.84}
-      - {x: -0.52, y: 0.84}
-      - {x: -0.59999996, y: 0.7828571}
-      - {x: -0.59999996, y: 0.6342857}
-      - {x: -0.42857143, y: 0.38285714}
-      - {x: -0.30285713, y: -0.074285716}
-      - {x: -0.34857142, y: -0.59999996}
-      - {x: -0.31428573, y: -0.81714284}
-      - {x: -0.28, y: -0.84}
-      - {x: -0.21142857, y: -0.84}
-      - {x: -0.16571428, y: -0.82857144}
-      - {x: -0.18857142, y: -0.6342857}
-      - {x: -0.108571425, y: -0.57714283}
-      - {x: -0.09714285, y: -0.47428572}
+    - - {x: 0.29714286, y: 0.045714285}
+      - {x: 0.37714285, y: 0.045714285}
+      - {x: 0.4, y: 0.10285714}
+      - {x: 0.4, y: 0.2742857}
+      - {x: 0.32, y: 0.33142856}
+      - {x: 0.09142857, y: 0.49142855}
+      - {x: -0.114285715, y: 0.49142855}
+      - {x: -0.33142856, y: 0.35428572}
+      - {x: -0.4, y: 0.26285714}
+      - {x: -0.4, y: 0.09142857}
+      - {x: -0.36571428, y: 0.045714285}
+      - {x: -0.12571429, y: 0.057142857}
+      - {x: -0.1942857, y: -0.13714285}
+      - {x: -0.29714286, y: -0.46857142}
+      - {x: -0.26285714, y: -0.49142855}
+      - {x: 0.1942857, y: -0.49142855}
+      - {x: 0.35428572, y: -0.4457143}
+      - {x: 0.4, y: -0.21714285}
+      - {x: 0.4, y: 0}
 --- !u!1 &7502112736971785943
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +847,7 @@ GameObject:
   - component: {fileID: 6893531450993481452}
   - component: {fileID: 5061868650796088598}
   - component: {fileID: 7553194353389309055}
-  - component: {fileID: 1565807911308148811}
+  - component: {fileID: 3505731520159601137}
   m_Layer: 0
   m_Name: shroomsheet_6 (3)
   m_TagString: Untagged
@@ -950,7 +908,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 046f802a77bd34ed7bda02683f942364, type: 3}
+  m_Sprite: {fileID: -8633203281069561234, guid: 71463cd4f55dd4f6d8eb58a13d271489,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -973,9 +932,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a7d2293af2540a1b527320ff1b6924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Collider: {fileID: 1565807911308148811}
+  Collider: {fileID: 3505731520159601137}
   Tags: 1
---- !u!60 &1565807911308148811
+--- !u!60 &3505731520159601137
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -992,7 +951,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2228571, y: 1.68}
+    oldSize: {x: 0.8, y: 0.98285717}
     newSize: {x: 0.69714284, y: 0.9942857}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1000,36 +959,25 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.16571428, y: -0.45142856}
-      - {x: 0.3257143, y: -0.41714284}
-      - {x: 0.44, y: -0.68}
-      - {x: 0.57714283, y: -0.70285714}
-      - {x: 0.5885714, y: -0.6457143}
-      - {x: 0.5885714, y: -0.3942857}
-      - {x: 0.52, y: -0.14285713}
-      - {x: 0.49714285, y: -0.074285716}
-      - {x: 0.47428572, y: -0.04}
-      - {x: 0.3942857, y: 0.108571425}
-      - {x: 0.33714285, y: 0.26857144}
-      - {x: -0.108571425, y: 0.14285713}
-      - {x: -0.15428571, y: 0.25714284}
-      - {x: -0.14285713, y: 0.59999996}
-      - {x: -0.26857144, y: 0.7828571}
-      - {x: -0.34857142, y: 0.81714284}
-      - {x: -0.41714284, y: 0.84}
-      - {x: -0.52, y: 0.84}
-      - {x: -0.59999996, y: 0.7828571}
-      - {x: -0.59999996, y: 0.6342857}
-      - {x: -0.42857143, y: 0.38285714}
-      - {x: -0.30285713, y: -0.074285716}
-      - {x: -0.34857142, y: -0.59999996}
-      - {x: -0.31428573, y: -0.81714284}
-      - {x: -0.28, y: -0.84}
-      - {x: -0.21142857, y: -0.84}
-      - {x: -0.16571428, y: -0.82857144}
-      - {x: -0.18857142, y: -0.6342857}
-      - {x: -0.108571425, y: -0.57714283}
-      - {x: -0.09714285, y: -0.47428572}
+    - - {x: 0.29714286, y: 0.045714285}
+      - {x: 0.37714285, y: 0.045714285}
+      - {x: 0.4, y: 0.10285714}
+      - {x: 0.4, y: 0.2742857}
+      - {x: 0.32, y: 0.33142856}
+      - {x: 0.09142857, y: 0.49142855}
+      - {x: -0.114285715, y: 0.49142855}
+      - {x: -0.33142856, y: 0.35428572}
+      - {x: -0.4, y: 0.26285714}
+      - {x: -0.4, y: 0.09142857}
+      - {x: -0.36571428, y: 0.045714285}
+      - {x: -0.12571429, y: 0.057142857}
+      - {x: -0.1942857, y: -0.13714285}
+      - {x: -0.29714286, y: -0.46857142}
+      - {x: -0.26285714, y: -0.49142855}
+      - {x: 0.1942857, y: -0.49142855}
+      - {x: 0.35428572, y: -0.4457143}
+      - {x: 0.4, y: -0.21714285}
+      - {x: 0.4, y: 0}
 --- !u!1001 &5434024249356610168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1125,7 +1073,7 @@ PrefabInstance:
     - target: {fileID: 8887799321153279635, guid: 724c00abeeaa246828d357b73e873062,
         type: 3}
       propertyPath: m_Name
-      value: LevelChunkC
+      value: ShroomLevelChunkC
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 724c00abeeaa246828d357b73e873062, type: 3}

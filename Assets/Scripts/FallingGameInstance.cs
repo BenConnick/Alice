@@ -41,8 +41,6 @@ public class FallingGameInstance
     public AnimationCurve titleAnimationCurve => MasterConfig.Values.titleAnimationCurve;
     public AnimationCurve introAnimationCurve => MasterConfig.Values.introAnimationCurve;
 
-    private Sprite[] perLevelBackgroundSprites => RabbitHole.perLevelBackgroundSprites;
-    
     #endregion
 
     // fields
@@ -106,6 +104,11 @@ public class FallingGameInstance
 
     public void Reset()
     {
+        if (mode != AnimationMode.Title)
+        {
+            mode = AnimationMode.Intro;
+        }
+        
         levelConfig = GameplayManager.GetCurrentLevelConfig();
         
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
@@ -118,6 +121,11 @@ public class FallingGameInstance
 
         // reset level height
         rabbitHoleObject.localPosition = new Vector3(rabbitHoleObject.localPosition.x, initialHeight, rabbitHoleObject.localPosition.z);
+        // var pixelAlign = rabbitHoleObject.GetComponent<PixelAlignmentBehavior>();
+        // if (pixelAlign != null)
+        // {
+        //     pixelAlign.ForceUpdate();
+        // }
         
         // reset title time?
         titleAnimationTimer = titleAnimationDuration;
@@ -373,7 +381,7 @@ public class FallingGameInstance
     private void PlayIntroAnim()
     {
         mode = AnimationMode.Intro;
-        SetBackgroundSpritesForLevel((int) ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value);
+        SetBackgroundSpritesForLevel();
     }
 
     private void OnIntroComplete()
@@ -424,17 +432,17 @@ public class FallingGameInstance
         return rabbitHoleObject.localPosition.y - (initialHeight + introAnimationDistance);
     }
 
-    private void SetBackgroundSpritesForLevel(int levelIndex)
+    private void SetBackgroundSpritesForLevel()
     {
-        if (perLevelBackgroundSprites.TryGet(levelIndex, out Sprite art)) {
-            foreach (var backgroundTile in BackgroundTiles)
-            {
-                backgroundTile.sprite = art;
-            }
-        }
-        else
+        var art = GameplayManager.GetCurrentLevelConfig()?.BackgroundSprite;
+        if (art == null)
         {
-            Debug.Log("failed to find background for level " + levelIndex);
+            Debug.Log("failed to find background for level " + GameplayManager.GetCurrentLevelConfig()?.LevelType);
+            art = RabbitHole.fallbackBackgroundSprite;
+        }
+        foreach (var backgroundTile in BackgroundTiles)
+        {
+            backgroundTile.sprite = art;
         }
     }
 

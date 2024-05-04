@@ -519,6 +519,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4551837825526320567, guid: 8dfee94415aa645beb4cafac525f7283,
+        type: 3}
+      propertyPath: m_text
+      value: CLICK ME
+      objectReference: {fileID: 0}
     - target: {fileID: 6559519577333774777, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
       propertyPath: m_Name
@@ -527,7 +532,7 @@ PrefabInstance:
     - target: {fileID: 6559519577333774777, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7463843284640947705, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
@@ -587,12 +592,12 @@ PrefabInstance:
     - target: {fileID: 7463843284640947705, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 7463843284640947705, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.97
+      value: -1.35
       objectReference: {fileID: 0}
     - target: {fileID: 7463843284640947705, guid: 8dfee94415aa645beb4cafac525f7283,
         type: 3}

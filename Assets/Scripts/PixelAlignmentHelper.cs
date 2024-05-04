@@ -48,9 +48,11 @@ public class PixelAlignmentHelper : MonoBehaviour
                 continue;
             }
             // set back to old position
-            //if (b.gameObject == GM.FindComp<CharacterController>().gameObject) Debug.Log(b.transform.position.y);
-            b.transform.position = b.PrevPos;
-            //if (b.gameObject == GM.FindComp<CharacterController>().gameObject) Debug.Log(b.transform.position.y);
+            bool wasMovedByAlignmentHelper = Util.Approximately(t.position, b.RoundedPos);
+            if (wasMovedByAlignmentHelper)
+            {
+                b.transform.position = b.PrevPos;
+            }
         }
     }
 }

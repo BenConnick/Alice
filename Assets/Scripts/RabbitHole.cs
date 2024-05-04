@@ -12,7 +12,7 @@ public class RabbitHole : MonoBehaviour
     [Header("Animation")] public float titleAnimationDistance;
     public MenuGraphics menuGraphics;
 
-    [Header("Assets")] [SerializeField] public Sprite[] perLevelBackgroundSprites;
+    [Header("Assets")] [SerializeField] public Sprite fallbackBackgroundSprite;
 
     // non-serialized fields
     public FallingGameInstance AssociatedGameInstance;

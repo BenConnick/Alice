@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: GardenOfSmokeSet
   m_EditorClassIdentifier: 
   Chunks:
-  - {fileID: 8465607651784711365, guid: 96a0e4e368a2c478e86962ad0954794f, type: 3}
+  - {fileID: 8465607651784711365, guid: c1415f9f124d5401b81ee3f8d8be2c30, type: 3}
+  - {fileID: 8465607651784711365, guid: e118938a35d464d70a42d90d93300582, type: 3}
