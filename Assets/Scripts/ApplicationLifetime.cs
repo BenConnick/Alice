@@ -90,6 +90,7 @@ public static partial class ApplicationLifetime
         {
             Debug.LogWarning($"Current mode and next mode are the same: ({appMode.GetType()}) {appMode}");
         }
+        EditorPersistentDebugOutput.UpdateDebugMessage("AppMode",$"current: '{appMode?.Name}', previous: '{CurrentMode?.Name}'");
         Modes.ChangeState(appMode);
         Debug.Log($"Game state changed to '{CurrentMode.Name}'");
     }
