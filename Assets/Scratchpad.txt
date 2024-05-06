@@ -8,3 +8,19 @@ Future work:
 Find some placeholder music for each section.
 
 Get better placeholder art for the landings that doesn't get cropped in view
+
+Issue Tracking:
+
+ALICE-11: player should be invincible until past the "tunnel top" visual
+ALICE-12: point collecting needs to be more satisfying
+ALICE-14: try removing the level select and switching to an endless mode just to see how much work that would take.
+ALICE_16: 
+
+
+
+
+
+
+
+DONE
+ALICE-15: create a persistent debug output editor utility
