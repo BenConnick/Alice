@@ -15,17 +15,15 @@ MonoBehaviour:
   Data:
     Name: Rabbit Hole
     LevelStartText:
-      Lines:
-      - "\u201COh dear! Oh dear! I shall be late!\u201D "
-      - The White Rabbit. The hole under the hedge.
-      - ...the curious way it begins.
+      Lines: []
     LevelBackgroundText:
       Lines: []
     LevelWinText:
       Lines:
-      - 'Down, down, down. There was nothing else to do. '
-      - "Alice was beginning to get very tired\u2026 "
+      - Stop looking for the White Rabbit.
+      - Think of this as just a game.
+      - 'There are things better off not learned. '
     LevelLoseText:
       Lines:
-      - Down, down, down.
-      - Would the fall never come to an end?
+      - Alice followed the rabbit down,
+      - Never once considering how she would get out again.

@@ -316,7 +316,9 @@ public class FallingGameInstance
 
     private void UpdateOutroAnim()
     {
-        rabbitHoleObject.localPosition += new Vector3(0, Time.deltaTime * fallSpeed, 0);
+        float distanceFromAnimationStart = rabbitHoleObject.localPosition.y - outroStartHeight;
+        float t = distanceFromAnimationStart / outroAnimationDistance;
+        rabbitHoleObject.localPosition += new Vector3(0, Time.deltaTime * fallSpeed * (1-t*.8f), 0);
 
         // alice lerp to resting pos
         var player = World.Get<AliceCharacter>();
@@ -325,9 +327,6 @@ public class FallingGameInstance
         {
             player.IsHijacked = true;
             float maxDistance = player.maxInstantMovePerSecond * Time.deltaTime;
-            float distanceFromAnimationStart = rabbitHoleObject.localPosition.y - outroStartHeight;
-            //float distanceToAnimationComplete = outroAnimationDistance - distanceFromAnimationStart;
-            float t = distanceFromAnimationStart / outroAnimationDistance;
             Vector3 characterTargetRestingPos = new Vector3(rabbitHoleObject.position.x, -10, 0);
             Vector3 alicePosition = player.transform.position;
             Vector3 toVec = characterTargetRestingPos - alicePosition;
