@@ -6,8 +6,8 @@ public class PreFallSlideshowMode : SlideshowMode
 
 	public override void OnEnter()
 	{
-		base.OnEnter();
 		DialogueExhausted += () => GameplayManager.Fire(GlobalGameEvent.PreRunCutsceneFinished);
+		base.OnEnter();
 	}
 
     public override string Name => "Pre-Fall Slideshow";
