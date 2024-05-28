@@ -15,6 +15,7 @@ public class TypewriterText : MonoBehaviour
     [SerializeField] private string displayString;
     [SerializeField] private bool autoPlay;
     [SerializeField] private float defaultSpeed = 10;
+    [SerializeField] private float autoDelay = 0;
 
     private struct InputData
     {
@@ -45,7 +46,7 @@ public class TypewriterText : MonoBehaviour
         VisualReset();
 
         // delay
-        ProgressNorm -= (inputData.TypewriterSpeed * delay * displayString.Length); 
+        ProgressNorm -= (delay * inputData.TypewriterSpeed / displayString.Length); 
     }
 
     public void Clear()
@@ -61,11 +62,18 @@ public class TypewriterText : MonoBehaviour
         SetText(""); // dialogueLabel.text handled by Update()
     }
 
-    private void Start()
+    private void OnEnable()
     {
         if (autoPlay)
         {
-            PlayTypewriter(displayString);
+            if (string.IsNullOrEmpty(displayString) && !string.IsNullOrEmpty(GetText()))
+            {
+                displayString = GetText();
+            }
+            if (!string.IsNullOrEmpty(displayString))
+            {
+                PlayTypewriter(displayString, delay: autoDelay);
+            }
         }
     }
 
