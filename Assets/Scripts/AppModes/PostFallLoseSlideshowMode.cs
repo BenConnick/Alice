@@ -27,6 +27,6 @@ public class PostFallLoseSlideshowMode : SlideshowMode
 
     protected override InGameText GetSlideshowText()
     {
-        return GameplayManager.GetCurrentLevelConfig().LevelText.Data.LevelWinText;
+        return GameplayManager.GetCurrentLevelConfig().LevelText.Data.LevelLoseText;
     }
 }
