@@ -9,8 +9,6 @@ public class ShrinkBehavior
 
     public SizeCategory ShrinkStatus { get; private set; }
     public const float DefaultScale = 0.8f;
-    
-    private float targetScale = DefaultScale;
 
     public static void GetSizeValues(AliceCharacter.SizeCategory sizeCategory, out float scale)
     {
