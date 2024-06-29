@@ -12,6 +12,14 @@ public static class ContextualInputSystem
     public static RabbitHoleDisplay ActiveViewport => ActiveGameInstance?.Viewport;
     
     public static FallingGameInstance ActiveGameInstance;
+    
+    #if UNITY_EDITOR
+    [UnityEditor.InitializeOnEnterPlayMode]
+    private static void EditorReload()
+    {
+        ActiveGameInstance = null;
+    }
+    #endif
 
     // where the cursor would be if it were in the world 
     // shown in the (raycast-hit) viewport

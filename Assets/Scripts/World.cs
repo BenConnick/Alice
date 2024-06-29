@@ -7,6 +7,14 @@ public static class World
     // cached singletons for ease of reference
     public static readonly Dictionary<System.Type, MonoBehaviour> gameplayComponentsCache = new Dictionary<System.Type, MonoBehaviour>();
     
+    #if UNITY_EDITOR
+    [UnityEditor.InitializeOnEnterPlayMode]
+    private static void EditorReload()
+    {
+        gameplayComponentsCache.Clear();
+    }
+    #endif
+    
     /// <summary>
     /// Finds a single object in the scene with the requested component and caches it
     /// for easily obtaining a reference to a singleton behavior across scripts without serializing

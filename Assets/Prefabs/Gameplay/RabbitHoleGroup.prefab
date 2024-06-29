@@ -479,6 +479,7 @@ MonoBehaviour:
   displayString: 
   autoPlay: 0
   defaultSpeed: 100
+  autoDelay: 0
 --- !u!222 &1104830552251414444
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -690,10 +691,7 @@ MonoBehaviour:
   - {fileID: 883553792915381672}
   titleAnimationDistance: 22
   menuGraphics: {fileID: 0}
-  perLevelBackgroundSprites:
-  - {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6, type: 3}
-  - {fileID: 21300000, guid: 22d1c6e017f5e413491a918e84c6d0f6, type: 3}
-  - {fileID: 21300000, guid: 4433a1e1bc1b74df2a3a7a693079ce99, type: 3}
+  fallbackBackgroundSprite: {fileID: 0}
 --- !u!114 &1104830552420216441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,7 +705,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pixelsPerUnit: 10
-  PrevPos: {x: 0, y: 0, z: 0}
 --- !u!114 &187167944256899329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,6 +1117,8 @@ MonoBehaviour:
   - {fileID: 1104830552813897276}
   - {fileID: 1104830553732955644}
   GameOverOverlay: {fileID: 6183004248173902175}
+  Dither: {fileID: 0}
+  DitherLevelsTextures: []
 --- !u!1 &1104830553696023126
 GameObject:
   m_ObjectHideFlags: 0

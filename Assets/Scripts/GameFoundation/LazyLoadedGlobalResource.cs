@@ -9,8 +9,8 @@ using UnityEngine;
 [Serializable]
 public abstract class LazyLoadedGlobalResource<T, TAsset> where TAsset : SerializableDataAsset<T>
 {
-    private static T _Singleton;
-    private static bool _Loaded;
+    protected static T _Singleton;
+    protected static bool _Loaded;
 
     public static T GetSingleton()
     {
@@ -34,8 +34,4 @@ public abstract class LazyLoadedGlobalResource<T, TAsset> where TAsset : Seriali
             _Loaded = true;
         }
     }
-
-    protected static T _SingletonReadonly => _Singleton;
-
-    protected static bool _LoadedReadonly => _Loaded;
 }

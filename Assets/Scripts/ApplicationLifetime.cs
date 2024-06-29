@@ -10,6 +10,14 @@ public static partial class ApplicationLifetime
 
     public static StateMachine<AppMode> Modes = new StateMachine<AppMode>();
     
+    #if UNITY_EDITOR
+    [UnityEditor.InitializeOnEnterPlayMode]
+    private static void EditorReload()
+    {
+        Modes = new StateMachine<AppMode>();
+    }
+    #endif
+    
     private static SerializablePlayerData _playerData;
 
     #endregion

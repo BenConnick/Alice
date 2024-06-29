@@ -14,6 +14,14 @@ using UnityEngine;
 [Serializable]
 public class MasterConfig : LazyLoadedGlobalResource<MasterConfig, MasterConfigAsset>
 {
+    #if UNITY_EDITOR
+    [UnityEditor.InitializeOnEnterPlayMode]
+    private static void EditorReload()
+    {
+        _Loaded = false;
+    }
+    #endif
+    
     /// <summary>
     /// Entry point to the runtime instance.
     /// </summary>
