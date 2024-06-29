@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8902031822891185014}
   - component: {fileID: 3349839276640368909}
-  - component: {fileID: 3706898252136387138}
   - component: {fileID: 6085115293385627165}
   - component: {fileID: 997180527966925781}
-  - component: {fileID: 5950619928971726817}
+  - component: {fileID: 1156746696066045578}
   m_Layer: 0
   m_Name: collectable
   m_TagString: Untagged
@@ -74,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a05ac87a566844837bb5aa850b0c7bf0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 35deacb7019b64ed5b04fe65881265f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,27 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3706898252136387138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750521127246064908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e21fe19dce119441098d151437cdb692, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animations:
-  - Name: Idle
-    Frames:
-    - {fileID: 21300000, guid: a05ac87a566844837bb5aa850b0c7bf0, type: 3}
-    - {fileID: 21300000, guid: 42206ef06477b4d329e3d9084e3e7361, type: 3}
-    Duration: 0.5
-    Looping: 1
-    LoopFrame: 0
-  Autoplay: Idle
 --- !u!61 &6085115293385627165
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -119,18 +97,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.6, y: 0.6}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1.0514286, y: 0.6857143}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
 --- !u!114 &997180527966925781
 MonoBehaviour:
@@ -146,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 6085115293385627165}
   Tags: 8
---- !u!114 &5950619928971726817
+--- !u!114 &1156746696066045578
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,8 +133,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1750521127246064908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 121dc8389285c4795900c31db9bc6403, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b6080f0b2e284995805aa160b1b684b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingRotation: 0
-  rotationSpeed: 3000
+  BlinkCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LoopSeconds: 1
