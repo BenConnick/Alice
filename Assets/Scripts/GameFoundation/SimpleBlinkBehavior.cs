@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GameFoundation;
 using UnityEngine;
 
-public class SimpleBlinkBehavior : MonoBehaviour
+public class SimpleBlinkBehavior : VisualMonoBehaviour
 {
-    public MonoBehaviour Renderer;
     public AnimationCurve BlinkCurve;
     public float LoopSeconds;
 
@@ -21,7 +19,7 @@ public class SimpleBlinkBehavior : MonoBehaviour
     {
         time += Time.deltaTime;
         time %= LoopSeconds;
-        bool vis = BlinkCurve.Evaluate(time / LoopSeconds) > .5f;
-        Renderer.enabled = vis;
+        bool isVisible = BlinkCurve.Evaluate(time / LoopSeconds) > .5f;
+        SetVisible(isVisible);
     }
 }
