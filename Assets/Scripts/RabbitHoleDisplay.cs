@@ -99,6 +99,14 @@ public class RabbitHoleDisplay : MonoBehaviour
     // render texture pool is global, shared across all instances
     private static List<RenderTexture> freeRTPool = new List<RenderTexture>();
     private static List<RenderTexture> rtTracker = new List<RenderTexture>(); // track all created RTs, avoid leaks
+    #if UNITY_EDITOR
+    [UnityEditor.InitializeOnEnterPlayMode]
+    private static void OnAppRestart()
+    {
+        freeRTPool.Clear();
+        rtTracker.Clear();
+    }
+    #endif
     private RenderTexture GetPooledRT()
     {
         int RTW = DefaultRT.width;
