@@ -122,6 +122,7 @@ public class AliceCharacter : AliceCharacterMovement
     private void SetStanding(bool standing)
     {
         string newAnimation = standing ? StandingAnimName : FallingAnimName;
+        spriteAnimator.Validate();
         if (spriteAnimator.GetAnimation() != newAnimation)
             spriteAnimator.SetAnimation(newAnimation);
         if (standing)

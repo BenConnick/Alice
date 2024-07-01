@@ -7,7 +7,7 @@ public class SpriteAnimator : AbstractSpriteAnimator
 {
     private SpriteRenderer spriteRenderer;
 
-    private void Validate()
+    public void Validate()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -19,7 +19,6 @@ public class SpriteAnimator : AbstractSpriteAnimator
 
     protected override void SetFrame(int frame)
     {
-        Validate();
         currentFrame = frame;
         spriteRenderer.sprite = currentAnimation.Value.Frames[currentFrame];
     }
