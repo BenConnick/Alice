@@ -98,7 +98,7 @@ public static class GameplayManager
     }
 
     public static LevelType HighestUnlockedLevel => ApplicationLifetime.GetPlayerData().LastUnlockedLevel.Value;
-    public static LevelType SelectedLevel => ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
+    public static LevelType SelectedLevel => LevelType.RabbitHole; // ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
 
     public static void UnlockNextLevel()
     {

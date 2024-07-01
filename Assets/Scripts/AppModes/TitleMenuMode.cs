@@ -7,6 +7,8 @@ public class TitleMenuMode : AppMode
     public override void OnEnter()
     {
         World.Get<MenuGraphics>().ShowStageArt(GameplayManager.SelectedLevel);
+        World.Get<MainUIController>().SetGameViewVisible();
+        World.Get<AliceCharacter>().ActivateMenuMode();
     }
 
     public override void Tick(float dt)

@@ -27,7 +27,7 @@ public static partial class ApplicationLifetime
         return _playerData;
     }
 
-    public static int MAX_LIVES = 3;
+    public static int MAX_LIVES = 1;
 
     #region gamestate
     // Game State
@@ -65,7 +65,7 @@ public static partial class ApplicationLifetime
         DebugOnPostInitialize();
 #endif
 
-        _playerData.LastSelectedLevel.Set(_playerData.LastUnlockedLevel.Value);
+        //_playerData.LastSelectedLevel.Set(_playerData.LastUnlockedLevel.Value);
 
         GameplayManager.Fire(GlobalGameEvent.BootLoadFinished);
     }
@@ -115,11 +115,6 @@ public static partial class ApplicationLifetime
             }
             case GlobalGameEvent.MainMenuGoNext:
             {
-                ChangeMode<PreFallSlideshowMode>();
-                break;
-            }
-            case GlobalGameEvent.PreRunCutsceneFinished:
-            {
                 ChangeMode<FallingGameActiveMode>();
                 break;
             }
@@ -127,29 +122,20 @@ public static partial class ApplicationLifetime
             case GlobalGameEvent.AllLivesLost:
             case GlobalGameEvent.MenuAnimationFinished:
             {
+                // handled in FallingGameInstance.HandleGlobalEvent()
                 CurrentMode.HandleGameEvent(gameEvent);
                 break;
             }
             case GlobalGameEvent.PlatformerLevelEndAnimationFinished:
             {
                 // begin dialogue
-                ChangeMode<PostFallWinSlideshowMode>();
+                Debug.LogWarning("Obsolete event");
                 break;
             }
             case GlobalGameEvent.GameResultsClosed:
             {
                 // set mode to main menu
-                ChangeMode<PostFallLoseSlideshowMode>();
-                break;
-            }
-            case GlobalGameEvent.PostRunCutsceneFinished:
-            {
-                ChangeMode<LevelSelectMode>();
-                break;
-            }
-            case GlobalGameEvent.LevelSelectionConfirmed:
-            {
-                ChangeMode<PreFallSlideshowMode>();
+                ChangeMode<TitleMenuMode>();
                 break;
             }
         }

@@ -5,6 +5,8 @@ public class AliceCharacter : AliceCharacterMovement
     public const string FallingAnimName = "falling";
     public const string StandingAnimName = "standing";
 
+    public Vector3 DefaultPositionInMenu;
+
     // Inspector
     [SerializeField] private SpriteAnimator spriteAnimator;
 
@@ -42,6 +44,7 @@ public class AliceCharacter : AliceCharacterMovement
     public void ActivateMenuMode()
     {
         SetStanding(true);
+        transform.localPosition = DefaultPositionInMenu;
     }
 
     public bool CheckOverlap(LevelCollider levelCollider)

@@ -17,6 +17,7 @@ public class AliceCharacterMovement : MonoBehaviour
     public float invincibilityTime = 2f;
     public float rotationSpeed; 
     public float maxInstantMovePerSecond = 15f;
+    public float wallThickness = 2f;
 
     private float angle;
 
@@ -40,12 +41,21 @@ public class AliceCharacterMovement : MonoBehaviour
             if (!IsHijacked)
             {
                 float maxInstantMove = maxInstantMovePerSecond * Time.deltaTime;
+                Vector3 viewportWorldPosition = ContextualInputSystem.ViewWorldCursorPos;
+                
+                // limit movement to the left and right viewport edges
+                float viewportWorldHalfWidth =
+                    ContextualInputSystem.ActiveGameInstance.Viewport.GameplayCamera.orthographicSize;
+                viewportWorldPosition.x = Mathf.Clamp(viewportWorldPosition.x, 
+                    wallThickness - viewportWorldHalfWidth,
+                    viewportWorldHalfWidth - wallThickness);
+                
                 Vector3 prevPos = transform.position;
-                Vector3 toVec = ContextualInputSystem.ViewWorldCursorPos - prevPos;
+                Vector3 toVec = viewportWorldPosition - prevPos;
                 if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
                 {
                     // instant move to position (micro movements)
-                    transform.position = ContextualInputSystem.ViewWorldCursorPos;
+                    transform.position = viewportWorldPosition;
                 }
                 else
                 {

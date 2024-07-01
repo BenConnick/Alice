@@ -226,7 +226,7 @@ public class FallingGameInstance
         
         // check collisions
         var player = World.Get<AliceCharacter>();
-        bool invincible = player.IsFlashing() || player.IsHijacked;
+        bool invincible = player.IsFlashing() || player.IsHijacked || totalFallDistance < LevelChunk.height*3;
         collisionBuffer.Clear();
         foreach (var obstacle in activeObstacles)
         {
@@ -248,9 +248,7 @@ public class FallingGameInstance
 
         // spawn new obstacles
         // PerFrameVariableWatches.SetDebugQuantity("temp", (initialHeight - transform.localPosition.y).ToString() + " < " + (chunkCursor - LevelChunk.height).ToString());
-        if (initialHeight - rabbitHoleObject.localPosition.y < chunkCursor + 6
-            // stop spawning chunks before the level end
-            && totalFallDistance < levelConfig.FallLength - LevelChunk.height * 2)
+        if (initialHeight - rabbitHoleObject.localPosition.y < chunkCursor + 6)
         {
             var newChunkPrefab = chunkSpawner.Force();
             LevelChunk newChunk = Object.Instantiate(newChunkPrefab, rabbitHoleObject);
@@ -268,11 +266,11 @@ public class FallingGameInstance
             }
         }
 
-        // check game over condition
-        if (mode == AnimationMode.Interactive && totalFallDistance > levelConfig.FallLength)
-        {
-            GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
-        }
+        // (obsolete: endless) check game over condition
+        // if (false)
+        // {
+        //     GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
+        // }
 
         // debug
         UpdateDebug();
