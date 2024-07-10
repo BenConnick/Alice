@@ -6,7 +6,7 @@ public class SimpleBlinkBehavior : VisualMonoBehaviour
     public AnimationCurve BlinkCurve;
     public float LoopSeconds;
 
-    private float time;
+    protected float time;
 
     // Start is called before the first frame update
     void Start()
