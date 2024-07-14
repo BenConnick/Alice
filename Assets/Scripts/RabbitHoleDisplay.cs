@@ -51,7 +51,7 @@ public class RabbitHoleDisplay : MonoBehaviour
 
     private void LateUpdate()
     {
-        // update UI
+        // UI
         UpdateGameplayUI();
     }
 
@@ -176,11 +176,8 @@ public class RabbitHoleDisplay : MonoBehaviour
 
     private void UpdateGameplayUI()
     {
-        float progressTotal = AssociatedGameInstance.GetProgressTotal();
-        
         // score
-        AssociatedGameInstance.VpScore = Mathf.FloorToInt(progressTotal); // <- putting the actual score in the UI rendering is questionable at best...
-        scoreLabel.text = string.Format($"{ApplicationLifetime.GetPlayerData().Money.Value:000000}"); // + Util.CurrencyChar;
+        scoreLabel.text = string.Format($"{AssociatedGameInstance.VpScore.GetCombinedScore():000000}"); // + Util.CurrencyChar;
         // lives
         for (int i = 0; i < heartIcons.Length; i++)
         {

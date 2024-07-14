@@ -6,7 +6,8 @@ public class LevelSelectMode : AppMode
 
     public override void OnEnter()
     {
-        World.Get<MainUIController>().ShowLevelSelect();
+        // deprecated
+        // World.Get<MainUIController>().ShowLevelSelect();
     }
 
     public override void Tick(float dt)

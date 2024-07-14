@@ -76,8 +76,18 @@ public class FallingGameInstance
     private LevelChunk[] chunkPrefabs => levelConfig.ChunkSet.Chunks;
 
     // per instance values TODO rename
-    public int VpLives { get; set; }
-    public int VpScore { get; set; }
+    public int VpLives
+    {
+        get => vpLives;
+        set
+        {
+            vpLives = value;
+            VpScore.Hearts = value;
+        }
+    }
+
+    public ScoreObject VpScore = new ScoreObject();
+    private int vpLives;
 
     public bool IsPaused { get; set; }
 
@@ -116,6 +126,8 @@ public class FallingGameInstance
         VpLives = ApplicationLifetime.MAX_LIVES;
 
         chunkCursor = -LevelChunk.height;
+
+        VpScore.Clear();
 
         totalFallDistance = 0;
 
@@ -242,7 +254,7 @@ public class FallingGameInstance
 
         foreach (LevelCollider hit in collisionBuffer)
         {
-            player.HandleObstacleCollision(hit);
+            HandlePlayerObstacleCollision(player, hit);
         }
 
 
@@ -271,9 +283,66 @@ public class FallingGameInstance
         // {
         //     GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
         // }
-
+        
+        // score
+        VpScore.Meters = Mathf.FloorToInt(GetProgressTotal()); // <- putting the actual score in the UI rendering is questionable at best...
+        
         // debug
         UpdateDebug();
+    }
+
+    private void HandlePlayerObstacleCollision(AliceCharacter player, LevelCollider obstacle) 
+    {
+        if (obstacle.HasTag(LevelCollider.Tag_DamageOnHit))
+        {
+            // invert the collider
+            var inv = obstacle.gameObject.AddComponent<InvertSpriteTintBehavior>();
+            inv.Initialize();
+
+            // flash the collider
+            //var flashing = obstacle.gameObject.AddComponent<FlashingBehavior>();
+            //flashing.flashOffTime = 0.07f;
+            //flashing.StartFlashing();
+
+            // bump up the removal time (if applicable)
+            var destroyer = obstacle.gameObject.GetComponent<DestroyAfterTimeBehavior>();
+            if (destroyer != null) destroyer.SecondsUntilDestruction = Mathf.Min(destroyer.SecondsUntilDestruction, 2);
+
+            // shake, flash, subtract lives
+            Viewport.InvertColor(0.01f);
+            TimeDistortionController.PlayImpactFrame(.9f);
+            Viewport.GameplayCamera.GetComponent<GameplayInnerDisplayCamera>().Shake(); // DISABLED FOR EDITING
+            player.StartFlashing();
+            SubtractLife();
+        }
+        if (obstacle.HasTag(LevelCollider.Tag_GrowOnHit))
+        {
+            player.GetComponent<ShrinkBehavior>().OnGrow();
+        }
+        if (obstacle.HasTag(LevelCollider.Tag_ShrinkOnHit))
+        {
+            player.GetComponent<ShrinkBehavior>().OnShrink();
+        }
+        if (obstacle.HasTag(LevelCollider.Tag_MoneyOnHit))
+        {
+            GameplayManager.AddMoney(1);
+            obstacle.gameObject.SetActive(false);
+        }
+    }
+
+    private void SubtractLife()
+    {
+        // per the current design, lives and score are NOT global,
+        // this is different from a normal game
+        // the game has multiple contexts, with different lives and score
+        // late in the game, the player can switch between these contexts
+        // and in doing so can effectively gain or lose lives
+        // this may eventually switch to a global context if that idea doesn't end up in the game
+        VpLives--;
+        if (VpLives <= 0)
+        {
+            GameplayManager.Fire(GlobalGameEvent.AllLivesLost);
+        }
     }
 
     private void BackgroundUpdate()

@@ -35,13 +35,6 @@ public class MainUIController : MonoBehaviour
         UIHelper.SetCanvasGroupActive(GameplayGroup, false);
     }
 
-    public void ShowLevelSelect()
-    {
-        ContextualInputSystem.UICapturedInput = true;
-        UIHelper.SetCanvasGroupActive(LevelSelectGroup, true);
-        World.Get<LevelSelectUI>().UpdateUI();
-    }
-
     public void HideLevelSelect()
     {
         UIHelper.SetCanvasGroupActive(LevelSelectGroup, false);

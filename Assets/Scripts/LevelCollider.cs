@@ -20,4 +20,9 @@ public class LevelCollider : MonoBehaviour
     {
         return Collider.OverlapPoint(point);
     }
+
+    public void ReactToPlayerCollision()
+    {
+        
+    }
 }

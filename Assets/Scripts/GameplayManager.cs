@@ -115,4 +115,16 @@ public static class GameplayManager
         LevelType levelIndex = ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value;
         return GetLevelConfig(levelIndex);
     }
+
+    public static void AddMoney(int amount)
+    {
+        if (ContextualInputSystem.ActiveGameInstance != null)
+        {
+            ContextualInputSystem.ActiveGameInstance.VpScore.Coins += amount;
+        }
+        
+        int plusOne = ApplicationLifetime.GetPlayerData().Money.Value + 1;
+        ApplicationLifetime.GetPlayerData().Money.Set(plusOne);
+        // TODO spawn collection celebration VFX
+    }
 }
