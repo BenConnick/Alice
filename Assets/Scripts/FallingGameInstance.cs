@@ -164,6 +164,7 @@ public class FallingGameInstance
     {
         levelConfig = GameplayManager.GetCurrentLevelConfig();
         chunkSpawner = new ChunkSpawner(chunkPrefabs);
+        SetBackgroundSpritesForLevel();
     }
 
     public void OnShow()
