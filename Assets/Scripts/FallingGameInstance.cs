@@ -133,17 +133,14 @@ public class FallingGameInstance
 
         // reset level height
         rabbitHoleObject.localPosition = new Vector3(rabbitHoleObject.localPosition.x, initialHeight, rabbitHoleObject.localPosition.z);
-        // var pixelAlign = rabbitHoleObject.GetComponent<PixelAlignmentBehavior>();
-        // if (pixelAlign != null)
-        // {
-        //     pixelAlign.ForceUpdate();
-        // }
-        
+
         // reset title time?
         titleAnimationTimer = titleAnimationDuration;
 
         // clean up game objects
         RemoveAllChunks();
+        
+        World.Get<AliceCharacter>().StopFlashing();
     }
 
     public bool HandleGlobalEvent(GlobalGameEvent globalGameEvent)
@@ -161,6 +158,12 @@ public class FallingGameInstance
         }
 
         return false;
+    }
+
+    public void ReloadLevelParts()
+    {
+        levelConfig = GameplayManager.GetCurrentLevelConfig();
+        chunkSpawner = new ChunkSpawner(chunkPrefabs);
     }
 
     public void OnShow()
@@ -269,7 +272,7 @@ public class FallingGameInstance
             activeChunks.Add(newChunk);
             activeObstacles.AddRange(newChunk.Obstacles);
 
-            const int maxChunks = 3;
+            const int maxChunks = 4;
             if (activeChunks.Count > maxChunks)
             {
                 var oldest = activeChunks[0];
@@ -283,6 +286,16 @@ public class FallingGameInstance
         // {
         //     GameplayManager.Fire(GlobalGameEvent.PlatformerLevelEndReached);
         // }
+
+        if (totalFallDistance > 20 && ApplicationLifetime.GetPlayerData().LastSelectedLevel.Value == LevelType.RabbitHole)
+        {
+            player.GiveTemporaryInvincibility(2.5f);
+            GameplayManager.Fire(GlobalGameEvent.Temp);
+            Vector3 rabbitHolePos = rabbitHoleObject.localPosition;
+            Vector3 newPos = rabbitHolePos + new Vector3(0, LevelChunk.height*2, 0);
+            rabbitHoleObject.localPosition = newPos;
+            totalFallDistance = newPos.y - initialHeight;
+        }
         
         // score
         VpScore.Meters = Mathf.FloorToInt(GetProgressTotal()); // <- putting the actual score in the UI rendering is questionable at best...

@@ -32,6 +32,11 @@ public class FlashingBehavior : MonoBehaviour
         flashingTimer = duration;
     }
 
+    public void StopFlashing()
+    {
+        flashingTimer = 0;
+    }
+
     public bool IsFlashing()
     {
         return flashingTimer > 0;

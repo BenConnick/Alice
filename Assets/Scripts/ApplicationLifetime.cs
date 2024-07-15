@@ -138,6 +138,13 @@ public static partial class ApplicationLifetime
                 ChangeMode<TitleMenuMode>();
                 break;
             }
+            case GlobalGameEvent.Temp:
+            {
+                World.Get<GlitchAnimator>().GlitchFadeInOut(.33f);
+                GetPlayerData().LastSelectedLevel.Set(LevelType.GardenOfChange);
+                ContextualInputSystem.ActiveGameInstance.ReloadLevelParts();
+                break;
+            }
         }
     }
 }

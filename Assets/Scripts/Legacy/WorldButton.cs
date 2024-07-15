@@ -21,27 +21,26 @@ public class WorldButton: MonoBehaviour
     private void Update()
     {
         // while active
-        if (ContextualInputSystem.ActiveViewport?.isActiveAndEnabled ?? false)
+        if (!(ContextualInputSystem.ActiveViewport?.isActiveAndEnabled ?? false)) return;
+        
+        // check for overlap
+        var pos = ContextualInputSystem.ViewWorldCursorPos;
+        bool newHover = ContainsPoint2D(pos);
+        if (newHover != hover)
         {
-            // check for overlap
-            var pos = ContextualInputSystem.ViewWorldCursorPos;
-            bool newHover = ContainsPoint2D(pos);
-            if (newHover != hover)
+            SetHover(newHover);
+        }
+        if (hover)
+        {
+            // click confirmed
+            if (Input.GetMouseButtonUp(0))
             {
-                SetHover(newHover);
+                OnClicked();
             }
-            if (hover)
+            // press and hold color feedback
+            else if (Input.GetMouseButton(0))
             {
-                // click confirmed
-                if (Input.GetMouseButtonUp(0))
-                {
-                    OnClicked();
-                }
-                // press and hold color feedback
-                else if (Input.GetMouseButton(0))
-                {
-                    SetHover(false); // visual only
-                }
+                SetHover(false); // visual only
             }
         }
     }

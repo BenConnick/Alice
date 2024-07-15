@@ -18,4 +18,5 @@ public enum GlobalGameEvent
     PreRunCutsceneFinished = 12,
     PostRunCutsceneFinished = 13,
     LevelSelectionConfirmed = 14,
+    Temp = 15,
 }

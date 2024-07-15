@@ -74,6 +74,11 @@ public class AliceCharacterMovement : MonoBehaviour
         GetComponentCached<FlashingBehavior>().StartFlashing(invincibilityTime);
     }
 
+    public void StopFlashing()
+    {
+        GetComponentCached<FlashingBehavior>().StopFlashing();
+    }
+
     public bool IsFlashing()
     {
         return GetComponentCached<FlashingBehavior>().IsFlashing();
@@ -93,6 +98,11 @@ public class AliceCharacterMovement : MonoBehaviour
             componentCache.Add(typeof(T), ret);
             return ret;
         }
+    }
+
+    public void GiveTemporaryInvincibility(float duration)
+    {
+        GetComponentCached<FlashingBehavior>().StartFlashing(duration);
     }
 
 #if UNITY_EDITOR
