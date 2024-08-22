@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1a8216019fb4344a5b1f9dffe3981566, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Sprite: {fileID: 21300000, guid: d22796f7598d54aeb8764d9204b9f52c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -124,14 +124,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.7916667, y: 1.0416666}
+    oldSize: {x: 0.6956522, y: 0.6956522}
     newSize: {x: 1.0514286, y: 0.6857143}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 1}
+  m_Size: {x: 0.62, y: 0.64}
   m_EdgeRadius: 0
 --- !u!114 &997180527966925781
 MonoBehaviour:
@@ -180,17 +180,35 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0.46224976
-      inSlope: 0.53775024
-      outSlope: 0.53775024
+      inSlope: 2.2812345
+      outSlope: 2.2812345
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
+      time: 0.21357492
+      value: 0.9494642
+      inSlope: 0.24638021
+      outSlope: 0.24638021
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.44451028
+      value: 0.5364423
+      inSlope: -0.47698563
+      outSlope: -0.47698563
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.53775024
-      outSlope: 0.53775024
+      inSlope: 0.8345028
+      outSlope: 0.8345028
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
