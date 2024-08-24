@@ -23,48 +23,61 @@ public class AliceCharacterMovement : MonoBehaviour
 
     public virtual void Update()
     {
+        UpdatePosition();
+    }
+
+    private void UpdatePosition()
+    {
+        if (IsHijacked) return;
         if (ApplicationLifetime.IsGameplayPaused) return;
-
-        if (gameContext == null) return;
-
-        bool mouseClick = Input.GetMouseButtonUp(0);
-
-        // switch viewport
-        if (prevGameContext != gameContext)
+        
+        // move outside of viewport
+        if (gameContext == null && ContextualInputSystem.AllowedOutside)
         {
-            prevGameContext = gameContext;
-            // position in lane
-            transform.position = ContextualInputSystem.ViewWorldCursorPos;
+            UpdatePositionOutside();
         }
-        // same viewport
         else
         {
-            // position
-            if (!IsHijacked)
-            {
-                float maxInstantMove = maxInstantMovePerSecond * Time.deltaTime;
-                Vector3 viewportWorldPosition = ContextualInputSystem.ViewWorldCursorPos;
-                
-                // limit movement to the left and right viewport edges
-                float viewportWorldHalfWidth =
-                    ContextualInputSystem.ActiveGameInstance.Viewport.GameplayCamera.orthographicSize;
-                viewportWorldPosition.x = Mathf.Clamp(viewportWorldPosition.x, 
-                    wallThickness - viewportWorldHalfWidth,
-                    viewportWorldHalfWidth - wallThickness);
-                
-                Vector3 prevPos = transform.position;
-                Vector3 toVec = viewportWorldPosition - prevPos;
-                if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove || mouseClick)
-                {
-                    // instant move to position (micro movements)
-                    transform.position = viewportWorldPosition;
-                }
-                else
-                {
-                    // cap per-frame movement (macro movements)
-                    transform.position = prevPos + toVec.normalized * maxInstantMove;
-                }
-            }
+            UpdatePositionInside();
+        }
+    }
+
+    private void UpdatePositionOutside()
+    {
+        prevGameContext = gameContext;
+        transform.position = ContextualInputSystem.ViewWorldCursorPos;
+        angle += 0;
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    private void UpdatePositionInside()
+    {
+        bool sameContext = gameContext == prevGameContext;
+        prevGameContext = gameContext;
+        bool mouseClick = Input.GetMouseButtonUp(0);
+    
+        // position
+        float maxInstantMove = prevGameContext == gameContext ? maxInstantMovePerSecond * Time.deltaTime : 999; // snap if changing viewport
+        Vector3 viewportWorldPosition = ContextualInputSystem.ViewWorldCursorPos;
+            
+        // limit movement to the left and right viewport edges
+        float viewportWorldHalfWidth =
+            ContextualInputSystem.ActiveGameInstance.Viewport.GameplayCamera.orthographicSize;
+        viewportWorldPosition.x = Mathf.Clamp(viewportWorldPosition.x, 
+            wallThickness - viewportWorldHalfWidth,
+            viewportWorldHalfWidth - wallThickness);
+            
+        Vector3 prevPos = transform.position;
+        Vector3 toVec = viewportWorldPosition - prevPos;
+        if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove || mouseClick)
+        {
+            // instant move to position (micro movements)
+            transform.position = viewportWorldPosition;
+        }
+        else
+        {
+            // cap per-frame movement (macro movements)
+            transform.position = prevPos + toVec.normalized * maxInstantMove;
         }
 
         angle += Time.deltaTime * rotationSpeed;

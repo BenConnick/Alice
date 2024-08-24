@@ -62,6 +62,7 @@ public class AliceCharacter : AliceCharacterMovement
 
     private void SetStanding(bool standing)
     {
+        IsHijacked = standing;
         string newAnimation = standing ? StandingAnimName : FallingAnimName;
         spriteAnimator.Validate();
         if (spriteAnimator.GetAnimation() != newAnimation)
