@@ -18,6 +18,7 @@ public class AliceCharacterMovement : MonoBehaviour
     public float rotationSpeed; 
     public float maxInstantMovePerSecond = 15f;
     public float wallThickness = 2f;
+    public float outOfBoundsCameraPanSpeed = 10f;
 
     private float angle;
 
@@ -44,10 +45,29 @@ public class AliceCharacterMovement : MonoBehaviour
 
     private void UpdatePositionOutside()
     {
-        prevGameContext = gameContext;
+        prevGameContext = null;
         transform.position = ContextualInputSystem.ViewWorldCursorPos;
         angle += 0;
         transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        
+        PanCamera();
+    }
+
+    private void PanCamera()
+    {
+        float deadZoneSize = .5f;
+        Vector3 renormalizedCursor = 2 * (ContextualInputSystem.ViewNormalizedCursorPos - Vector3.one * .5f);
+        var cam = World.Get<GameplayCameraBehavior>().GetComponent<Camera>();
+        if (Mathf.Abs(renormalizedCursor.x) < deadZoneSize && Mathf.Abs(renormalizedCursor.y) < deadZoneSize)
+        {
+            return;
+        }
+        renormalizedCursor.z = 0;
+        float xSign = Mathf.Sign(renormalizedCursor.x);
+        float ySign = Mathf.Sign(renormalizedCursor.y);
+        renormalizedCursor.x = xSign * Mathf.InverseLerp(1 - deadZoneSize, 1, Mathf.Abs(renormalizedCursor.x));
+        renormalizedCursor.y = ySign * Mathf.InverseLerp(1 - deadZoneSize, 1, Mathf.Abs(renormalizedCursor.y));
+        cam.transform.localPosition += renormalizedCursor * outOfBoundsCameraPanSpeed * Time.deltaTime;
     }
 
     private void UpdatePositionInside()
@@ -57,7 +77,7 @@ public class AliceCharacterMovement : MonoBehaviour
         bool mouseClick = Input.GetMouseButtonUp(0);
     
         // position
-        float maxInstantMove = prevGameContext == gameContext ? maxInstantMovePerSecond * Time.deltaTime : 999; // snap if changing viewport
+        float maxInstantMove = sameContext ? maxInstantMovePerSecond * Time.deltaTime : 999; // snap if changing viewport
         Vector3 viewportWorldPosition = ContextualInputSystem.ViewWorldCursorPos;
             
         // limit movement to the left and right viewport edges

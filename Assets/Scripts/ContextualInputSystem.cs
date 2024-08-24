@@ -69,9 +69,10 @@ public static class ContextualInputSystem
         foreach (var instance in FallingGameInstance.All)
         {
             var viewport = instance.Viewport;
-            ViewNormalizedCursorPos = viewport.GetNormalizedCursorPos(cam);
-            if (Util.IsInBounds(ViewNormalizedCursorPos))
+            Vector2 viewportCursor = viewport.GetNormalizedCursorPos(cam);
+            if (Util.IsInBounds(viewportCursor))
             {
+                ViewNormalizedCursorPos = viewportCursor;
                 ActiveGameInstance = instance;
                 break;
             }

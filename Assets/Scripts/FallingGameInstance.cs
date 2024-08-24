@@ -4,7 +4,7 @@ using UnityEngine;
 public class FallingGameInstance
 {
     public static List<FallingGameInstance> All = new List<FallingGameInstance>();
-    public static FallingGameInstance Current => ContextualInputSystem.ActiveGameInstance;
+    public static FallingGameInstance Current => ContextualInputSystem.ActiveGameInstance ?? Object.FindObjectOfType<RabbitHoleDisplay>().AssociatedGameInstance;
     
     private RabbitHoleGroup gameplayObjects;
     private RabbitHoleDisplay viewport;

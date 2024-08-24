@@ -54,6 +54,8 @@ public static partial class ApplicationLifetime
         // init frame rate
         Application.targetFrameRate = 60;
         
+        ContextualInputSystem.AllowedOutside = true; // TEMP
+        
         // begin loading
         ChangeMode<LoadingMode>();
         
