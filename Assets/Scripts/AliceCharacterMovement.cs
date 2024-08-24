@@ -27,6 +27,8 @@ public class AliceCharacterMovement : MonoBehaviour
 
         if (gameContext == null) return;
 
+        bool mouseClick = Input.GetMouseButtonUp(0);
+
         // switch viewport
         if (prevGameContext != gameContext)
         {
@@ -52,7 +54,7 @@ public class AliceCharacterMovement : MonoBehaviour
                 
                 Vector3 prevPos = transform.position;
                 Vector3 toVec = viewportWorldPosition - prevPos;
-                if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove)
+                if (toVec.sqrMagnitude < maxInstantMove * maxInstantMove || mouseClick)
                 {
                     // instant move to position (micro movements)
                     transform.position = viewportWorldPosition;
