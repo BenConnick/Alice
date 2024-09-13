@@ -142,7 +142,7 @@ public static partial class ApplicationLifetime
             }
             case GlobalGameEvent.Temp:
             {
-                World.Get<GlitchAnimator>().GlitchFadeInOut(.33f);
+                World.Get<GlitchAnimator>().GlitchFadeInOut(3.33f);
                 GetPlayerData().LastSelectedLevel.Set(LevelType.GardenOfChange);
                 ContextualInputSystem.ActiveGameInstance.ReloadLevelParts();
                 break;

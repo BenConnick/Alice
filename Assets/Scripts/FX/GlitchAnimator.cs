@@ -15,6 +15,8 @@ public class GlitchAnimator : MonoBehaviour
 
     private Coroutine activeAnimation;
 
+    public AnimationCurve PlaceholderAnimationCurve;
+
     public void Awake()
     {
         glitchMatInstance = new Material(GlitchMaterial);
@@ -60,7 +62,8 @@ public class GlitchAnimator : MonoBehaviour
             float startTime = endTime - duration;
             float elapsedTime = Time.time - startTime;
             float normalizedElapsedTime = elapsedTime / duration; // 0-1
-            float t = 1 - 2 * Mathf.Abs(normalizedElapsedTime-.5f);
+            float curved = PlaceholderAnimationCurve.Evaluate(normalizedElapsedTime);
+            float t = 1 - 2 * Mathf.Abs(curved-.5f);
             ManualIntensity = t;
             yield return null;
         }

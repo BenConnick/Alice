@@ -33,7 +33,7 @@ public class TitleMenuMode : AppMode
                 }
                 else
                 {
-                    ContextualInputSystem.ActiveGameInstance.FastForwardTitleIntro();
+                    FallingGameInstance.Current.FastForwardTitleIntro();
                 }
                 break;  
         }
@@ -49,8 +49,8 @@ public class TitleMenuMode : AppMode
     private bool IsTitleAnimationDone()
     {
         bool done = false;
-        if (ContextualInputSystem.ActiveViewport != null && ContextualInputSystem.ActiveViewport.GameplayCamera != null)
-            done = ContextualInputSystem.ActiveViewport.GameplayCamera.transform.localPosition.y == 0; // kinda hacky
+        if (FallingGameInstance.Current != null && FallingGameInstance.Current.GameplayCam != null)
+            done = FallingGameInstance.Current.GameplayCam.transform.localPosition.y == 0; // kinda hacky
         return done;
     }
 }
