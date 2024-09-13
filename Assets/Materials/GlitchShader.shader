@@ -72,7 +72,7 @@ Shader "FX/Glitch/Analog"
     {
         Pass
         {
-            ZTest Always Cull Off ZWrite Off
+            ZTest Always Cull Off ZWrite On
             CGPROGRAM
             #pragma vertex vert_img
             #pragma fragment frag
