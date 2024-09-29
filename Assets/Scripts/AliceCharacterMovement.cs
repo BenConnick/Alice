@@ -32,7 +32,7 @@ public class AliceCharacterMovement : MonoBehaviour
         bool mouseClick = Input.GetMouseButtonUp(0);
         if (mouseClick && Mathf.Abs(ContextualInputSystem.ViewNormalizedCursorPos.x) > 1)
         {
-            ContextualInputSystem.AllowedOutside = true;
+            //ContextualInputSystem.AllowedOutside = true;
         }
         
         if (IsHijacked) return;

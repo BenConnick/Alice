@@ -768,12 +768,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitleBG
       objectReference: {fileID: 0}
-    - target: {fileID: 3209870556575597993, guid: 77b8475bdb4064989833ebd26aeba12f,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: aae4cf2df807d455f8eb43905b682ede,
-        type: 3}
     - target: {fileID: 3559774419105561940, guid: 77b8475bdb4064989833ebd26aeba12f,
         type: 3}
       propertyPath: m_RootOrder
@@ -782,7 +776,7 @@ PrefabInstance:
     - target: {fileID: 3559774419105561940, guid: 77b8475bdb4064989833ebd26aeba12f,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 3559774419105561940, guid: 77b8475bdb4064989833ebd26aeba12f,
         type: 3}
@@ -792,7 +786,7 @@ PrefabInstance:
     - target: {fileID: 3559774419105561940, guid: 77b8475bdb4064989833ebd26aeba12f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.75
+      value: 0.96
       objectReference: {fileID: 0}
     - target: {fileID: 3559774419105561940, guid: 77b8475bdb4064989833ebd26aeba12f,
         type: 3}
